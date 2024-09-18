@@ -2,6 +2,7 @@ import axios from 'axios';
 
 
 const API_URL = "http://localhost:8080/hey";
+const API_URL2 = "http://localhost:8080/hey/create";
 
 // Fetch all users
 export const getAllUsers = async () => {
@@ -14,11 +15,13 @@ export const getAllUsers = async () => {
     }
 };
 
+
+
 // Add a new user
 export const addUser = async (user) => {
     try {
         console.log("yipee it worked")
-        const response = await axios.post(API_URL, user);
+        const response = await axios.post(API_URL2, user);
         console.log("yipee it worked")
         return response.data;
     } catch (error) {

@@ -29,7 +29,7 @@ const LoginForm = () => {
                     <button type="submit"><a href="/HomePage">Login</a></button>
 
                     <div className="register-link">
-                        <p>Don't have an account? <a href="#">Register</a></p>
+                        <p>Don't have an account? <a href="/RegistrationForm">Register</a></p>
                     </div>
 
 

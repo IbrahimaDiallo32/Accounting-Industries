@@ -13,10 +13,11 @@ function App() {
   useEffect(() => {
     // Fetch users when the component mounts
     getAllUsers().then((data) => setUsers(data));
-    console.log("this that fetch users");
+    console.log("this that fetch userssss");
   }, []);
 
   const handleAddUser = () => {
+    //this isnt even being resigered
     const newUser = { firstName: "John", lastName: "Doe", email: "john@example.com" };
     addUser(newUser).then(() => {
       // Refresh the list after adding a new user

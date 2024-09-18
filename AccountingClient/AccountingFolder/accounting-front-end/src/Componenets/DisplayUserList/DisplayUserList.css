@@ -1,0 +1,10 @@
+.outermostContainer {
+    background-color: rgb(255, 230, 202);
+    min-height: 100vh;
+    /* makes sure background applies even when the user scrolls down */
+    width: 100vw;
+    margin: 0%;
+    color: black;
+    display: flex;
+    flex-direction: column;
+}
