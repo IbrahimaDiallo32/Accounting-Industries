@@ -2,6 +2,19 @@ import React from 'react';
 import './LoginForm.css';
 import { FaUser, FaLock } from "react-icons/fa";
 
+const API_URL = "http://localhost:8080/hey";
+
+// Fetch all users
+export const getAllUsers = async () => {
+    try {
+        const response = await axios.get(API_URL);
+        console.log(response.data);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching users", error);
+    }
+};
+
 const LoginForm = () => {
     return (
         <div>

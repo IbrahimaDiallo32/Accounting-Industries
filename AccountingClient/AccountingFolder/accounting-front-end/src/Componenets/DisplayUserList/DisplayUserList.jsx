@@ -25,14 +25,13 @@ const DisplayUserList = () => {
                         <li key={user.id}>
                             Name: {user.lastName}, {user.firstName}
                             <ul>
-                                <li>UserID: {user.userID}</li>
                                 <li>Email: {user.email}</li>
-                                <li>Username: {user.username}</li>
+                                <li>Username: {user.userName}</li>
                                 <li>Account Creation Date: {user.accountCreatedDate}</li>
                                 <li>Account type: {user.accountType}</li>
                                 <li>Address: {user.address}</li>
-                                <li>Date of Birth: {user.dateOfBirth}</li>
-                                <li>User is Active: {user.isActive}</li>
+                                <li>Date of Birth: {user.birthMonth} {user.birthDate}, {user.birthYear}</li>
+                                <li>Account Status: {user.accountStatus}</li>
                                 <li>Password is Expired: {user.passwordIsExpired}</li>
                             </ul>
 
