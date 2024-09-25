@@ -81,7 +81,7 @@ fieldset {
 .RegistrationContainer {
     background-color: #FBF7F6;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .registrationInnerContainer {
@@ -119,6 +119,18 @@ select {
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
+}
+
+.passwordFieldRegistration {
+    position: inherit;
+    margin: auto;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.passwordFieldRegistration p {
+    color: red;
 }
 
 .birthDateTextField {

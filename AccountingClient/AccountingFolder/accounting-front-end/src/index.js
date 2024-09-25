@@ -8,6 +8,7 @@ import ForgotPassword from './Componenets/ForgotPassword/ForgotPassword';
 import HomePage from './Componenets/home/HomePage';
 import DisplayUserList from './Componenets/DisplayUserList/DisplayUserList'
 import RegistrationForm from './Componenets/RegistrationForm/RegistrationForm';
+import LoginForm from './Componenets/LoginForm/LoginForm';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,6 +20,7 @@ root.render(
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/DisplayUserList" element={<DisplayUserList />} />
         <Route path="/RegistrationForm" element={<RegistrationForm />} />
+        <Route path="/LoginForm" element={<LoginForm />} />
         {/* <Route path="/handleFetchUsers" element={<handleFetchUsers />} /> */}
       </Routes>
     </BrowserRouter>

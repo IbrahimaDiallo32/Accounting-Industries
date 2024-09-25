@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getAllUsers } from '../../api/axiosConfiguration';
 import './DisplayUserList.css';
+import { IoArrowBack } from "react-icons/io5";
 
 
 const DisplayUserList = () => {
@@ -17,31 +18,43 @@ const DisplayUserList = () => {
     }, []);
 
     return (
-        <div className='outermostContainer'>
-            <h1>User List</h1>
-            <ul>
-                {users.length > 0 ? (
-                    users.map((user) => (
-                        <li key={user.id}>
-                            Name: {user.lastName}, {user.firstName}
-                            <ul>
-                                <li>Email: {user.email}</li>
-                                <li>Username: {user.userName}</li>
-                                <li>Account Creation Date: {user.accountCreatedDate}</li>
-                                <li>Account type: {user.accountType}</li>
-                                <li>Address: {user.address}</li>
-                                <li>Date of Birth: {user.birthMonth} {user.birthDate}, {user.birthYear}</li>
-                                <li>Account Status: {user.accountStatus}</li>
-                                <li>Password is Expired: {user.passwordIsExpired}</li>
-                            </ul>
-
-
-                        </li>
-                    ))
-                ) : (
-                    <p>No users found.</p>
-                )}
-            </ul>
+        <div className="loginPageContainer">
+            <a href="/HomePage"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
+            <h1>User List </h1>
+            {users.length > 0 ? (
+                <table className="user-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Username</th>
+                            <th>Account Creation Date</th>
+                            <th>Account Type</th>
+                            <th>Address</th>
+                            <th>Date of Birth</th>
+                            <th>Account Status</th>
+                            <th>Password Expired</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {users.map((user) => (
+                            <tr key={user.id}>
+                                <td>{user.lastName}, {user.firstName}</td>
+                                <td>{user.email}</td>
+                                <td>{user.username}</td>
+                                <td>{user.accountCreatedDate}</td>
+                                <td>{user.accountType}</td>
+                                <td>{user.address}</td>
+                                <td>{user.birthMonth} {user.birthDate}, {user.birthYear}</td>
+                                <td>{user.accountStatus}</td>
+                                <td>{user.passwordIsExpired ? "Yes" : "No"}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            ) : (
+                <p>No users found.</p>
+            )}
         </div>
     );
 };
