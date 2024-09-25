@@ -119,9 +119,9 @@ function RegistrationForm() {
     }, []);
 
     const handleSubmit = async (e) => {
-        console.log(dateForUserName())
+        //console.log(dateForUserName())
         const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + dateForUserName();
-        console.log(dbUserName);
+        //console.log(dbUserName);
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sensda a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
         try {

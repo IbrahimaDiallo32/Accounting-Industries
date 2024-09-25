@@ -3,42 +3,40 @@ import { useState } from 'react';
 import './LoginForm.css';
 import { FaUser, FaLock } from "react-icons/fa";
 import axios from 'axios';
-import { getUserByUsername } from '../../api/axiosConfiguration';
+import { useNavigate } from 'react-router-dom';
 
-// const handleLogin = async (e) => {
-//     e.preventDefault();
-//     try {
-//         const repo = getUserByUsername();
-//         const response = await axios.get(API_URLS);
-//         if (response.password == password) {
-//             console.log("i guess")
-//         }
-//         Console.log("guess notttt guess")
-//         // if (response.status === 200) {
-//         //     console.log("Login successful");
-//         //     // Optionally, save a token to localStorage for authentication
-//         //     localStorage.setItem("token", response.data);
-//         // }
-//     } catch (err) {
-//         alert("failure");
-//         console.error("Login failed");
-//         // Display error to user
-//     }
-//     Console.log("stress")
-// };
+const handleLogin = async (e, userName, password, navigate) => {
+    e.preventDefault();
+    try {
+        //const user = getUserByUsername();
+        const userData = await axios.get(`http://localhost:8080/hey/username/${userName}`);
+        if (userData.data.password == password) {
+            console.log("passwords match")
+            navigate('/HomePage');
+        } else if (userData.data.password != password) {
+            alert("Either username/password is incorrect")
+        } else {
+            alert("No")
+            return false;
+        }
+    } catch (err) {
+        alert("failure");
+        console.error("Login failed");
+    }
+};
 
 const LoginForm = () => {
+    const navigate = useNavigate();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
 
     return (
-
         <div>
             <div>
                 <img src="/AIT.png" alt="logo" className='logo' />
             </div>
             <div className='outerContainerLogin'>
-                <form action="">
+                <form action="" onSubmit={(e) => handleLogin(e, userName, password, navigate)}>
                     <h1>Login</h1>
                     <div className="input-box">
                         <input type="text" placeholder='Username' value={userName} required onChange={(e) => setUserName(e.target.value)} />
@@ -50,12 +48,12 @@ const LoginForm = () => {
                         <FaLock className='icon' />
                     </div>
 
-                    <div className="rememeber-forgot">
+                    <div className="rememeber-forgotLogin">
                         <label><input type="checkbox" />Remember Me</label>
                         <a href="/ForgotPassword">Forgot Password </a>
                     </div>
 
-                    <button type="submit"><a href="/HomePage">Login</a></button>
+                    <button type="submit">Login</button>
 
                     <div className="register-link">
                         <p>Don't have an account? <a href="/RegistrationForm">Register</a></p>
