@@ -4,7 +4,10 @@ import { RxAvatar } from "react-icons/rx";
 import Avatar from '../Assets/Avatar';
 
 
-const HomePage = () => {
+const HomePage = ({ userName }) => {
+
+    //this is creating the User that will be used throughout the entire application
+
     const username = "Ibrahima Diallo"
     return (
         <div className="homePageOutermostcontainer">
@@ -39,33 +42,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-// import './HomePage.css';
-
-
-// const HomePage = () => {
-//     return (
-//         <div className='outerContainers'>
-//             <form action="">
-//                 <h1>This this the home page.. more incomming</h1>
-//                 <a href="/DisplayUserList">Click here to see the Full User List</a>
-//                 <p><a href="/#">Click here to edit users?</a></p>
-//             </form>
-
-//         </div>
-//     );
-// };
-
-// export default HomePage; 

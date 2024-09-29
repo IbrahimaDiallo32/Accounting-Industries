@@ -4,6 +4,24 @@ import axios from 'axios';
 import { IoArrowBack, IoThunderstormOutline } from "react-icons/io5";
 
 function RegistrationForm() {
+    class User {
+        constructor(firstName, lastName, address, birthMonth, birthDate, birthYear,
+            email, password, username, accountType, passwordIsExpired, accountStatus, accountCreatedDate) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.address = address;
+            this.birthMonth = birthMonth;
+            this.birthDate = birthDate;
+            this.birthYear = birthYear;
+            this.email = email;
+            this.password = password;
+            this.username = username;
+            this.accountType = accountType;
+            this.passwordIsExpired = passwordIsExpired;
+            this.accountStatus = accountStatus;
+            this.accountCreatedDate = accountCreatedDate;
+        }
+    }
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [address, setAddress] = useState('');
@@ -11,11 +29,11 @@ function RegistrationForm() {
     const [birthDate, setBirthDate] = useState('');
     const [birthYear, setBirthYear] = useState('');
     const [email, setEmail] = useState('');
+    const [accountType, setAccountType] = useState("role");
     const [password, setPassword] = useState({
         value: "",
         isTouched: false,
     });
-    const [accountType, setAccountType] = useState("role");
 
     const passwordHasNumber = /\d/;
 
@@ -90,40 +108,14 @@ function RegistrationForm() {
         const currentDate = thisMonthMonth + twoDigitYear;
         return currentDate;
     }
-
-    const [birthMonthMap, setBirthMonthMap] = useState(new Map());
-    const addToMap = () => { //this is used to set the userName accuratlely. I wanted the database to have full month name "July" instead of "07";
-        const copyMap = new Map(birthMonthMap); // Create a copy of the map
-        copyMap.set('January', '01');
-        copyMap.set('February', '02');
-        copyMap.set('March', '03');
-        copyMap.set('April', '04');
-        copyMap.set('May', '05');
-        copyMap.set('June', '06');
-        copyMap.set('July', '07');
-        copyMap.set('August', '08');
-        copyMap.set('September', '09');
-        copyMap.set('October', '10');
-        copyMap.set('November', '11');
-        copyMap.set('December', '12');
-        setBirthMonthMap(copyMap);
-    };
-    // Function to retrieve a value by key
-    const getValueFromMap = (key) => {
-        console.log(birthMonthMap.get(key));
-        return birthMonthMap.get(key);
-    };
-
-    React.useEffect(() => {
-        addToMap();
-    }, []);
-
     const handleSubmit = async (e) => {
         //console.log(dateForUserName())
         const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + dateForUserName();
         //console.log(dbUserName);
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sensda a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
+        // const currentUser = new User(firstName, lastName, address, birthMonth, birthDate, birthYear, email, password, dbUserName, accountType, false, accountStatus(), dateToday())
+        // //this is creating the User that will be used throughout the entire application
         try {
             const response = await axios.post('http://localhost:8080/hey/create', {
                 firstName,

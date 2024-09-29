@@ -4,12 +4,13 @@ import './LoginForm.css';
 import { FaUser, FaLock } from "react-icons/fa";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import HomePage from '../home/HomePage';
 
-const handleLogin = async (e, userName, password, navigate) => {
+const handleLogin = async (e, username, password, navigate) => {
     e.preventDefault();
     try {
         //const user = getUserByUsername();
-        const userData = await axios.get(`http://localhost:8080/hey/username/${userName}`);
+        const userData = await axios.get(`http://localhost:8080/hey/username/${username}`); //Getting all the information for a user given this username
         if (userData.data.password == password) {
             console.log("passwords match")
             navigate('/HomePage');
@@ -20,14 +21,14 @@ const handleLogin = async (e, userName, password, navigate) => {
             return false;
         }
     } catch (err) {
-        alert("failure");
+        alert("Either username/password is incorrect");
         console.error("Login failed");
     }
 };
 
 const LoginForm = () => {
     const navigate = useNavigate();
-    const [userName, setUserName] = useState('');
+    const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
 
     return (
@@ -36,10 +37,11 @@ const LoginForm = () => {
                 <img src="/AIT.png" alt="logo" className='logo' />
             </div>
             <div className='outerContainerLogin'>
-                <form action="" onSubmit={(e) => handleLogin(e, userName, password, navigate)}>
+
+                <form action="" onSubmit={(e) => handleLogin(e, username, password, navigate)}>
                     <h1>Login</h1>
                     <div className="input-box">
-                        <input type="text" placeholder='Username' value={userName} required onChange={(e) => setUserName(e.target.value)} />
+                        <input type="text" placeholder='Username' value={username} required onChange={(e) => setUserName(e.target.value)} />
                         <FaUser className='icon' />
                     </div>
 

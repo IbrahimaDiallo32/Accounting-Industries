@@ -13,7 +13,8 @@ const handleResetPassword = async (e, password, confirmPassword, navigate) => {
         if (password != confirmPassword) {
             alert('Passwords do not match')
         } else {
-            alert("No")
+            alert('Password change was successful')
+            navigate('/LoginForm')
             return false;
         }
     } catch (err) {
