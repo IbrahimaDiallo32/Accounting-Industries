@@ -1,16 +1,6 @@
-import './RegistrationForm.css';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { IoArrowBack } from "react-icons/io5";
-
-
-const PasswordLengthErrorMessage = () => (
-    <p className='FieldError'>Password should have at least 8 characters</p>
-);
-
-const PasswordNumberErrorMessage = () => (
-    <p className='FieldError'>Password should have at least 1 number</p>
-);
+import './NewUserForm.css'
 
 function RegistrationForm() {
     const [firstName, setFirstName] = useState('');
@@ -20,14 +10,9 @@ function RegistrationForm() {
     const [birthDate, setBirthDate] = useState('');
     const [birthYear, setBirthYear] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState({
-        value: "",
-        isTouched: false,
-    });
-    const [confirmPassword, setConfirmPassword]= useState(true);
+
     const [accountType, setAccountType] = useState("role");
 
-    const passwordHasNumber = /\d/;
 
     const validateEmail = (email) => { //This method makes sure the email is valid
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -38,8 +23,6 @@ function RegistrationForm() {
         // console.log({
         //     firstName,
         //     emailValid: validateEmail(email),
-        //     passwordLengthValid: password.value.length >= 8,
-        //     passwordHasNumber: passwordHasNumber.test(password.value),
         //     accountTypeValid: accountType !== "role",
 
         // });
@@ -48,8 +31,6 @@ function RegistrationForm() {
         return (
             firstName &&
             validateEmail(email) &&
-            password.value.length >= 8 &&
-            passwordHasNumber.test(password.value) &&
             accountType !== "role"
         );
     };
@@ -62,26 +43,8 @@ function RegistrationForm() {
         setBirthMonth("");
         setBirthYear("");
         setEmail("");
-        setPassword({
-            value: "",
-            isTouched: false,
-        });
-        setConfirmPassword({
-              password: '',
-            confirmPassword: ''
-        });
         setAccountType("role");
     };
-
-    const [state, setState] = React.useState({
-        password:"",
-        cPassword: ""
-      });
-
-    React.useEffect(() => {
-    validatePassword();
-    }, [state]);
-
 
 
     const accountStatus = () => {
@@ -142,8 +105,6 @@ function RegistrationForm() {
                 birthDate,
                 birthYear,
                 email,
-                password: password.value,
-                confirmPassword:password.value,
                 accountStatus: accountStatus(),
                 accountType,
                 userName: dbUserName,
@@ -164,14 +125,7 @@ function RegistrationForm() {
           ...prevState,
           [id]: value
         }));
-      };
-    
-      const validatePassword = () => {
-        state.password === state.cPassword
-          ? setConfirmPassword(true)
-          : setConfirmPassword(false);
-      };
-      
+      }
 
    
     return (
@@ -369,39 +323,7 @@ function RegistrationForm() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder='Email Address' />
                         </div>
-                        <div className='Field'>
-                            <label>Password <sup>*</sup></label>
-                            <input value={password.value} type='password' className='registrationInput'
-                                onChange={(e) => setPassword({ ...password, value: e.target.value })}
-                                onBlur={() => setPassword({ ...password, isTouched: true })}
-                                placeholder="Password" />
-                            {password.isTouched && password.value.length < 8 ? (
-                                <PasswordLengthErrorMessage />
-                            ) : null}
-                            {password.isTouched && !passwordHasNumber.test(password.value) ? (
-                                <PasswordNumberErrorMessage />
-                            ) : null}
-                        </div>
-                        <div className='Field'>
-                            <label>Confirm Password <sup>*</sup></label>
-                            <input  
-                            type='password' 
-                            name='confirm_password'
-                            className={`registrationInput ${confirmPassword ? "" : "input-error-border"}`}
-                            id="cPassword"
-                            placeholder="Confirm Password"
-                            value={state.cPassword}
-                            onChange={handleChange}
-                            aria-required="true"
-                            aria-invalid={confirmPassword ? true : false}
-                            />
-                            <div className="input-error">
-                            {state.password !== state.cPassword ? "" : ""}
-                            </div>
-                            <div className="input-error">
-                            {confirmPassword ? "" : "Error: Passwords do not match"}
-                            </div>
-                            </div>
+                       
                         <div className='Field'>
                             <label>Role <sup>*</sup></label>
                             <select value={accountType} onChange={(e) => setAccountType(e.target.value)}>
