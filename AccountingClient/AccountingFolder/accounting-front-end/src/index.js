@@ -10,6 +10,7 @@ import DisplayUserList from './Componenets/DisplayUserList/DisplayUserList'
 import RegistrationForm from './Componenets/RegistrationForm/RegistrationForm';
 import LoginForm from './Componenets/LoginForm/LoginForm';
 import ResetPassword from './Componenets/ResetPassword/ResetPassword';
+import Accounts from './Componenets/AccountsHome/Accounts';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -23,6 +24,7 @@ root.render(
         <Route path="/RegistrationForm" element={<RegistrationForm />} />
         <Route path="/LoginForm" element={<LoginForm />} />
         <Route path="/ResetPassword" element={<ResetPassword />} />
+        <Route path="/Accounts" element={<Accounts />} />
         {/* <Route path="/handleFetchUsers" element={<handleFetchUsers />} /> */}
       </Routes>
     </BrowserRouter>

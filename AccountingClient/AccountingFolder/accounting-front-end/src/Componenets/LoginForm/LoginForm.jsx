@@ -11,7 +11,7 @@ const handleLogin = async (e, username, password, navigate) => {
     try {
         //const user = getUserByUsername();
         const userData = await axios.get(`http://localhost:8080/hey/username/${username}`); //Getting all the information for a user given this username
-        if (userData.data.password == password) {
+        if (userData.data.password == password && userData.data.accountStatus == 'active') {
             console.log("passwords match")
             navigate('/HomePage');
         } else if (userData.data.password != password) {

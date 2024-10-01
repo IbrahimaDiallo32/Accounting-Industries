@@ -4,6 +4,7 @@ import { RxAvatar } from "react-icons/rx";
 import Avatar from '../Assets/Avatar';
 
 
+
 const HomePage = ({ userName }) => {
 
     //this is creating the User that will be used throughout the entire application
@@ -30,8 +31,8 @@ const HomePage = ({ userName }) => {
                     <span className="spanForHome">Hello Alexa</span>
                 </div>
                 <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
-                <a href="#module2">EXPIRED PASSWORDS</a>
-                <a href="#module3">MODULE 3</a>
+                <a href="#module2">Chart of Accounts</a>
+                <a href="/Accounts">Accounts</a>
                 <a href="#module4">MODULE 4</a>
                 <a href="#module5">MODULE 5</a>
             </div>
@@ -42,7 +43,7 @@ const HomePage = ({ userName }) => {
                 <div className="header">
                     <div className="title-logo">
                         <img src="/AIT.PNG" alt="AIT Logo" />
-                        <h1>Accounting Treasury Industries</h1>
+                        <h1>Welcome To Accounting Treasury Industries!</h1>
                     </div>
                     <a href="/LoginForm"><button className="logout-btn">LOGOUT</button></a>
                 </div>

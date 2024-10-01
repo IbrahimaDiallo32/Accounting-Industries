@@ -34,6 +34,7 @@ const DisplayUserList = () => {
                             <th>Date of Birth</th>
                             <th>Account Status</th>
                             <th>Password Expired</th>
+                            <th>Edit User</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,6 +49,7 @@ const DisplayUserList = () => {
                                 <td>{user.birthMonth} {user.birthDate}, {user.birthYear}</td>
                                 <td>{user.accountStatus}</td>
                                 <td>{user.passwordIsExpired ? "Yes" : "No"}</td>
+                                <td><a href="/">Edit</a></td>
                             </tr>
                         ))}
                     </tbody>
