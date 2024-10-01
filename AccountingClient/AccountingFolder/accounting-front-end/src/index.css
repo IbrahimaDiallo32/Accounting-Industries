@@ -14,6 +14,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  min-width: 100vw;
   background: url('./Componenets/Assets/ATI\ backdrop.jpg') no-repeat;
   background-size: cover;
   background-position: center;

@@ -1,10 +1,39 @@
-.outermostContainer {
-    background-color: rgb(255, 230, 202);
+.loginPageContainer {
     min-height: 100vh;
-    /* makes sure background applies even when the user scrolls down */
-    width: 100vw;
-    margin: 0%;
-    color: black;
-    display: flex;
-    flex-direction: column;
+    min-width: 100vw;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: "Poppins", sans-serif;
+    background: white;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.user-table th,
+.user-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.user-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.user-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.user-table tr:hover {
+    background-color: white;
 }
