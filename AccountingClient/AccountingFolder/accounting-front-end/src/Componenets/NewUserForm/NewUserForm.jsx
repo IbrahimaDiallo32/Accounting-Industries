@@ -1,27 +1,8 @@
-import './RegistrationForm.css';
 import React, { useState } from 'react';
 import axios from 'axios';
-import { IoArrowBack, IoThunderstormOutline } from "react-icons/io5";
+import './NewUserForm.css'
 
 function RegistrationForm() {
-    class User {
-        constructor(firstName, lastName, address, birthMonth, birthDate, birthYear,
-            email, password, username, accountType, passwordIsExpired, accountStatus, accountCreatedDate) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.address = address;
-            this.birthMonth = birthMonth;
-            this.birthDate = birthDate;
-            this.birthYear = birthYear;
-            this.email = email;
-            this.password = password;
-            this.username = username;
-            this.accountType = accountType;
-            this.passwordIsExpired = passwordIsExpired;
-            this.accountStatus = accountStatus;
-            this.accountCreatedDate = accountCreatedDate;
-        }
-    }
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [address, setAddress] = useState('');
@@ -29,41 +10,27 @@ function RegistrationForm() {
     const [birthDate, setBirthDate] = useState('');
     const [birthYear, setBirthYear] = useState('');
     const [email, setEmail] = useState('');
-    const [accountType, setAccountType] = useState("role");
-    const [password, setPassword] = useState({
-        value: "",
-        isTouched: false,
-    });
 
-    const [confirmPassword, setConfirmPassword]= useState(true);
     const [accountType, setAccountType] = useState("role");
 
-
-    const passwordHasNumber = /\d/;
 
     const validateEmail = (email) => { //This method makes sure the email is valid
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
     };
 
-    const hasSpecialCharacter = (password) => {
-        const specialCharacterRegex = /[!@#$%^&*(),.?":{}|<>]/; // Makes sure the password has a vaild special character
-        return specialCharacterRegex.test(password);
-    };
-
-    const startsWithLetter = (password) => {
-        const letterRegex = /^[A-Za-z]/; // Check if the first character in the password is a letter
-        return letterRegex.test(password);
-    };
-
     const getIsFormValid = () => {
+        // console.log({
+        //     firstName,
+        //     emailValid: validateEmail(email),
+        //     accountTypeValid: accountType !== "role",
+
+        // });
+
+        //ensure evertyhing on the form is accurate
         return (
             firstName &&
             validateEmail(email) &&
-            password.value.length >= 8 &&
-            passwordHasNumber.test(password.value) &&
-            hasSpecialCharacter(password.value) &&
-            startsWithLetter(password.value) &&
             accountType !== "role"
         );
     };
@@ -76,26 +43,8 @@ function RegistrationForm() {
         setBirthMonth("");
         setBirthYear("");
         setEmail("");
-        setPassword({
-            value: "",
-            isTouched: false,
-        });
-        setConfirmPassword({
-              password: '',
-            confirmPassword: ''
-        });
         setAccountType("role");
     };
-
-    const [state, setState] = React.useState({
-        password:"",
-        cPassword: ""
-      });
-
-    React.useEffect(() => {
-    validatePassword();
-    }, [state]);
-
 
 
     const accountStatus = () => {
@@ -107,35 +56,47 @@ function RegistrationForm() {
 
     const dateToday = () => {
         const today = new Date();
-        const thisMonth = today.getMonth() + 1;
-        const thisYear = today.getFullYear();
-        const thisDate = today.getDate();
-        const currentDate = thisMonth + "/" + thisDate + "/" + thisYear;
+        const month = today.getMonth() + 1;
+        const year = today.getFullYear();
+        const date = today.getDate();
+        const currentDate = month + "/" + date + "/" + year;
         return currentDate;
     };
 
-    const dateForUserName = () => {
-        const today = new Date();
-        const thisMonth = today.getMonth() + 1;
-        const thisYear = today.getFullYear();
-        const twoDigitYear = thisYear % 100;
-        if (thisMonth < 10) {
-            const userMonth = "0" + thisMonth;
-            const currentDate = userMonth + twoDigitYear;
-            return currentDate
-        }
-        const currentDate = thisMonthMonth + twoDigitYear;
-        return currentDate;
-    }
+    const [birthMonthMap, setBirthMonthMap] = useState(new Map());
+    const addToMap = () => { //this is used to set the userName accuratlely. I wanted the database to have full month name "July" instead of "07";
+        const copyMap = new Map(birthMonthMap); // Create a copy of the map
+        copyMap.set('January', '01');
+        copyMap.set('February', '02');
+        copyMap.set('March', '03');
+        copyMap.set('April', '04');
+        copyMap.set('May', '05');
+        copyMap.set('June', '06');
+        copyMap.set('July', '07');
+        copyMap.set('August', '08');
+        copyMap.set('September', '09');
+        copyMap.set('October', '10');
+        copyMap.set('November', '11');
+        copyMap.set('December', '12');
+        setBirthMonthMap(copyMap);
+    };
+    // Function to retrieve a value by key
+    const getValueFromMap = (key) => {
+        console.log(birthMonthMap.get(key));
+        return birthMonthMap.get(key);
+    };
+
+    React.useEffect(() => {
+        addToMap();
+    }, []);
+
     const handleSubmit = async (e) => {
-        //console.log(dateForUserName())
-        const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + dateForUserName();
-        //console.log(dbUserName);
+        const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + getValueFromMap(birthMonth) + birthYear.slice(-2);
+        console.log(dbUserName);
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sensda a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
-        // const currentUser = new User(firstName, lastName, address, birthMonth, birthDate, birthYear, email, password, dbUserName, accountType, false, accountStatus(), dateToday())
-        // //this is creating the User that will be used throughout the entire application
         try {
+
             const response = await axios.post('http://localhost:8080/hey/create', {
                 firstName,
                 lastName,
@@ -144,15 +105,12 @@ function RegistrationForm() {
                 birthDate,
                 birthYear,
                 email,
-                password: password.value,
-                confirmPassword:password.value,
                 accountStatus: accountStatus(),
                 accountType,
-                username: dbUserName,
-                accountCreatedDate: dateToday(),
-                passwordIsExpired: false
+                userName: dbUserName,
+                accountCreatedDate: dateToday()
             });
-            alert("Account created! Your log in username is: " + dbUserName); //notifies user successful
+            alert("Account created!"); //notifies user successful
             clearForm(); //clears data if account successfully created
             // const response2 = await axios.get('http://localhost:8080/hey/create')
         } catch (error) {
@@ -167,20 +125,13 @@ function RegistrationForm() {
           ...prevState,
           [id]: value
         }));
-      };
-    
-      const validatePassword = () => {
-        state.password === state.cPassword
-          ? setConfirmPassword(true)
-          : setConfirmPassword(false);
-      };
-      
+      }
 
    
     return (
         <div className='RegistrationContainer'>
             <header className='logoForRegistration'>
-                <a href="/"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
+                <button className='backButtonRegistration'><IoArrowBack /><a href="/">BACK</a></button>
                 <div className='shiftForRegis'>
                     <img src="/AIT.PNG" width={100} height={100} alt="Logo" className='shiftForRegistation' />
                     <h2 className='registerText'>REGISTER</h2>
@@ -372,53 +323,7 @@ function RegistrationForm() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder='Email Address' />
                         </div>
-                        <div className='passwordFieldRegistration'>
-                            <label>Password <sup>*</sup></label>
-                            <input value={password.value} type='password' className='registrationInput'
-                                onChange={(e) => setPassword({ ...password, value: e.target.value })}
-                                onBlur={() => setPassword({ ...password, isTouched: true })}
-                                placeholder="Password" />
-                            {password.isTouched && password.value.length < 8 ? (
-                                <div>
-                                    <p>Your password must be 8+ Characters</p>
-                                </div>
-                            ) : null}
-                            {password.isTouched && !passwordHasNumber.test(password.value) ? (
-                                <div>
-                                    <p>Your password must contain a number</p>
-                                </div>
-                            ) : null}
-                            {password.isTouched && !hasSpecialCharacter(password.value) ? (
-                                <div>
-                                    <p>Your password must have a special character</p>
-                                </div>
-                            ) : null}
-                            {password.isTouched && !startsWithLetter(password.value) ? (
-                                <div>
-                                    <p>Your passowrd must begin with a letter</p>
-                                </div>
-                            ) : null}
-                        </div>
-                        <div className='Field'>
-                            <label>Confirm Password <sup>*</sup></label>
-                            <input  
-                            type='password' 
-                            name='confirm_password'
-                            className={`registrationInput ${confirmPassword ? "" : "input-error-border"}`}
-                            id="cPassword"
-                            placeholder="Confirm Password"
-                            value={state.cPassword}
-                            onChange={handleChange}
-                            aria-required="true"
-                            aria-invalid={confirmPassword ? true : false}
-                            />
-                            <div className="input-error">
-                            {state.password !== state.cPassword ? "" : ""}
-                            </div>
-                            <div className="input-error">
-                            {confirmPassword ? "" : "Error: Passwords do not match"}
-                            </div>
-                            </div>
+                       
                         <div className='Field'>
                             <label>Role <sup>*</sup></label>
                             <select value={accountType} onChange={(e) => setAccountType(e.target.value)}>
@@ -433,7 +338,7 @@ function RegistrationForm() {
                     </fieldset>
                 </form>
             </div>
-        </div >
+        </div>
     );
 }
 
