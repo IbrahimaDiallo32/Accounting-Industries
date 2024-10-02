@@ -109,7 +109,11 @@ const CreateAccount = () => {
                             <label>Account Number <sup>*</sup></label>
                             <input value={accountNumber} className='registrationInput'
                                 onChange={(e) => setAccountNumber(e.target.value)}
-                                placeholder='e.g (1001)' type='number' />
+                                placeholder='e.g (1001)' type='number' onKeyPress={(e) => {
+                                    if (!/[0-9]/.test(e.key)) {
+                                        e.preventDefault();
+                                    }
+                                }} />
                         </div>
                         <div className='Field'>
                             <label>Account Description <sup>*</sup></label>

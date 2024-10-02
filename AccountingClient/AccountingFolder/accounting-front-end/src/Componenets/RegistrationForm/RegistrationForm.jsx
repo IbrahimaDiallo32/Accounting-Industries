@@ -123,7 +123,7 @@ function RegistrationForm() {
             const currentDate = userMonth + twoDigitYear;
             return currentDate
         }
-        const currentDate = thisMonthMonth + twoDigitYear;
+        const currentDate = thisMonth + twoDigitYear;
         return currentDate;
     }
     const handleSubmit = async (e) => {
@@ -397,26 +397,6 @@ function RegistrationForm() {
                                     <p>Your passowrd must begin with a letter</p>
                                 </div>
                             ) : null}
-                        </div>
-                        <div className='Field'>
-                            <label>Confirm Password <sup>*</sup></label>
-                            <input
-                                type='password'
-                                name='confirm_password'
-                                className={`registrationInput ${confirmPassword ? "" : "input-error-border"}`}
-                                id="cPassword"
-                                placeholder="Confirm Password"
-                                value={state.cPassword}
-                                onChange={handleChange}
-                                aria-required="true"
-                                aria-invalid={confirmPassword ? true : false}
-                            />
-                            <div className="input-error">
-                                {state.password !== state.cPassword ? "" : ""}
-                            </div>
-                            <div className="input-error">
-                                {confirmPassword ? "" : "Error: Passwords do not match"}
-                            </div>
                         </div>
                         <div className='Field'>
                             <label>Role <sup>*</sup></label>
