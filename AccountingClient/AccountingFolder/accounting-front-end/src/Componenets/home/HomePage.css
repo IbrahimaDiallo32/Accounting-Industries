@@ -12,7 +12,8 @@ body {
 
 .sidebar {
     background-color: #5DADE2;
-    width: 200px;
+    max-width: 205px;
+    min-width: 205px;
     padding-top: 20px;
     color: white;
     display: flex;

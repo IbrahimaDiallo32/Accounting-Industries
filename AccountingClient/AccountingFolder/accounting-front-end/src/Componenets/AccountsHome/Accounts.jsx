@@ -4,9 +4,18 @@ import { RxAvatar } from "react-icons/rx";
 import Avatar from '../Assets/Avatar';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import CreateAccount from './CreateAccount';
+import Modal from '../Modal/Modal';
+import { IoMdAdd } from 'react-icons/io';
 
 
 const Accounts = () => {
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
 
     const [accounts, setAccounts] = useState([]);
 
@@ -34,7 +43,7 @@ const Accounts = () => {
                     <span className="spanForHome">Hello Alexa</span>
                 </div>
                 <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
-                <a href="#module2">EXPIRED PASSWORDS</a>
+                <a href="#module2">Chart of Accounts</a>
                 <a href="#module3">Accounts</a>
                 <a href="#module4">MODULE 4</a>
                 <a href="#module5">MODULE 5</a>
@@ -42,7 +51,10 @@ const Accounts = () => {
             </div>
 
             <div className="main-content">
-                <h1>Accounts</h1>
+                <h1>Accounts<button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button></h1>
+                <Modal isOpen={isModalOpen} onClose={closeModal}>
+                    <CreateAccount /> {/* This is the content to be displayed inside the modal */}
+                </Modal>
                 {accounts.length > 0 ? (
                     <table className="user-table">
                         <thead>
@@ -52,8 +64,11 @@ const Accounts = () => {
                                 <th>Account Name</th>
                                 <th>Account Category</th>
                                 <th>Sub-Category</th>
-                                <th>balance</th>
-                                <th>Edit Account</th>
+                                <th>Balance</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                                <th>Account Description</th>
+                                <th>Edit</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,6 +80,9 @@ const Accounts = () => {
                                     <td>{account.accountCategory}</td>
                                     <td>{account.accountSubCategory}</td>
                                     <td>{account.balance}</td>
+                                    <td>{account.debit}</td>
+                                    <td>{account.credit}</td>
+                                    <td>{account.accountDescription}</td>
                                     <td><a href="/">Edit</a></td>
                                 </tr>
                             ))}

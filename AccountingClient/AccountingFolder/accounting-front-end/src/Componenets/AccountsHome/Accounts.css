@@ -4,4 +4,30 @@
     border: none;
     padding: 10px 15px;
     cursor: pointer;
+    margin-left: 10px;
+}
+
+.createNewAccountButton {
+    display: flex;
+    justify-content: right;
+    margin-left: 1050px;
+    padding: 12px;
+    border-radius: 4px;
+    border: .1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.createNewAccountButton a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.createNewAccountButton:hover {
+    background-color: blueviolet;
+    color: azure;
 }

@@ -2,9 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { getAllUsers } from '../../api/axiosConfiguration';
 import './DisplayUserList.css';
 import { IoArrowBack } from "react-icons/io5";
+import { IoMdAdd } from "react-icons/io";
+import Modal from '../Modal/Modal';
+import NewUserForm from './NewUserForm'
 
 
 const DisplayUserList = () => {
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
+
     const [users, setUsers] = useState([]);
 
     // Fetch users when the component is mounted
@@ -20,6 +29,10 @@ const DisplayUserList = () => {
     return (
         <div className="loginPageContainer">
             <a href="/HomePage"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
+            <button className='createNewUserButton' onClick={openModal}><IoMdAdd />Create User</button>
+            <Modal isOpen={isModalOpen} onClose={closeModal}>
+                <NewUserForm /> {/* This is the content to be displayed inside the modal */}
+            </Modal>
             <h1>User List </h1>
             {users.length > 0 ? (
                 <table className="user-table">

@@ -35,8 +35,7 @@ function RegistrationForm() {
         isTouched: false,
     });
 
-    const [confirmPassword, setConfirmPassword]= useState(true);
-    const [accountType, setAccountType] = useState("role");
+    const [confirmPassword, setConfirmPassword] = useState(true);
 
 
     const passwordHasNumber = /\d/;
@@ -81,19 +80,19 @@ function RegistrationForm() {
             isTouched: false,
         });
         setConfirmPassword({
-              password: '',
+            password: '',
             confirmPassword: ''
         });
         setAccountType("role");
     };
 
     const [state, setState] = React.useState({
-        password:"",
+        password: "",
         cPassword: ""
-      });
+    });
 
     React.useEffect(() => {
-    validatePassword();
+        validatePassword();
     }, [state]);
 
 
@@ -145,7 +144,7 @@ function RegistrationForm() {
                 birthYear,
                 email,
                 password: password.value,
-                confirmPassword:password.value,
+                confirmPassword: password.value,
                 accountStatus: accountStatus(),
                 accountType,
                 username: dbUserName,
@@ -158,25 +157,25 @@ function RegistrationForm() {
         } catch (error) {
             console.error('Error creating user:', error);
         }
-        
+
     };
 
     const handleChange = (e) => {
         const { id, value } = e.target;
         setState((prevState) => ({
-          ...prevState,
-          [id]: value
+            ...prevState,
+            [id]: value
         }));
-      };
-    
-      const validatePassword = () => {
-        state.password === state.cPassword
-          ? setConfirmPassword(true)
-          : setConfirmPassword(false);
-      };
-      
+    };
 
-   
+    const validatePassword = () => {
+        state.password === state.cPassword
+            ? setConfirmPassword(true)
+            : setConfirmPassword(false);
+    };
+
+
+
     return (
         <div className='RegistrationContainer'>
             <header className='logoForRegistration'>
@@ -401,24 +400,24 @@ function RegistrationForm() {
                         </div>
                         <div className='Field'>
                             <label>Confirm Password <sup>*</sup></label>
-                            <input  
-                            type='password' 
-                            name='confirm_password'
-                            className={`registrationInput ${confirmPassword ? "" : "input-error-border"}`}
-                            id="cPassword"
-                            placeholder="Confirm Password"
-                            value={state.cPassword}
-                            onChange={handleChange}
-                            aria-required="true"
-                            aria-invalid={confirmPassword ? true : false}
+                            <input
+                                type='password'
+                                name='confirm_password'
+                                className={`registrationInput ${confirmPassword ? "" : "input-error-border"}`}
+                                id="cPassword"
+                                placeholder="Confirm Password"
+                                value={state.cPassword}
+                                onChange={handleChange}
+                                aria-required="true"
+                                aria-invalid={confirmPassword ? true : false}
                             />
                             <div className="input-error">
-                            {state.password !== state.cPassword ? "" : ""}
+                                {state.password !== state.cPassword ? "" : ""}
                             </div>
                             <div className="input-error">
-                            {confirmPassword ? "" : "Error: Passwords do not match"}
+                                {confirmPassword ? "" : "Error: Passwords do not match"}
                             </div>
-                            </div>
+                        </div>
                         <div className='Field'>
                             <label>Role <sup>*</sup></label>
                             <select value={accountType} onChange={(e) => setAccountType(e.target.value)}>
