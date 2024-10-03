@@ -7,6 +7,7 @@ import axios from 'axios';
 import CreateAccount from './CreateAccount';
 import Modal from '../Modal/Modal';
 import { IoMdAdd } from 'react-icons/io';
+import { Dropdown } from 'bootstrap';
 
 
 const Accounts = () => {
@@ -16,9 +17,23 @@ const Accounts = () => {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
+    const [sortByType, setSortByType] = useState('sort');
+    const [order, setOrder] = useState('order');
 
     const [accounts, setAccounts] = useState([]);
 
+    const sortedAccount = async () => {
+        try {
+            console.log(sortByType);
+            console.log(order);
+            const response = await axios.get(`http://localhost:8080/account/${sortByType}${order}`);
+            console.log(response.data);
+            setAccounts(response.data);
+        } catch (error) {
+            console.error("Error fetching users", error);
+        }
+    }
+    //const sortData = async () await axios.get(`http://localhost:8080/account/${SortByType}${Order}`)
     // Fetch all the acounts present in the databse when the component is mounted
     useEffect(() => {
         const fetchAccounts = async () => {
@@ -29,6 +44,7 @@ const Accounts = () => {
         fetchAccounts();
     }, []);
 
+    
     //this is creating the User that will be used throughout the entire application
 
     const username = "Ibrahima Diallo"
@@ -49,9 +65,32 @@ const Accounts = () => {
                 <a href="#module5">MODULE 5</a>
                 <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
             </div>
-
+            
             <div className="main-content">
                 <h1>Accounts<button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button></h1>
+                <div className='SortByContainer'>
+                            <div className='SortBy'>
+                                <label className='SortByTextField'>Sort By</label>
+                                <select name="Sort By" className='SortBySelection' value={sortByType} // Sort the data by variable
+                                    onChange={(e) => setSortByType(e.target.value)}>
+                                    <option value="sort" disabled>Select Sort by Type</option>
+                                    <option value="accountNumber">Account Number</option>
+                                    <option value="accountName">Account Name</option>
+                                    <option value="order">Order Number</option>
+                                    <option value="balance">Current Balance</option>
+                                </select>
+                                <select name="Order" className='OrderSelect' value={order} //Asending or Descending Order
+                                    onChange={(e) => setOrder(e.target.value)} >
+                                    <option value="order" disabled>Select Order Direction</option>
+                                    <option value="ASC">Ascending</option>
+                                    <option value="DES">Descending</option>
+                                </select>
+                                <input placeholder='' hidden></input>
+                                <button className='SubmitSort' onClick={(e) => {sortedAccount()}}>
+                                    Sort
+                                </button>
+                            </div>
+                        </div>
                 <Modal isOpen={isModalOpen} onClose={closeModal}>
                     <CreateAccount /> {/* This is the content to be displayed inside the modal */}
                 </Modal>
