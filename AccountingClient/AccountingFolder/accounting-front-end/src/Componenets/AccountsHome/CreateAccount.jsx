@@ -143,12 +143,15 @@ const CreateAccount = () => {
                                 <option value="Asset">Asset</option>
                                 <option value="Liability">Liability</option>
                                 <option value="Equity">Equity</option>
+                                <option value="Expense">Expense</option>
+                                <option value="Expense">Equity</option>
                             </select>
                         </div>
                         <div className='Field'>
                             <label>Sub-Category <sup>*</sup></label>
                             <input className="registrationInput" value={accountSubCategory}
                                 onChange={(e) => setAccountSubCategory(e.target.value)} placeholder='e.g (current assets)' />
+                                //current assests, long term assets, current laibilty, long term liability, they only apply to assets and liability
                         </div>
                         <div className='Field'>
                             <label className='birthDateTextField'>Statement<sup>*</sup></label>

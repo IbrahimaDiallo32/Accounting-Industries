@@ -43,7 +43,7 @@ const Accounts = () => {
                     <span className="spanForHome">Hello Alexa</span>
                 </div>
                 <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
-                <a href="#module2">Chart of Accounts</a>
+                <a href="/Accounts">Accounts</a>
                 <a href="#module3">Accounts</a>
                 <a href="#module4">MODULE 4</a>
                 <a href="#module5">MODULE 5</a>
@@ -51,9 +51,9 @@ const Accounts = () => {
             </div>
 
             <div className="main-content">
-                <h1>Accounts<button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button></h1>
+                <h1>Chart of Accounts<button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button></h1>
                 <Modal isOpen={isModalOpen} onClose={closeModal}>
-                    <CreateAccount /> {/* This is the content to be displayed inside the modal */}
+                    <CreateAccount /> {/* This is the content displayed inside the modal */}
                 </Modal>
                 {accounts.length > 0 ? (
                     <table className="user-table">
