@@ -35,8 +35,6 @@ function RegistrationForm() {
         isTouched: false,
     });
 
-    const [confirmPassword, setConfirmPassword]= useState(true);
-    const [accountType, setAccountType] = useState("role");
 
 
     const passwordHasNumber = /\d/;
