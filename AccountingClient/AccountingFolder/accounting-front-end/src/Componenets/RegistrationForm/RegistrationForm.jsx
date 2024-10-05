@@ -34,9 +34,7 @@ function RegistrationForm() {
         value: "",
         isTouched: false,
     });
-
-
-
+ 
     const passwordHasNumber = /\d/;
 
     const validateEmail = (email) => { //This method makes sure the email is valid
