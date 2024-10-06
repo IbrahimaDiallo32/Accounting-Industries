@@ -18,8 +18,8 @@ const HomePage = ({ userName }) => {
                         <span className="spanForHome">Hello Alexa</span>
                     </div>
                     <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
-                    <a href="#module2">Chart of Accounts</a>
                     <a href="/Accounts">Accounts</a>
+                    <a href="/#">Chart Of Accounts</a>
                     <a href="/NewUserForm">New user form</a>
                     <a href="#module5">MODULE 5</a>
                 </div>

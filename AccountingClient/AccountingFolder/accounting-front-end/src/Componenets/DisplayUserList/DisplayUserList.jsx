@@ -5,14 +5,18 @@ import { IoArrowBack } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
 import Modal from '../Modal/Modal';
 import NewUserForm from './NewUserForm'
-
+import EditUserForm from './EditUserForm'
 
 const DisplayUserList = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedUser, setSelectedUser] = useState(null); // Track the user to edit so that informatoin can be autopopulated later on
 
     const openModal = () => setIsModalOpen(true);
-    const closeModal = () => setIsModalOpen(false);
+    const closeModal = () => {
+        setIsModalOpen(false);
+        setSelectedUser(null); // This resets the selected user when closing the modal component
+    };
 
     const [users, setUsers] = useState([]);
 
@@ -26,12 +30,21 @@ const DisplayUserList = () => {
         fetchUsers();
     }, []);
 
+    const openEditModal = (user) => {
+        setSelectedUser(user); // Set the user to be edited
+        setIsModalOpen(true);
+    };
+
     return (
         <div className="loginPageContainer">
             <a href="/HomePage"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
             <button className='createNewUserButton' onClick={openModal}><IoMdAdd />Create User</button>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
-                <NewUserForm /> {/* This is the content to be displayed inside the modal */}
+                {selectedUser ? (
+                    <EditUserForm user={selectedUser} />  // Pass the user to the EditUserForm
+                ) : (
+                    <NewUserForm />
+                )}
             </Modal>
             <h1>User List </h1>
             {users.length > 0 ? (
@@ -48,6 +61,7 @@ const DisplayUserList = () => {
                             <th>Account Status</th>
                             <th>Password Expired</th>
                             <th>Edit User</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +76,7 @@ const DisplayUserList = () => {
                                 <td>{user.birthMonth} {user.birthDate}, {user.birthYear}</td>
                                 <td>{user.accountStatus}</td>
                                 <td>{user.passwordIsExpired ? "Yes" : "No"}</td>
-                                <td><a href="/">Edit</a></td>
+                                <td><button className='buttonForEditUserRecord' onClick={() => openEditModal(user)}>Edit</button></td>
                             </tr>
                         ))}
                     </tbody>
