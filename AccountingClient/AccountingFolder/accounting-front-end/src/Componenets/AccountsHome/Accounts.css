@@ -7,6 +7,15 @@
     margin-left: 10px;
 }
 
+.helpButton {
+    background-color: white;
+    color: #5DADE2;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
 .createNewAccountButton {
     display: flex;
     justify-content: right;
@@ -30,4 +39,70 @@
 .createNewAccountButton:hover {
     background-color: blueviolet;
     color: azure;
+}
+
+.sortByContainer {
+    display: flex;
+}
+
+.sortByTextField {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.sortBySelection {
+    font-size: 16px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    margin-right: 15px; 
+}
+
+.orderSelect {
+    font-size: 16px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    margin-right: 20px; 
+}
+
+.submitSort {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: cornflowerblue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submitSort:hover {
+    background-color:blueviolet;
+}
+
+.toolTip {
+    position: relative; 
+    display: inline-block;
+}
+
+.toolTipText {
+    font-size: 12px;
+    visibility: hidden; 
+    width: 100px; 
+    background-color:cornflowerblue; 
+    color: black; 
+    text-align: center; 
+    border-radius: 5px; 
+    padding: 5px;
+    position: absolute; 
+    z-index: 1; 
+    top: 125%; 
+    left: 90%;
+    transform: translateX(-60%); 
+    opacity: 0; 
+    transition: opacity 0.3s; 
+}
+
+.toolTip:hover .toolTipText {
+    visibility: visible; 
+    opacity: 1; 
 }

@@ -5,8 +5,10 @@ import Avatar from '../Assets/Avatar';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import CreateAccount from './CreateAccount';
+import AccountsHelp from './AccountsHelp'
 import Modal from '../Modal/Modal';
 import { IoMdAdd } from 'react-icons/io';
+import { Dropdown } from 'bootstrap';
 
 
 const Accounts = () => {
@@ -16,9 +18,28 @@ const Accounts = () => {
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
 
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
+
+    const openHelp = () => setIsHelpOpen(true);
+    const closeHelp = () => setIsHelpOpen(false);
+
+    const [sortByType, setSortByType] = useState('sort');
+    const [order, setOrder] = useState('order');
 
     const [accounts, setAccounts] = useState([]);
 
+    const sortedAccount = async () => {
+        try {
+            console.log(sortByType);
+            console.log(order);
+            const response = await axios.get(`http://localhost:8080/account/${sortByType}${order}`);
+            console.log(response.data);
+            setAccounts(response.data);
+        } catch (error) {
+            console.error("Error fetching users", error);
+        }
+    }
+    //const sortData = async () await axios.get(`http://localhost:8080/account/${SortByType}${Order}`)
     // Fetch all the acounts present in the databse when the component is mounted
     useEffect(() => {
         const fetchAccounts = async () => {
@@ -29,6 +50,7 @@ const Accounts = () => {
         fetchAccounts();
     }, []);
 
+    
     //this is creating the User that will be used throughout the entire application
 
     const username = "Ibrahima Diallo"
@@ -48,10 +70,46 @@ const Accounts = () => {
                 <a href="#module4">MODULE 4</a>
                 <a href="#module5">MODULE 5</a>
                 <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
+                <a> 
+                        <button className = "helpButton" onClick={openHelp}> Help</button>
+                </a>
             </div>
 
+            <Modal isOpen={isHelpOpen} onClose={closeHelp}>
+                    <AccountsHelp />
+                </Modal>
+
             <div className="main-content">
-                <h1>Chart of Accounts<button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button></h1>
+                <h1>Accounts
+                    <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>
+                    <span className = "toolTipText">Create a new account for the chart of Accounts</span>
+                </h1>
+                <div className='sortByContainer'>
+                            <div className='sortBy'>
+                                <label className='sortByTextField'>Sort By</label>
+                                <select name="Sort By" className='sortBySelection' value={sortByType} // Sort the data by variable
+                                    onChange={(e) => setSortByType(e.target.value)}>
+                                    <option value="sort" disabled>Select Sort by Type</option>
+                                    <option value="accountNumber">Account Number</option>
+                                    <option value="accountName">Account Name</option>
+                                    <option value="order">Order Number</option>
+                                    <option value="balance">Current Balance</option>
+                                    <option value="accountCategory">Account Category</option>
+                                    <option value="accountSubCategory">Account Sub Category</option>
+                                </select>
+                                <select name="Order" className='orderSelect' value={order} //Asending or Descending Order
+                                    onChange={(e) => setOrder(e.target.value)} >
+                                    <option value="order" disabled>Select Order Direction</option>
+                                    <option value="ASC">Ascending</option>
+                                    <option value="DESC">Descending</option>
+                                </select>
+                                <input placeholder='' hidden></input>
+
+                                <button className='submitSort toolTip' onClick={(e) => {sortedAccount()}}>
+                                    Sort</button>
+                                    <span className = "toolTipText">Sort Chart of Accounts</span>
+                            </div>
+                        </div>
                 <Modal isOpen={isModalOpen} onClose={closeModal}>
                     <CreateAccount /> {/* This is the content displayed inside the modal */}
                 </Modal>
@@ -83,7 +141,12 @@ const Accounts = () => {
                                     <td>{account.debit}</td>
                                     <td>{account.credit}</td>
                                     <td>{account.accountDescription}</td>
-                                    <td><a href="/">Edit</a></td>
+                                    <td>
+                                        <div className = "toolTip">
+                                        <a href="/">Edit</a>
+                                        <span className = "toolTipText">Edit this accounts values</span>
+                                        </div>
+                                        </td>
                                 </tr>
                             ))}
                         </tbody>
