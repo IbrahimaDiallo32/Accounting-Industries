@@ -1,35 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import './EventLog.css'
-import Avatar from '../Assets/Avatar'
+import './EventLog.css';
+import { getAllUsers } from '../../api/axiosConfiguration';
+import Avatar from '../Assets/Avatar';
 import axios from 'axios';
-//import { FaCalendar } from "react-icons/fa";
-//import PopUpCal from '../PopUpCal/PopUpCal';
-import HomePage from '../home/HomePage';
 
 const EventLog = () => {
+    const [logs, setLogs] = useState([]);
+    const [users, setUsers] = useState([]);
 
-        const [logs, setLogs] = useState([]);
-      
-        useEffect(() => {
-          const fetchLogs = async () => {
+    useEffect(() => {
+        // Fetch both logs and users
+        const fetchData = async () => {
             try {
-              const response = await axios.get('http://localhost:5000/api/get-event-logs');
-              setLogs(response.data);
+                // Fetch event logs 
+                const logResponse = await axios.get('http://localhost:8080/api/event-logs');  
+                console.log('Fetched logs:', logResponse.data);
+                setLogs(logResponse.data);
+
+                // Fetch users from API
+                const userResponse = await getAllUsers();
+                setUsers(userResponse);
             } catch (error) {
-              console.error('Error fetching logs:', error);
+                console.error('Error fetching data:', error.response.data);
             }
-          };
-      
-          fetchLogs();
-        }, []);
+        };
+
+        fetchData();
+    }, []);
+
 
     return (
         <div className='outerContainers'>
             <form action="">
-                {/* <h1>This is the home page.. more incoming</h1> */}
-                {/* <a href="/DisplayUserList">Click here to see the Full User List</a> */}
-                {/* <a href="/#">Click here to edit users?</a> */}
-                {/* alex was here */}
+                {/* Placeholder for form */}
             </form>
 
             <div className="homePageOutermostcontainer">
@@ -37,7 +40,7 @@ const EventLog = () => {
                 <div className="sidebar">
                     <div className="profile">
                         <Avatar name="NAME" />
-                        <span className="spanForHome"><button class="profilebtn">Hello Alex</button></span>
+                        <span className="spanForHome"><button className="profilebtn">Hello Alex</button></span>
                     </div>
                     <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
                     <a href="#module2">EXPIRED PASSWORDS</a>
@@ -48,33 +51,43 @@ const EventLog = () => {
 
                 {/* Main Content */}
                 <div className="event-log-container">
-                <h1>Event Log</h1>
-                
-            <table className="event-log-table">
-                <thead>
-                    <tr>
-                        <th>Event ID</th>
-                        <th>User ID</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Before Image</th>
-                        <th>After Image</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {logs.map((log) => (
-                    <tr key={log._id}>
-                    <td>{log.userId}</td>
-                    <td>{log.eventType}</td>
-                    <td>{new Date(log.timestamp).toLocaleString()}</td>
-                    </tr>
-                ))}
-                     </tbody>
-            </table>
+                    <h1>Event Log</h1>
+                    {logs.length > 0 ? (
+                        <table className="event-log-table">
+                            <thead>
+                                <tr>
+                                    <th>Event ID</th>
+                                    <th>User ID</th>
+                                    <th>L</th>
+                                    <th>Date/Time</th>
+                                    <th>Before Image</th>
+                                    <th>After Image</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        {logs.map((log) => (
+                            <tr key={log._id}>
+                                <td>{log._id}</td>
+                                <td>{log.userId}</td>
+                                <td>{log.modifiedBy}</td>
+                                <td>{new Date(log.timestamp).toLocaleString()}</td>
+                                <td>
+                                    <pre>{JSON.stringify(log.beforeChange, null, 2)}</pre>
+                                </td>
+                                <td>
+                                    <pre>{JSON.stringify(log.afterChange, null, 2)}</pre>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                        </table>
+                     ) : (
+                        <p>No logs available.</p>
+                    )}
                 </div>
-            
             </div>
         </div>
     );
-}
+};
+
 export default EventLog;
