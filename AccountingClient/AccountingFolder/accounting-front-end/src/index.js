@@ -13,6 +13,7 @@ import ResetPassword from './Componenets/ResetPassword/ResetPassword';
 import Accounts from './Componenets/AccountsHome/Accounts';
 import NewUserForm from './Componenets/DisplayUserList/NewUserForm';
 import EditUserForm from './Componenets/DisplayUserList/EditUserForm'
+import EditAccount from './Componenets/AccountsHome/EditAccount';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -29,6 +30,7 @@ root.render(
         <Route path="/Accounts" element={<Accounts />} />
         <Route path="/NewUserForm" element={<NewUserForm />} />
         <Route path="/EditUserForm" element={<EditUserForm />} />
+        <Route path="/EditAccount" element={<EditAccount />} />
         {/* <Route path="/handleFetchUsers" element={<handleFetchUsers />} /> */}
       </Routes>
     </BrowserRouter>
