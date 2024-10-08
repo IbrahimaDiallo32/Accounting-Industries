@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './NewUserForm.css'
 import { IoArrowBack } from 'react-icons/io5';
 
-function RegistrationForm() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [address, setAddress] = useState('');
-    const [birthMonth, setBirthMonth] = useState('');
-    const [birthDate, setBirthDate] = useState('');
-    const [birthYear, setBirthYear] = useState('');
-    const [email, setEmail] = useState('');
-
-    const [accountType, setAccountType] = useState("role");
+function RegistrationForm({ user }) {
+    //this autopopulates the fields with the user data
+    const [firstName, setFirstName] = useState(user?.firstName || '');
+    const [lastName, setLastName] = useState(user?.lastName || '');
+    const [email, setEmail] = useState(user?.email || '');
+    const [accountType, setAccountType] = useState(user?.accountType || '');
+    const [address, setAddress] = useState(user?.address || '');
+    const [birthDate, setBirthDate] = useState(user?.birthDate || '');
+    const [birthMonth, setBirthMonth] = useState(user?.birthMonth || '');
+    const [birthYear, setBirthYear] = useState(user?.birthYear || '');
 
 
     const validateEmail = (email) => { //This method makes sure the email is valid
@@ -21,14 +21,6 @@ function RegistrationForm() {
     };
 
     const getIsFormValid = () => {
-        // console.log({
-        //     firstName,
-        //     emailValid: validateEmail(email),
-        //     accountTypeValid: accountType !== "role",
-
-        // });
-
-        //ensure evertyhing on the form is accurate
         return (
             firstName &&
             validateEmail(email) &&
@@ -47,7 +39,6 @@ function RegistrationForm() {
         setAccountType("role");
     };
 
-
     const accountStatus = () => {
         if (accountType == 'Admin') {
             return "active";
@@ -55,26 +46,26 @@ function RegistrationForm() {
         return "inactive";
     };
 
-    const dateToday = () => {
-        const today = new Date();
-        const month = today.getMonth() + 1;
-        const year = today.getFullYear();
-        const date = today.getDate();
-        const currentDate = month + "/" + date + "/" + year;
-        return currentDate;
-    };
-
-    React.useEffect(() => {
-        addToMap();
-    }, []);
+    useEffect(() => {
+        // You can re-initialize form fields when user changes
+        if (user) {
+            setFirstName(user.firstName);
+            setLastName(user.lastName);
+            setEmail(user.email);
+            setAccountType(user.accountType);
+            setAddress(user.address);
+            setBirthDate(user.birthDate);
+            setBirthMonth(user.birthMonth);
+            setBirthYear(user.birthYear);
+        }
+    }, [user]);
 
     const handleSubmit = async (e) => {
-        const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + getValueFromMap(birthMonth) + birthYear.slice(-2);
-        console.log(dbUserName);
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sensda a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
         try {
 
+            //this needs to be a patch call
             const response = await axios.post('http://localhost:8080/hey/create', {
                 firstName,
                 lastName,
@@ -83,10 +74,7 @@ function RegistrationForm() {
                 birthDate,
                 birthYear,
                 email,
-                accountStatus: accountStatus(),
-                accountType,
-                userName: dbUserName,
-                accountCreatedDate: dateToday()
+                accountType
             });
             alert("Account created!"); //notifies user successful
             clearForm(); //clears data if account successfully created
@@ -112,7 +100,7 @@ function RegistrationForm() {
                 <button className='backButtonRegistration'><IoArrowBack /><a href="/DisplayUserList">BACK</a></button>
                 <div className='shiftForRegis'>
                     <img src="/AIT.PNG" width={100} height={100} alt="Logo" className='shiftForRegistation' />
-                    <h2 className='registerText'>NEW USER</h2>
+                    <h2 className='registerText'>EDIT USER</h2>
                     <img src="/AIT.PNG" width={100} height={100} className='regLogo2' alt="Logo" />
                 </div>
             </header>
@@ -311,7 +299,7 @@ function RegistrationForm() {
                                 <option value="Manager">Manager</option>
                             </select>
                         </div>
-                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Create Account</button>
+                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Update Account</button>
                         {/* button disabled until form is valid */}
                     </fieldset>
                 </form>
