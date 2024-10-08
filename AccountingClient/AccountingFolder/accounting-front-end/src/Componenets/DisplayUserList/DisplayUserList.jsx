@@ -3,8 +3,10 @@ import { getAllUsers } from '../../api/axiosConfiguration';
 import './DisplayUserList.css';
 import { IoArrowBack } from "react-icons/io5";
 import { IoMdAdd } from "react-icons/io";
+import Avatar from '../Assets/Avatar';
 import Modal from '../Modal/Modal';
 import NewUserForm from './NewUserForm'
+import UserListHelp from './UserListHelp'
 
 
 const DisplayUserList = () => {
@@ -13,6 +15,11 @@ const DisplayUserList = () => {
 
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
+
+    const [isHelpOpen, setIsHelpOpen] = useState(false);
+
+    const openHelp = () => setIsHelpOpen(true);
+    const closeHelp = () => setIsHelpOpen(false);
 
     const [users, setUsers] = useState([]);
 
@@ -26,14 +33,38 @@ const DisplayUserList = () => {
         fetchUsers();
     }, []);
 
+    const username = "Ibrahima Diallo"
+
     return (
         <div className="loginPageContainer">
-            <a href="/HomePage"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
+            <div className="sidebar">
+                <div className="profile">
+                    {/* <RxAvatar className='avatarHomePage' /> */}
+                    {/* <img src="https://via.placeholder.com/40" alt="Profile Picture" /> */}
+                    <Avatar name={username} />
+                    <span className="spanForHome">Hello Alexa</span>
+                </div>
+                <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
+                <a href="/Accounts">Chart of Accounts</a>
+                <a href="#module3">Accounts</a>
+                <a href="#module4">MODULE 4</a>
+                <a href="#module5">MODULE 5</a>
+                <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
+                <a> 
+                        <button className = "helpButton" onClick={openHelp}> Help</button>
+                </a>
+            </div>
+
+            <Modal isOpen={isHelpOpen} onClose={closeHelp}>
+                    <UserListHelp />
+                </Modal>
+
+            <div className='useListMainInfo'>
+            <h1>User List </h1>
             <button className='createNewUserButton' onClick={openModal}><IoMdAdd />Create User</button>
             <Modal isOpen={isModalOpen} onClose={closeModal}>
                 <NewUserForm /> {/* This is the content to be displayed inside the modal */}
             </Modal>
-            <h1>User List </h1>
             {users.length > 0 ? (
                 <table className="user-table">
                     <thead>
@@ -70,6 +101,7 @@ const DisplayUserList = () => {
             ) : (
                 <p>No users found.</p>
             )}
+            </div>
         </div>
     );
 };

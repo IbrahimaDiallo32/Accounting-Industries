@@ -9,6 +9,7 @@ import AccountsHelp from './AccountsHelp'
 import Modal from '../Modal/Modal';
 import { IoMdAdd } from 'react-icons/io';
 import { Dropdown } from 'bootstrap';
+import { Link } from 'react-router-dom';
 
 
 const Accounts = () => {
@@ -66,7 +67,7 @@ const Accounts = () => {
                 </div>
                 <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
                 <a href="/Accounts">Accounts</a>
-                <a href="#module3">Accounts</a>
+                <a href="#module3">Event Log</a>
                 <a href="#module4">MODULE 4</a>
                 <a href="#module5">MODULE 5</a>
                 <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
@@ -81,7 +82,7 @@ const Accounts = () => {
 
             <div className="main-content">
                 <h1>Accounts
-                    <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>
+                    <button className='createNewAccountButton toolTip' onClick={openModal}><IoMdAdd />Account</button>
                     <span className = "toolTipText">Create a new account for the chart of Accounts</span>
                 </h1>
                 <div className='sortByContainer'>
@@ -114,7 +115,7 @@ const Accounts = () => {
                     <CreateAccount /> {/* This is the content displayed inside the modal */}
                 </Modal>
                 {accounts.length > 0 ? (
-                    <table className="user-table">
+                    <table className="accounts-table">
                         <thead>
                             <tr>
                                 <th>Order Number</th>
@@ -134,7 +135,8 @@ const Accounts = () => {
                                 <tr key={account.accountNumber}>
                                     <td>{account.order}</td>
                                     <td>{account.accountNumber}</td>
-                                    <td>{account.accountName}</td>
+                                    <td>
+                                    <Link to="/LedgerOfAccounts"  className='linkToLedger'>{account.accountName}</Link></td>
                                     <td>{account.accountCategory}</td>
                                     <td>{account.accountSubCategory}</td>
                                     <td>{account.balance}</td>
