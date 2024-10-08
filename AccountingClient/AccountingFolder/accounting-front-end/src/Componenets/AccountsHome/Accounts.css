@@ -80,7 +80,6 @@
 }
 
 .toolTip {
-    position: relative; 
     display: inline-block;
 }
 
@@ -93,16 +92,61 @@
     text-align: center; 
     border-radius: 5px; 
     padding: 5px;
-    position: absolute; 
-    z-index: 1; 
-    top: 125%; 
-    left: 90%;
-    transform: translateX(-60%); 
+    position: relative; 
+    transform: translateX(-50%); 
     opacity: 0; 
+    z-index: 1;
     transition: opacity 0.3s; 
 }
 
 .toolTip:hover .toolTipText {
     visibility: visible; 
     opacity: 1; 
+}
+
+.accountHelpBody {
+    background: fixed;
+    background-color: #fff;
+}
+
+.accounts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 4px;
+    border: .1px solid green;
+}
+
+.accounts-table th,
+.accounts-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.accounts-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.accounts-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.accounts-table tr:hover {
+    background-color: white;
+}
+
+.accounts-table a {
+    padding: 10px;
+    width: 90px;
+    color: cornflowerblue;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.accounts-table a:hover {
+    color: blueviolet;
 }
