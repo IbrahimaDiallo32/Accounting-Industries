@@ -6,22 +6,23 @@ import { IoArrowBack } from 'react-icons/io5';
 import axios from 'axios';
 
 
-const CreateAccount = () => {
+const EditAccount = ({ account }) => {
 
+    const originalAccountNumber = account.accountNumber;
     //all variables match from MongoDB 
-    const [accountName, setAccountName] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
-    const [accountDescription, setAccountDescription] = useState('');
-    const [normalSide, setNormalSide] = useState('');
-    const [accountCategory, setAccountCategory] = useState('');
-    const [balance, setBalance] = useState('');
-    const [accountSubCategory, setAccountSubCategory] = useState('');
-    const [initalBalance, setInitalBalance] = useState('');
-    const [debit, setDebit] = useState('');
-    const [credit, setCredit] = useState('');
-    const [order, setOrder] = useState('');
-    const [statement, setStatement] = useState('');
-    const [comment, setComment] = useState('');
+    const [accountName, setAccountName] = useState(account?.accountName || '');
+    const [accountNumber, setAccountNumber] = useState(account?.accountNumber || '');
+    const [accountDescription, setAccountDescription] = useState(account?.accountDescription || '');
+    const [normalSide, setNormalSide] = useState(account?.normalSide || '');
+    const [accountCategory, setAccountCategory] = useState(account?.accountCategory || '');
+    const [balance, setBalance] = useState(account?.balance || '');
+    const [accountSubCategory, setAccountSubCategory] = useState(account?.accountSubCategory || '');
+    const [initalBalance, setInitalBalance] = useState(account?.initalBalance || '');
+    const [debit, setDebit] = useState(account?.debit || '');
+    const [credit, setCredit] = useState(account?.credit || '');
+    const [order, setOrder] = useState(account?.order || '');
+    const [statement, setStatement] = useState(account?.statement || '');
+    const [comment, setComment] = useState(account?.comment || '');
 
     const clearForm = () => {
         setAccountName('');
@@ -57,7 +58,7 @@ const CreateAccount = () => {
         console.log("debit" + debit);
         console.log("credit" + credit);
         try {
-            const response = await axios.post('http://localhost:8080/account/create', { //URL that will create a new account
+            const response = await axios.patch(`http://localhost:8080/account/edit/${originalAccountNumber}`, { //URL that will create a new account
                 accountName,
                 accountNumber,
                 accountDescription,
@@ -89,7 +90,7 @@ const CreateAccount = () => {
                 <a href="/Accounts"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
                 <div className='shiftForRegis'>
                     <img src="/AIT.PNG" width={100} height={100} alt="Logo" className='shiftForRegistation' />
-                    <h2 className='registerText'>New Account</h2>
+                    <h2 className='registerText'>Edit Account</h2>
                     <img src="/AIT.PNG" width={100} height={100} className='regLogo2' alt="Logo" />
                 </div>
             </header>
@@ -144,11 +145,11 @@ const CreateAccount = () => {
                                 <option value="Liability">Liability</option>
                                 <option value="Equity">Equity</option>
                                 <option value="Expense">Expense</option>
-                                <option value="Revenue">Revenue</option>
+                                <option value="Expense">Equity</option>
                             </select>
                         </div>
                         <div className='Field'>
-                            <label>Sub-Category<sup>*</sup></label>
+                            <label>Sub-Category <sup>*</sup></label>
                             <select className='registrationInput' value={accountSubCategory}
                                 onChange={(e) => setAccountSubCategory(e.target.value)} placeholder='e.g (current assets)'>
                                 <option value="Current Asset">Current Asset</option>
@@ -255,7 +256,7 @@ const CreateAccount = () => {
                             <input className="registrationInput" value={comment}
                                 onChange={(e) => setComment(e.target.value)} placeholder='Comment' />
                         </div>
-                        <button disabled={!IsFormValid()} type="submit" className='RegistrationButton'>Create Account</button>
+                        <button disabled={!IsFormValid()} type="submit" className='RegistrationButton'>Save Changes</button>
                     </fieldset>
                 </form>
             </div>
@@ -263,4 +264,4 @@ const CreateAccount = () => {
     );
 };
 
-export default CreateAccount;
+export default EditAccount;

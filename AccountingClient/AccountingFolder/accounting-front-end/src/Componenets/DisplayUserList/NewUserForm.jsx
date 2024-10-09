@@ -65,7 +65,7 @@ function RegistrationForm() {
     };
 
     React.useEffect(() => {
-        addToMap();
+
     }, []);
 
     const handleSubmit = async (e) => {
