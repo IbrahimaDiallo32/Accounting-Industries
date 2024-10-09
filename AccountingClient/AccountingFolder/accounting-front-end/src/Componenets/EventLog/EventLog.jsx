@@ -3,6 +3,7 @@ import './EventLog.css';
 import { getAllUsers } from '../../api/axiosConfiguration';
 import Avatar from '../Assets/Avatar';
 import axios from 'axios';
+import { v4 as uuid } from 'uuid'
 
 const EventLog = () => {
     const [logs, setLogs] = useState([]);
@@ -57,8 +58,9 @@ const EventLog = () => {
                             <thead>
                                 <tr>
                                     <th>Event ID</th>
+                                    <th>Event Type</th>
                                     <th>User ID</th>
-                                    <th>L</th>
+                                    <th>Modified By</th>
                                     <th>Date/Time</th>
                                     <th>Before Image</th>
                                     <th>After Image</th>
@@ -67,7 +69,8 @@ const EventLog = () => {
                             <tbody>
                         {logs.map((log) => (
                             <tr key={log._id}>
-                                <td>{log._id}</td>
+                                <td>{log._id=crypto.randomUUID()}</td>
+                                <td>{log.eventType}</td>
                                 <td>{log.userId}</td>
                                 <td>{log.modifiedBy}</td>
                                 <td>{new Date(log.timestamp).toLocaleString()}</td>
