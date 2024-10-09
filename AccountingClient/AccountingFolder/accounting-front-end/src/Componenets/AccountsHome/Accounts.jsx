@@ -65,10 +65,12 @@ const Accounts = () => {
                 <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
                 <a href="/Accounts">Accounts</a>
                 <a href="#module3">Event Log</a>
+                <a href="#module4">Module 4</a>
+                <a href="#module5">Module 5</a>
 
                 <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
-                <a> 
-                        <button className = "helpButton" onClick={openHelp}> Help</button>
+                <a>
+                    <button className="helpButton" onClick={openHelp}> Help</button>
                 </a>
             </div>
 
@@ -133,7 +135,7 @@ const Accounts = () => {
                                     <td>{account.order}</td>
                                     <td>{account.accountNumber}</td>
                                     <td>
-                                    <Link to="/LedgerOfAccounts"  className='linkToLedger'>{account.accountName}</Link></td>
+                                        <Link to="/LedgerOfAccounts" className='linkToLedger'>{account.accountName}</Link></td>
                                     <td>{account.accountCategory}</td>
                                     <td>{account.accountSubCategory}</td>
                                     <td>{account.balance}</td>

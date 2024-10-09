@@ -16,12 +16,14 @@ const CreateAccount = () => {
     const [accountCategory, setAccountCategory] = useState('');
     const [balance, setBalance] = useState('');
     const [accountSubCategory, setAccountSubCategory] = useState('');
-    const [initalBalance, setInitalBalance] = useState('');
+    const [initialBalance, setInitialBalance] = useState('');
     const [debit, setDebit] = useState('');
     const [credit, setCredit] = useState('');
     const [order, setOrder] = useState('');
     const [statement, setStatement] = useState('');
     const [comment, setComment] = useState('');
+    const [existingAccounts, setExistingAccounts] = useState([]);
+
 
     const clearForm = () => {
         setAccountName('');
@@ -31,7 +33,7 @@ const CreateAccount = () => {
         setAccountCategory('');
         setBalance('');
         setAccountSubCategory('');
-        setInitalBalance('');
+        setInitialBalance('');
         setDebit('');
         setCredit('');
         setOrder('');
@@ -43,30 +45,61 @@ const CreateAccount = () => {
         return (
             accountCategory &&
             accountDescription && accountName && accountNumber
-            && accountSubCategory && debit && credit && initalBalance
+            && accountSubCategory && debit && credit && initialBalance
             && balance
         );
     };
+
+    useEffect(() => {
+        // Fetch existing accounts when the component mounts to capture all data 
+        const fetchAccounts = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/account'); // Adjust URL as necessary
+                setExistingAccounts(response.data);
+                console.log('Existing accounts:', response.data); // Add this line
+            } catch (error) {
+                console.error('Error fetching accounts:', error);
+            }
+        };
+        fetchAccounts();
+    }, []);
+
+    //Responsible for checking to see if there is either a duplicate Name or Number before the account is created
+    const isDuplicate = (name, number) => {
+        return existingAccounts.some(account =>
+            account.accountName.trim() === name.trim() ||
+            String(account.accountNumber).trim() === String(number).trim()
+        );
+    };
+    //added trim so that no leading spaces interfere with the values for proper checking
+
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sends a a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
         console.log("the form submitted")
-        console.log("inital balance:" + initalBalance)
+        console.log("initial balance:" + initialBalance)
         console.log("balance" + balance);
         console.log("debit" + debit);
         console.log("credit" + credit);
+
+        if (isDuplicate(accountName, accountNumber)) {
+            alert('Duplicate account name or number detected. Please use unique values.');
+            return; // Exit early if duplicate is found
+        }
+        console.log('Existing accounts:', existingAccounts);
+        console.log('Checking for duplicates:', { name, number });
         try {
             const response = await axios.post('http://localhost:8080/account/create', { //URL that will create a new account
                 accountName,
-                accountNumber,
+                accountNumber: Number(accountNumber),
                 accountDescription,
                 normalSide,
                 order,
                 accountCategory,
                 accountSubCategory,
                 statement,
-                initalBalance: parseFloat(initalBalance.replace(/,/g, '')), //parses to float because this is what the databse is expecting
+                initialBalance: parseFloat(initialBalance.replace(/,/g, '')), //parses to float because this is what the databse is expecting
                 debit: parseFloat(debit.replace(/,/g, '')), //these were originally strings for easier formatting with automatic commas and decimals
                 credit: parseFloat(credit.replace(/,/g, '')),
                 balance: parseFloat(balance.replace(/,/g, '')),
@@ -168,11 +201,11 @@ const CreateAccount = () => {
                             <input placeholder='' hidden></input>
                         </div>
                         <div className='Field'>
-                            <label>Inital Balance<sup>*</sup></label>
-                            <input value={initalBalance} className='registrationInput'
+                            <label>Initial Balance<sup>*</sup></label>
+                            <input value={initialBalance} className='registrationInput'
                                 placeholder='0.00' type='text'
                                 onChange={(e) => {
-                                    setInitalBalance(e.target.value.replace(/,/g, '')); // This removes commas to save the number in the database accurately
+                                    setInitialBalance(e.target.value.replace(/,/g, '')); // This removes commas to save the number in the database accurately
                                 }}
                                 onBlur={(e) => { //OnBlur activates the code when the user leaves the input box
                                     let value = parseFloat(e.target.value).toFixed(2); // Format to two decimal places when the user leaves the input box 
@@ -182,11 +215,11 @@ const CreateAccount = () => {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         }).format(value);
-                                        setInitalBalance(value); // Set formatted value with commas and two decimals
+                                        setInitialBalance(value); // Set formatted value with commas and two decimals
                                     }
                                 }}
                                 onFocus={(e) => { //onFocus activates the code when the user is actively present in the component/input box
-                                    setInitalBalance(e.target.value.replace(/,/g, '')); // This removes commas when the user is typing
+                                    setInitialBalance(e.target.value.replace(/,/g, '')); // This removes commas when the user is typing
                                 }}
                             />
                         </div>

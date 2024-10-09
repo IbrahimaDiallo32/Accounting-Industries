@@ -4,11 +4,12 @@ import Avatar from '../Assets/Avatar';
 import { useState, useEffect } from 'react';
 import { IoArrowBack } from 'react-icons/io5';
 import axios from 'axios';
-
+import CreateAccount from './CreateAccount';
 
 const EditAccount = ({ account }) => {
 
     const originalAccountNumber = account.accountNumber;
+    const deleteDesciption = "deleteMePleaseIMeanItThx!@#$!@"
     //all variables match from MongoDB 
     const [accountName, setAccountName] = useState(account?.accountName || '');
     const [accountNumber, setAccountNumber] = useState(account?.accountNumber || '');
@@ -17,7 +18,7 @@ const EditAccount = ({ account }) => {
     const [accountCategory, setAccountCategory] = useState(account?.accountCategory || '');
     const [balance, setBalance] = useState(account?.balance || '');
     const [accountSubCategory, setAccountSubCategory] = useState(account?.accountSubCategory || '');
-    const [initalBalance, setInitalBalance] = useState(account?.initalBalance || '');
+    const [initialBalance, setInitialBalance] = useState(account?.initialBalance || '');
     const [debit, setDebit] = useState(account?.debit || '');
     const [credit, setCredit] = useState(account?.credit || '');
     const [order, setOrder] = useState(account?.order || '');
@@ -32,7 +33,7 @@ const EditAccount = ({ account }) => {
         setAccountCategory('');
         setBalance('');
         setAccountSubCategory('');
-        setInitalBalance('');
+        setInitialBalance('');
         setDebit('');
         setCredit('');
         setOrder('');
@@ -44,7 +45,7 @@ const EditAccount = ({ account }) => {
         return (
             accountCategory &&
             accountDescription && accountName && accountNumber
-            && accountSubCategory && debit && credit && initalBalance
+            && accountSubCategory && debit && credit && initialBalance
             && balance
         );
     };
@@ -52,35 +53,71 @@ const EditAccount = ({ account }) => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sends a a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
-        console.log("the form submitted")
-        console.log("inital balance:" + initalBalance)
-        console.log("balance" + balance);
-        console.log("debit" + debit);
-        console.log("credit" + credit);
+        // setAccountDescription(deleteDesciption);
+        // console.log(account.accountDescription)
+        // try {
+        //     const response = await axios.delete(`http://localhost:8080/account/deleteByDescription/${deleteDesciption}`);
+        //     if (response.status === 204) {
+        //         console.log('Account deleted successfully');
+        //     }
+        // }
+        // catch (error) {
+        //     console.error("thiserroed")
+        // }
+        // console.log(originalAccountNumber);
+        // try {
+        //     const response = await axios.post('http://localhost:8080/account/create', { //URL that will create a new account
+        //         accountName,
+        //         accountNumber,
+        //         accountDescription,
+        //         normalSide,
+        //         order,
+        //         accountCategory,
+        //         accountSubCategory,
+        //         statement,
+        //         initialBalance: parseFloat(String(initialBalance).replace(/,/g, '')), // Parses to float
+        //         debit: parseFloat(String(debit).replace(/,/g, '')), // Convert to string first
+        //         credit: parseFloat(String(credit).replace(/,/g, '')), // Convert to string first
+        //         balance: parseFloat(String(balance).replace(/,/g, '')), // Convert to string first
+        //         comment
+        //     });
+        //     alert("Account created!"); //notifies user successful
+        //     clearForm(); //clears data if account successfully created
+        //     // const response2 = await axios.get('http://localhost:8080/hey/create')
+        // } catch (error) {
+        //     console.error('Error creating user:', error);
+        // }
         try {
-            const response = await axios.patch(`http://localhost:8080/account/edit/${originalAccountNumber}`, { //URL that will create a new account
-                accountName,
-                accountNumber,
-                accountDescription,
-                normalSide,
-                order,
-                accountCategory,
-                accountSubCategory,
-                statement,
-                initalBalance: parseFloat(initalBalance.replace(/,/g, '')), //parses to float because this is what the databse is expecting
-                debit: parseFloat(debit.replace(/,/g, '')), //these were originally strings for easier formatting with automatic commas and decimals
-                credit: parseFloat(credit.replace(/,/g, '')),
-                balance: parseFloat(balance.replace(/,/g, '')),
-                comment
+            console.log("OG" + originalAccountNumber);
+            console.log("reg" + accountNumber);
+
+            console.log(order)
+            const response = await axios.patch(`http://localhost:8080/account/edit/${originalAccountNumber}`, { //URL that will edit an account given the original Accountnumner 
+                accountName: accountName,
+                accountNumber: Number(accountNumber),
+                accountDescription: accountDescription,
+                normalSide: normalSide,
+                order: Number(order), // Ensure this is a number
+                accountCategory: accountCategory,
+                accountSubCategory: accountSubCategory,
+                initialBalance: parseFloat(String(initialBalance).replace(/,/g, '')),
+                debit: parseFloat(String(debit).replace(/,/g, '')),
+                credit: parseFloat(String(credit).replace(/,/g, '')),
+                balance: parseFloat(String(balance).replace(/,/g, '')),
+                statement: statement,
+                comment: comment
             });
-            alert("Account created!"); //notifies user successful
+            alert("Account successfully edited!"); //notifies user successful
             clearForm(); //clears data if account successfully created
-            // const response2 = await axios.get('http://localhost:8080/hey/create')
+            window.location.reload(true); //refreshes the page so the chages can be realized
         } catch (error) {
-            console.error('Error creating user:', error);
+            console.error('Error updating account:', error.response ? error.response.data : error.message);
         }
 
     };
+
+    useEffect(() => {
+    }, [accountDescription]); // Dependency array, triggers when accountDescription changes
 
 
 
@@ -169,11 +206,11 @@ const EditAccount = ({ account }) => {
                             <input placeholder='' hidden></input>
                         </div>
                         <div className='Field'>
-                            <label>Inital Balance<sup>*</sup></label>
-                            <input value={initalBalance} className='registrationInput'
+                            <label>Initial Balance<sup>*</sup></label>
+                            <input value={initialBalance} className='registrationInput'
                                 placeholder='0.00' type='text'
                                 onChange={(e) => {
-                                    setInitalBalance(e.target.value.replace(/,/g, '')); // This removes commas to save the number in the database accurately
+                                    setInitialBalance(e.target.value.replace(/,/g, '')); // This removes commas to save the number in the database accurately
                                 }}
                                 onBlur={(e) => { //OnBlur activates the code when the user leaves the input box
                                     let value = parseFloat(e.target.value).toFixed(2); // Format to two decimal places when the user leaves the input box 
@@ -183,11 +220,11 @@ const EditAccount = ({ account }) => {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2
                                         }).format(value);
-                                        setInitalBalance(value); // Set formatted value with commas and two decimals
+                                        setInitialBalance(value); // Set formatted value with commas and two decimals
                                     }
                                 }}
                                 onFocus={(e) => { //onFocus activates the code when the user is actively present in the component/input box
-                                    setInitalBalance(e.target.value.replace(/,/g, '')); // This removes commas when the user is typing
+                                    setInitialBalance(e.target.value.replace(/,/g, '')); // This removes commas when the user is typing
                                 }}
                             />
                         </div>
