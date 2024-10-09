@@ -9,6 +9,8 @@ import AccountsHelp from './AccountsHelp'
 import Modal from '../Modal/Modal';
 import { IoMdAdd } from 'react-icons/io';
 import EditAccount from './EditAccount';
+import { Dropdown } from 'bootstrap';
+import { Link } from 'react-router-dom';
 
 
 const Accounts = () => {
@@ -63,11 +65,10 @@ const Accounts = () => {
                 <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
                 <a href="/Accounts">Accounts</a>
                 <a href="#module3">Event Log</a>
-                <a href="#module4">Module 4</a>
-                <a href="#module5">Module 5</a>
-                <a href="/LoginForm"><button className="logout-other-button">Logout</button></a>
-                <a>
-                    <button className="helpButton" onClick={openHelp}> Help</button>
+
+                <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
+                <a> 
+                        <button className = "helpButton" onClick={openHelp}> Help</button>
                 </a>
             </div>
 
@@ -111,7 +112,7 @@ const Accounts = () => {
                 </div>
 
                 {accounts.length > 0 ? (
-                    <table className="user-table">
+                    <table className="accounts-table">
                         <thead>
                             <tr>
                                 <th>Order Number</th>
@@ -131,7 +132,8 @@ const Accounts = () => {
                                 <tr key={account.accountNumber}>
                                     <td>{account.order}</td>
                                     <td>{account.accountNumber}</td>
-                                    <td>{account.accountName}</td>
+                                    <td>
+                                    <Link to="/LedgerOfAccounts"  className='linkToLedger'>{account.accountName}</Link></td>
                                     <td>{account.accountCategory}</td>
                                     <td>{account.accountSubCategory}</td>
                                     <td>{account.balance}</td>
