@@ -24,7 +24,6 @@ const CreateAccount = () => {
     const [comment, setComment] = useState('');
     const [existingAccounts, setExistingAccounts] = useState([]);
 
-
     const clearForm = () => {
         setAccountName('');
         setAccountNumber('');
@@ -49,7 +48,6 @@ const CreateAccount = () => {
             && balance
         );
     };
-
     useEffect(() => {
         // Fetch existing accounts when the component mounts to capture all data 
         const fetchAccounts = async () => {
@@ -72,8 +70,7 @@ const CreateAccount = () => {
         );
     };
     //added trim so that no leading spaces interfere with the values for proper checking
-
-
+  
     const handleSubmit = async (e) => {
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sends a a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 

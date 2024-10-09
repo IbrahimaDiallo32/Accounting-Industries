@@ -10,6 +10,7 @@ import DisplayUserList from './Componenets/DisplayUserList/DisplayUserList'
 import RegistrationForm from './Componenets/RegistrationForm/RegistrationForm';
 import LoginForm from './Componenets/LoginForm/LoginForm';
 import ResetPassword from './Componenets/ResetPassword/ResetPassword';
+import EventLog from './Componenets/EventLog/EventLog';
 import Accounts from './Componenets/AccountsHome/Accounts';
 import LedgerOfAccounts from './Componenets/Ledger/LedgerOfAccounts';
 import NewUserForm from './Componenets/DisplayUserList/NewUserForm';
@@ -28,6 +29,7 @@ root.render(
         <Route path="/RegistrationForm" element={<RegistrationForm />} />
         <Route path="/LoginForm" element={<LoginForm />} />
         <Route path="/ResetPassword" element={<ResetPassword />} />
+        <Route path="/EventLog" element={<EventLog />} />
         <Route path="/Accounts" element={<Accounts />} />
         <Route path="/NewUserForm" element={<NewUserForm />} />
         <Route path="/LedgerOfAccounts" element={<LedgerOfAccounts />} />

@@ -1,12 +1,14 @@
-import React from 'react';
 import './HomePage.css';
-import { RxAvatar } from "react-icons/rx";
+import { Link } from 'react-router-dom';
 import Avatar from '../Assets/Avatar';
-
+import { FaCalendar } from "react-icons/fa";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import React from 'react';
 
 const HomePage = ({ userName }) => {
-
-    const username = "Ibrahima Diallo";
+    // Using the userName prop, defaulting to "Ibrahima Diallo" if not provided
+    const username = userName || "Ibrahima Diallo";
 
     return (
         <div className='outerContainers'>
