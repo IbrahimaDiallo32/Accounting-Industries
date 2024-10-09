@@ -107,7 +107,6 @@ const CreateAccount = () => {
             });
             alert("Account created!"); //notifies user successful
             clearForm(); //clears data if account successfully created
-            // const response2 = await axios.get('http://localhost:8080/hey/create')
         } catch (error) {
             console.error('Error creating user:', error);
         }

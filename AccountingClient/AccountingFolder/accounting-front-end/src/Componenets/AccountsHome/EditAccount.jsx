@@ -9,7 +9,6 @@ import CreateAccount from './CreateAccount';
 const EditAccount = ({ account }) => {
 
     const originalAccountNumber = account.accountNumber;
-    const deleteDesciption = "deleteMePleaseIMeanItThx!@#$!@"
     //all variables match from MongoDB 
     const [accountName, setAccountName] = useState(account?.accountName || '');
     const [accountNumber, setAccountNumber] = useState(account?.accountNumber || '');
@@ -53,40 +52,6 @@ const EditAccount = ({ account }) => {
     const handleSubmit = async (e) => {
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sends a a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
-        // setAccountDescription(deleteDesciption);
-        // console.log(account.accountDescription)
-        // try {
-        //     const response = await axios.delete(`http://localhost:8080/account/deleteByDescription/${deleteDesciption}`);
-        //     if (response.status === 204) {
-        //         console.log('Account deleted successfully');
-        //     }
-        // }
-        // catch (error) {
-        //     console.error("thiserroed")
-        // }
-        // console.log(originalAccountNumber);
-        // try {
-        //     const response = await axios.post('http://localhost:8080/account/create', { //URL that will create a new account
-        //         accountName,
-        //         accountNumber,
-        //         accountDescription,
-        //         normalSide,
-        //         order,
-        //         accountCategory,
-        //         accountSubCategory,
-        //         statement,
-        //         initialBalance: parseFloat(String(initialBalance).replace(/,/g, '')), // Parses to float
-        //         debit: parseFloat(String(debit).replace(/,/g, '')), // Convert to string first
-        //         credit: parseFloat(String(credit).replace(/,/g, '')), // Convert to string first
-        //         balance: parseFloat(String(balance).replace(/,/g, '')), // Convert to string first
-        //         comment
-        //     });
-        //     alert("Account created!"); //notifies user successful
-        //     clearForm(); //clears data if account successfully created
-        //     // const response2 = await axios.get('http://localhost:8080/hey/create')
-        // } catch (error) {
-        //     console.error('Error creating user:', error);
-        // }
         try {
             console.log("OG" + originalAccountNumber);
             console.log("reg" + accountNumber);
