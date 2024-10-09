@@ -1,4 +1,5 @@
 .loginPageContainer {
+    display: flex;
     min-height: 100vh;
     min-width: 100vw;
     margin: 0 auto;
@@ -36,4 +37,66 @@ h1 {
 
 .user-table tr:hover {
     background-color: white;
+}
+
+.user-table a {
+    padding: 10px;
+    width: 90px;
+    border-radius: 4px;
+    border: .1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.user-table a:hover {
+    background-color: blueviolet;
+    color: azure;
+}
+
+.createNewUserButton {
+    justify-content: right;
+    margin-left: 1150px;
+    padding: 12px;
+    width: 140px;
+    border-radius: 4px;
+    border: .1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.createNewUserButton a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.createNewUserButton:hover {
+    background-color: blueviolet;
+    color: azure;
+}
+
+.buttonForEditUserRecord {
+    justify-content: right;
+    padding: 10px;
+    width: 60px;
+    border-radius: 4px;
+    border: .1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.buttonForEditUserRecord:hover {
+    background-color: blueviolet;
+    color: azure;
 }

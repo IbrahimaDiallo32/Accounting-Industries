@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './NewUserForm.css'
+import { IoArrowBack } from 'react-icons/io5';
 
 function RegistrationForm() {
     const [firstName, setFirstName] = useState('');
@@ -63,31 +64,8 @@ function RegistrationForm() {
         return currentDate;
     };
 
-    const [birthMonthMap, setBirthMonthMap] = useState(new Map());
-    const addToMap = () => { //this is used to set the userName accuratlely. I wanted the database to have full month name "July" instead of "07";
-        const copyMap = new Map(birthMonthMap); // Create a copy of the map
-        copyMap.set('January', '01');
-        copyMap.set('February', '02');
-        copyMap.set('March', '03');
-        copyMap.set('April', '04');
-        copyMap.set('May', '05');
-        copyMap.set('June', '06');
-        copyMap.set('July', '07');
-        copyMap.set('August', '08');
-        copyMap.set('September', '09');
-        copyMap.set('October', '10');
-        copyMap.set('November', '11');
-        copyMap.set('December', '12');
-        setBirthMonthMap(copyMap);
-    };
-    // Function to retrieve a value by key
-    const getValueFromMap = (key) => {
-        console.log(birthMonthMap.get(key));
-        return birthMonthMap.get(key);
-    };
-
     React.useEffect(() => {
-        addToMap();
+
     }, []);
 
     const handleSubmit = async (e) => {
@@ -116,25 +94,25 @@ function RegistrationForm() {
         } catch (error) {
             console.error('Error creating user:', error);
         }
-        
+
     };
 
     const handleChange = (e) => {
         const { id, value } = e.target;
         setState((prevState) => ({
-          ...prevState,
-          [id]: value
+            ...prevState,
+            [id]: value
         }));
-      }
+    }
 
-   
+
     return (
         <div className='RegistrationContainer'>
             <header className='logoForRegistration'>
-                <button className='backButtonRegistration'><IoArrowBack /><a href="/">BACK</a></button>
+                <button className='backButtonRegistration'><IoArrowBack /><a href="/DisplayUserList">BACK</a></button>
                 <div className='shiftForRegis'>
                     <img src="/AIT.PNG" width={100} height={100} alt="Logo" className='shiftForRegistation' />
-                    <h2 className='registerText'>REGISTER</h2>
+                    <h2 className='registerText'>NEW USER</h2>
                     <img src="/AIT.PNG" width={100} height={100} className='regLogo2' alt="Logo" />
                 </div>
             </header>
@@ -323,7 +301,7 @@ function RegistrationForm() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder='Email Address' />
                         </div>
-                       
+
                         <div className='Field'>
                             <label>Role <sup>*</sup></label>
                             <select value={accountType} onChange={(e) => setAccountType(e.target.value)}>

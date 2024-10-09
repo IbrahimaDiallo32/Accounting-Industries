@@ -1,0 +1,152 @@
+.logout-other-button {
+    background-color: white;
+    color: #5DADE2;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.helpButton {
+    background-color: white;
+    color: #5DADE2;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.createNewAccountButton {
+    display: flex;
+    justify-content: right;
+    margin-left: 1050px;
+    padding: 12px;
+    border-radius: 4px;
+    border: .1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.createNewAccountButton a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.createNewAccountButton:hover {
+    background-color: blueviolet;
+    color: azure;
+}
+
+.sortByContainer {
+    display: flex;
+}
+
+.sortByTextField {
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.sortBySelection {
+    font-size: 16px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    margin-right: 15px; 
+}
+
+.orderSelect {
+    font-size: 16px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    margin-right: 20px; 
+}
+
+.submitSort {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: cornflowerblue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submitSort:hover {
+    background-color:blueviolet;
+}
+
+.toolTip {
+    display: inline-block;
+}
+
+.toolTipText {
+    font-size: 12px;
+    visibility: hidden; 
+    width: 100px; 
+    background-color:cornflowerblue; 
+    color: black; 
+    text-align: center; 
+    border-radius: 5px; 
+    padding: 5px;
+    position: relative; 
+    transform: translateX(-50%); 
+    opacity: 0; 
+    z-index: 1;
+    transition: opacity 0.3s; 
+}
+
+.toolTip:hover .toolTipText {
+    visibility: visible; 
+    opacity: 1; 
+}
+
+.accountHelpBody {
+    background: fixed;
+    background-color: #fff;
+}
+
+.accounts-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border-radius: 4px;
+    border: .1px solid green;
+}
+
+.accounts-table th,
+.accounts-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.accounts-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.accounts-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.accounts-table tr:hover {
+    background-color: white;
+}
+
+.accounts-table a {
+    padding: 10px;
+    width: 90px;
+    color: cornflowerblue;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.accounts-table a:hover {
+    color: blueviolet;
+}

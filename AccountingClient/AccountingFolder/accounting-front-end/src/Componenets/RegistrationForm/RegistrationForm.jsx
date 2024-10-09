@@ -19,6 +19,8 @@ function RegistrationForm() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordMatch, setPasswordMatch] = useState(true);
 
+    //const [confirmPassword, setConfirmPassword] = useState(true);
+
     const passwordHasNumber = /\d/;
 
     const validateEmail = (email) => {
@@ -65,7 +67,31 @@ function RegistrationForm() {
         setAccountType("role");
     };
 
-    const accountStatus = () => accountType === 'Admin' ? "active" : "inactive";
+    //const accountStatus = () => accountType === 'Admin' ? "active" : "inactive";
+        setConfirmPassword({
+            password: '',
+            confirmPassword: ''
+        });
+        setAccountType("role");
+    };
+
+    const [state, setState] = React.useState({
+        password: "",
+        cPassword: ""
+    });
+
+    React.useEffect(() => {
+        validatePassword();
+    }, [state]);
+
+
+
+    const accountStatus = () => {
+        if (accountType == 'Admin') {
+            return "active";
+        }
+        return "inactive";
+    };
 
     const dateToday = () => {
         const today = new Date();
@@ -80,9 +106,17 @@ function RegistrationForm() {
         const thisMonth = today.getMonth() + 1;
         const thisYear = today.getFullYear();
         const twoDigitYear = thisYear % 100;
-        return (thisMonth < 10 ? "0" + thisMonth : thisMonth) + twoDigitYear;
+        //return (thisMonth < 10 ? "0" + thisMonth : thisMonth) + twoDigitYear;
     };
 
+        if (thisMonth < 10) {
+            const userMonth = "0" + thisMonth;
+            const currentDate = userMonth + twoDigitYear;
+            return currentDate
+        }
+        const currentDate = thisMonth + twoDigitYear;
+        return currentDate;
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + dateForUserName();
@@ -97,6 +131,7 @@ function RegistrationForm() {
                 birthYear,
                 email,
                 password: password.value,
+                confirmPassword: password.value
                 accountStatus: accountStatus(),
                 accountType,
                 username: dbUserName,
@@ -123,6 +158,21 @@ function RegistrationForm() {
     const handleConfirmPassword = (e) => {
         setConfirmPassword(e.target.value);
         setPasswordMatch(password.value === e.target.value);
+    };
+    };
+
+    const handleChange = (e) => {
+        const { id, value } = e.target;
+        setState((prevState) => ({
+            ...prevState,
+            [id]: value
+        }));
+    };
+
+    const validatePassword = () => {
+        state.password === state.cPassword
+            ? setConfirmPassword(true)
+            : setConfirmPassword(false);
     };
 
     return (
@@ -191,6 +241,9 @@ function RegistrationForm() {
                             {/* Password validation messages */}
                         </div>
                         <div className='Field'>
+                          
+                          
+                          
                             <label>Confirm Password <sup>*</sup></label>
                             <input  
                                 type='password'
@@ -202,6 +255,11 @@ function RegistrationForm() {
                             {!passwordMatch && <div className="input-error">Passwords do not match</div>}
                         </div>
                         <div className='Field'>
+                       
+                        
+                        
+                        
+
                             <label>Role <sup>*</sup></label>
                             <select value={accountType} onChange={(e) => setAccountType(e.target.value)}>
                                 <option value="role" disabled>Select Role</option>

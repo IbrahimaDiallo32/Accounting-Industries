@@ -12,24 +12,19 @@ const HomePage = ({ userName }) => {
 
     return (
         <div className='outerContainers'>
-            <form action="">
-                {/* Placeholder form */}
-            </form>
-
             <div className="homePageOutermostcontainer">
                 {/* Sidebar */}
                 <div className="sidebar">
                     <div className="profile">
                         <Avatar name={username} />
-                        <span className="spanForHome">
-                            <button className="profilebtn">Hello {username}</button>
-                        </span>
+                        <span className="spanForHome">Hello Alexa</span>
                     </div>
-                    <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
-                    <a href="#module2">EXPIRED PASSWORDS</a>
-                    <a href="#module3">MODULE 3</a>
-                    <a href="#module4">MODULE 4</a>
-                    <a href="#module5">MODULE 5</a>
+                    <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
+                    <a href="/Accounts">Accounts</a>
+                    <a href="/#">Event Log</a>
+                    <a href="/#">Module 4</a>
+                    <a href="#">Module 5</a>
+                    <a href="/LoginForm"><button className="logout-other-button">Logout</button></a>
                 </div>
 
                 {/* Main Content */}
@@ -37,20 +32,9 @@ const HomePage = ({ userName }) => {
                     <div className="header">
                         <div className="title-logo">
                             <img src="/AIT.PNG" alt="AIT Logo" />
-                            <h1>Accounting Treasury Industries</h1>
+                            <h1>Welcome To Accounting Treasury Industries!</h1>
                         </div>
-                        <a href="/LoginForm">
-                            <button className="logout-btn">LOGOUT</button>
-                        </a>
-                    </div>
-
-                    <div className='taskbar'>
-                        <Link to="/EventLog">
-                            <button type='button' className='eventLogBtn'>Event Log</button>
-                        </Link>
-
-                        {/* Calendar Popup Button */}
-                        
+                        <a href="/LoginForm"><button className="logout-btn">LOGOUT</button></a>
                     </div>
                 </div>
             </div>
