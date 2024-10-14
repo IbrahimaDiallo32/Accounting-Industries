@@ -81,40 +81,40 @@ const Accounts = () => {
 
             <div className="main-content">
                 <h1>Accounts
- {/* Recently added */}
+                    {/* Recently added */}
                     <span className='toolTip'>
-                    <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>
-                    <span className = "toolTipText">Create a new account for the chart of Accounts</span></span>
+                        <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>
+                        <span className="toolTipText">Create a new account for the chart of Accounts</span></span>
                 </h1>
                 <div className='sortByContainer'>
-                            <div className='sortBy'>
-                                <label className='sortByTextField'>Sort By</label>
-                                <select name="Sort By" className='sortBySelection' value={sortByType} // Sort the data by variable
-                                    onChange={(e) => setSortByType(e.target.value)}>
-                                    <option value="sort" disabled>Select Sort by Type</option>
-                                    <option value="accountNumber">Account Number</option>
-                                    <option value="accountName">Account Name</option>
-                                    <option value="order">Order Number</option>
-                                    <option value="balance">Current Balance</option>
-                                    <option value="accountCategory">Account Category</option>
-                                    <option value="accountSubCategory">Account Sub Category</option>
-                                </select>
-                                <select name="Order" className='orderSelect' value={order} //Asending or Descending Order
-                                    onChange={(e) => setOrder(e.target.value)} >
-                                    <option value="order" disabled>Select Order Direction</option>
-                                    <option value="ASC">Ascending</option>
-                                    <option value="DESC">Descending</option>
-                                </select>
-                                <input placeholder='' hidden></input>
-                                <span className='toolTip'>
-                                <button className='submitSort' onClick={(e) => {sortedAccount()}}>
-                                    Sort</button>
-                                    <span className = "toolTipText">Sort Chart of Accounts</span></span>
-                            </div>
-                        </div>
- {/* Recently added */}
-  {/* <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>*/}
-{/*</h1>*/}
+                    <div className='sortBy'>
+                        <label className='sortByTextField'>Sort By</label>
+                        <select name="Sort By" className='sortBySelection' value={sortByType} // Sort the data by variable
+                            onChange={(e) => setSortByType(e.target.value)}>
+                            <option value="sort" disabled>Select Sort by Type</option>
+                            <option value="accountNumber">Account Number</option>
+                            <option value="accountName">Account Name</option>
+                            <option value="order">Order Number</option>
+                            <option value="balance">Current Balance</option>
+                            <option value="accountCategory">Account Category</option>
+                            <option value="accountSubCategory">Account Sub Category</option>
+                        </select>
+                        <select name="Order" className='orderSelect' value={order} //Asending or Descending Order
+                            onChange={(e) => setOrder(e.target.value)} >
+                            <option value="order" disabled>Select Order Direction</option>
+                            <option value="ASC">Ascending</option>
+                            <option value="DESC">Descending</option>
+                        </select>
+                        <input placeholder='' hidden></input>
+                        <span className='toolTip'>
+                            <button className='submitSort' onClick={(e) => { sortedAccount() }}>
+                                Sort</button>
+                            <span className="toolTipText">Sort Chart of Accounts</span></span>
+                    </div>
+                </div>
+                {/* Recently added */}
+                {/* <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>*/}
+                {/*</h1>*/}
 
                 {/* //Conditionally renders either Create or Edit Account */}
                 <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -169,9 +169,9 @@ const Accounts = () => {
                                     <td>{account.accountNumber}</td>
                                     <td>
                                         <div className="toolTip">
-                                    <Link to="/LedgerOfAccounts"  className='linkToLedger'>{account.accountName}</Link>
-                                    <span className = "toolTipText">Link to this accounts Ledger</span>
-                                    </div>
+                                            <Link to="/LedgerOfAccounts" className='linkToLedger'>{account.accountName}</Link>
+                                            <span className="toolTipText">Link to this accounts Ledger</span>
+                                        </div>
                                     </td>
                                     <td>{account.accountCategory}</td>
                                     <td>{account.accountSubCategory}</td>
