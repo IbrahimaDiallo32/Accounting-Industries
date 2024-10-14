@@ -26,10 +26,10 @@ const HomePage = ({ userName }) => {
                         <Avatar name={username} />
                         <span className="spanForHome">Hello Alexa</span>
                     </div>
-                    <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
+                    <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
                     <a href="/Accounts">Accounts</a>
-                    <a href="/#">Chart Of Accounts</a>
+                    <a href="/#">Event Log</a>
                     <a href="/NewUserForm">New user form</a>
                     <a href="#module5">MODULE 5</a>
                 </div>

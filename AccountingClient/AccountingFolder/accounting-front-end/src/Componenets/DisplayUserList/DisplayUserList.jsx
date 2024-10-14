@@ -9,7 +9,6 @@ import NewUserForm from './NewUserForm'
 import UserListHelp from './UserListHelp'
 import EditUserForm from './EditUserForm'
 
-
 const DisplayUserList = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
