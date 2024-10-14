@@ -124,28 +124,6 @@ const Accounts = () => {
                         <CreateAccount /> // Render CreateAccount when no account is selected
                     )}
                 </Modal>
-
-                <div className='sortByContainer'>
-                    <div className='sortBy'>
-                        <label className='sortByTextField'>Sort By</label>
-                        <select name="Sort By" className='sortBySelection' value={sortByType} onChange={(e) => setSortByType(e.target.value)}>
-                            <option value="sort" disabled>Select Sort by Type</option>
-                            <option value="accountNumber">Account Number</option>
-                            <option value="accountName">Account Name</option>
-                            <option value="order">Order Number</option>
-                            <option value="balance">Current Balance</option>
-                            <option value="accountCategory">Account Category</option>
-                            <option value="accountSubCategory">Account Sub Category</option>
-                        </select>
-                        <select name="Order" className='orderSelect' value={order} onChange={(e) => setOrder(e.target.value)} >
-                            <option value="order" disabled>Select Order Direction</option>
-                            <option value="ASC">Ascending</option>
-                            <option value="DESC">Descending</option>
-                        </select>
-                        <button className='submitSort toolTip' onClick={sortedAccount}>Sort</button>
-                    </div>
-                </div>
-
                 {accounts.length > 0 ? (
                     <table className="accounts-table">
                         <thead>
