@@ -1,0 +1,9 @@
+.calendar-popup {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    z-index: 10;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  

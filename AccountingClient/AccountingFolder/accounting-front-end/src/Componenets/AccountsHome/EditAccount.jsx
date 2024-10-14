@@ -4,25 +4,25 @@ import Avatar from '../Assets/Avatar';
 import { useState, useEffect } from 'react';
 import { IoArrowBack } from 'react-icons/io5';
 import axios from 'axios';
+import CreateAccount from './CreateAccount';
 
+const EditAccount = ({ account }) => {
 
-const CreateAccount = () => {
-
+    const originalAccountNumber = account.accountNumber;
     //all variables match from MongoDB 
-    const [accountName, setAccountName] = useState('');
-    const [accountNumber, setAccountNumber] = useState('');
-    const [accountDescription, setAccountDescription] = useState('');
-    const [normalSide, setNormalSide] = useState('');
-    const [accountCategory, setAccountCategory] = useState('');
-    const [balance, setBalance] = useState('');
-    const [accountSubCategory, setAccountSubCategory] = useState('');
-    const [initialBalance, setInitialBalance] = useState('');
-    const [debit, setDebit] = useState('');
-    const [credit, setCredit] = useState('');
-    const [order, setOrder] = useState('');
-    const [statement, setStatement] = useState('');
-    const [comment, setComment] = useState('');
-    const [existingAccounts, setExistingAccounts] = useState([]);
+    const [accountName, setAccountName] = useState(account?.accountName || '');
+    const [accountNumber, setAccountNumber] = useState(account?.accountNumber || '');
+    const [accountDescription, setAccountDescription] = useState(account?.accountDescription || '');
+    const [normalSide, setNormalSide] = useState(account?.normalSide || '');
+    const [accountCategory, setAccountCategory] = useState(account?.accountCategory || '');
+    const [balance, setBalance] = useState(account?.balance || '');
+    const [accountSubCategory, setAccountSubCategory] = useState(account?.accountSubCategory || '');
+    const [initialBalance, setInitialBalance] = useState(account?.initialBalance || '');
+    const [debit, setDebit] = useState(account?.debit || '');
+    const [credit, setCredit] = useState(account?.credit || '');
+    const [order, setOrder] = useState(account?.order || '');
+    const [statement, setStatement] = useState(account?.statement || '');
+    const [comment, setComment] = useState(account?.comment || '');
 
     const clearForm = () => {
         setAccountName('');
@@ -48,67 +48,41 @@ const CreateAccount = () => {
             && balance
         );
     };
-    useEffect(() => {
-        // Fetch existing accounts when the component mounts to capture all data 
-        const fetchAccounts = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/account'); // Adjust URL as necessary
-                setExistingAccounts(response.data);
-                console.log('Existing accounts:', response.data); // Add this line
-            } catch (error) {
-                console.error('Error fetching accounts:', error);
-            }
-        };
-        fetchAccounts();
-    }, []);
 
-    //Responsible for checking to see if there is either a duplicate Name or Number before the account is created
-    const isDuplicate = (name, number) => {
-        return existingAccounts.some(account =>
-            account.accountName.trim() === name.trim() ||
-            String(account.accountNumber).trim() === String(number).trim()
-        );
-    };
-    //added trim so that no leading spaces interfere with the values for proper checking
-  
     const handleSubmit = async (e) => {
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sends a a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
-        console.log("the form submitted")
-        console.log("initial balance:" + initialBalance)
-        console.log("balance" + balance);
-        console.log("debit" + debit);
-        console.log("credit" + credit);
-
-        if (isDuplicate(accountName, accountNumber)) {
-            alert('Duplicate account name or number detected. Please use unique values.');
-            return; // Exit early if duplicate is found
-        }
-        console.log('Existing accounts:', existingAccounts);
-        console.log('Checking for duplicates:', { name, number });
         try {
-            const response = await axios.post('http://localhost:8080/account/create', { //URL that will create a new account
-                accountName,
+            console.log("OG" + originalAccountNumber);
+            console.log("reg" + accountNumber);
+
+            console.log(order)
+            const response = await axios.patch(`http://localhost:8080/account/edit/${originalAccountNumber}`, { //URL that will edit an account given the original Accountnumner 
+                accountName: accountName,
                 accountNumber: Number(accountNumber),
-                accountDescription,
-                normalSide,
-                order,
-                accountCategory,
-                accountSubCategory,
-                statement,
-                initialBalance: parseFloat(initialBalance.replace(/,/g, '')), //parses to float because this is what the databse is expecting
-                debit: parseFloat(debit.replace(/,/g, '')), //these were originally strings for easier formatting with automatic commas and decimals
-                credit: parseFloat(credit.replace(/,/g, '')),
-                balance: parseFloat(balance.replace(/,/g, '')),
-                comment
+                accountDescription: accountDescription,
+                normalSide: normalSide,
+                order: Number(order), // Ensure this is a number
+                accountCategory: accountCategory,
+                accountSubCategory: accountSubCategory,
+                initialBalance: parseFloat(String(initialBalance).replace(/,/g, '')),
+                debit: parseFloat(String(debit).replace(/,/g, '')),
+                credit: parseFloat(String(credit).replace(/,/g, '')),
+                balance: parseFloat(String(balance).replace(/,/g, '')),
+                statement: statement,
+                comment: comment
             });
-            alert("Account created!"); //notifies user successful
+            alert("Account successfully edited!"); //notifies user successful
             clearForm(); //clears data if account successfully created
+            window.location.reload(true); //refreshes the page so the chages can be realized
         } catch (error) {
-            console.error('Error creating user:', error);
+            console.error('Error updating account:', error.response ? error.response.data : error.message);
         }
 
     };
+
+    useEffect(() => {
+    }, [accountDescription]); // Dependency array, triggers when accountDescription changes
 
 
 
@@ -118,7 +92,7 @@ const CreateAccount = () => {
                 <a href="/Accounts"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
                 <div className='shiftForRegis'>
                     <img src="/AIT.PNG" width={100} height={100} alt="Logo" className='shiftForRegistation' />
-                    <h2 className='registerText'>New Account</h2>
+                    <h2 className='registerText'>Edit Account</h2>
                     <img src="/AIT.PNG" width={100} height={100} className='regLogo2' alt="Logo" />
                 </div>
             </header>
@@ -173,11 +147,11 @@ const CreateAccount = () => {
                                 <option value="Liability">Liability</option>
                                 <option value="Equity">Equity</option>
                                 <option value="Expense">Expense</option>
-                                <option value="Revenue">Revenue</option>
+                                <option value="Expense">Equity</option>
                             </select>
                         </div>
                         <div className='Field'>
-                            <label>Sub-Category<sup>*</sup></label>
+                            <label>Sub-Category <sup>*</sup></label>
                             <select className='registrationInput' value={accountSubCategory}
                                 onChange={(e) => setAccountSubCategory(e.target.value)} placeholder='e.g (current assets)'>
                                 <option value="Current Asset">Current Asset</option>
@@ -284,7 +258,7 @@ const CreateAccount = () => {
                             <input className="registrationInput" value={comment}
                                 onChange={(e) => setComment(e.target.value)} placeholder='Comment' />
                         </div>
-                        <button disabled={!IsFormValid()} type="submit" className='RegistrationButton'>Create Account</button>
+                        <button disabled={!IsFormValid()} type="submit" className='RegistrationButton'>Save Changes</button>
                     </fieldset>
                 </form>
             </div>
@@ -292,4 +266,4 @@ const CreateAccount = () => {
     );
 };
 
-export default CreateAccount;
+export default EditAccount;
