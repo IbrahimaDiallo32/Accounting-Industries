@@ -94,10 +94,13 @@ body {
     background-color: white;
     color: #5DADE2;
     border: none;
+    margin-right:15px;
     padding: 10px 15px;
     cursor: pointer;
 }
-
+.header .rightHeader{
+    justify-content: right;
+}
 /* .outerContainers {
     background-color: rgb(255, 230, 202);
     height: 100vh;

@@ -13,6 +13,7 @@ import ResetPassword from './Componenets/ResetPassword/ResetPassword';
 import Accounts from './Componenets/AccountsHome/Accounts';
 import NewUserForm from './Componenets/DisplayUserList/NewUserForm'
 import LedgerOfAccounts from './Componenets/Ledger/LedgerOfAccounts';
+import EditUserForm from './Componenets/DisplayUserList/EditUserForm'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -30,6 +31,7 @@ root.render(
         <Route path="/Accounts" element={<Accounts />} />
         <Route path="/NewUserForm" element={<NewUserForm />} />
         <Route path="/LedgerOfAccounts" element={<LedgerOfAccounts />} />
+        <Route path="/EditUserForm" element={<EditUserForm />} />
         {/* <Route path="/handleFetchUsers" element={<handleFetchUsers />} /> */}
       </Routes>
     </BrowserRouter>

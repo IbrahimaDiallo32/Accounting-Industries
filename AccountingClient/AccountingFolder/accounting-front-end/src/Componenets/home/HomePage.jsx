@@ -1,10 +1,19 @@
 import React from 'react';
 import './HomePage.css';
 import { RxAvatar } from "react-icons/rx";
+import { useState, useEffect } from 'react';
+import Modal from '../Modal/Modal';
+import { CiCalendar } from "react-icons/ci";
 import Avatar from '../Assets/Avatar';
+import CalandarPopUp from '../Modal/CalandarPopUp';
 
 
 const HomePage = ({ userName }) => {
+
+    const [isCalandarOpen, setIsCalandarOpen] = useState(false);
+
+    const openCalandar = () => setIsCalandarOpen(true);
+    const closeCalandar = () => setIsCalandarOpen(false);
 
     const username = "Ibrahima Diallo";
 
@@ -20,6 +29,7 @@ const HomePage = ({ userName }) => {
                     <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
                     <a href="/Accounts">Accounts</a>
+                    <a href="/#">Chart Of Accounts</a>
                     <a href="/NewUserForm">New user form</a>
                     <a href="#module5">MODULE 5</a>
                 </div>
@@ -31,8 +41,14 @@ const HomePage = ({ userName }) => {
                             <img src="/AIT.PNG" alt="AIT Logo" />
                             <h1>Welcome To Accounting Treasury Industries!</h1>
                         </div>
+                        <div className='rightHeader'>
                         <a href="/LoginForm"><button className="logout-btn">LOGOUT</button></a>
+                        <button className='Calandar' onClick={openCalandar}><CiCalendar/></button>
+                        </div>
                     </div>
+                    <Modal isOpen={isCalandarOpen} onClose={closeCalandar}>
+                    <CalandarPopUp />
+                </Modal>
                 </div>
             </div>
         </div>

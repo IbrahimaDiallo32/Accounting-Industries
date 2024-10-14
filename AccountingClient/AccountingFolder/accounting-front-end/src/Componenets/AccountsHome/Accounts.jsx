@@ -82,8 +82,9 @@ const Accounts = () => {
 
             <div className="main-content">
                 <h1>Accounts
-                    <button className='createNewAccountButton toolTip' onClick={openModal}><IoMdAdd />Account</button>
-                    <span className = "toolTipText">Create a new account for the chart of Accounts</span>
+                    <span className='toolTip'>
+                    <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>
+                    <span className = "toolTipText">Create a new account for the chart of Accounts</span></span>
                 </h1>
                 <div className='sortByContainer'>
                             <div className='sortBy'>
@@ -105,10 +106,10 @@ const Accounts = () => {
                                     <option value="DESC">Descending</option>
                                 </select>
                                 <input placeholder='' hidden></input>
-
-                                <button className='submitSort toolTip' onClick={(e) => {sortedAccount()}}>
+                                <span className='toolTip'>
+                                <button className='submitSort' onClick={(e) => {sortedAccount()}}>
                                     Sort</button>
-                                    <span className = "toolTipText">Sort Chart of Accounts</span>
+                                    <span className = "toolTipText">Sort Chart of Accounts</span></span>
                             </div>
                         </div>
                 <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -136,7 +137,11 @@ const Accounts = () => {
                                     <td>{account.order}</td>
                                     <td>{account.accountNumber}</td>
                                     <td>
-                                    <Link to="/LedgerOfAccounts"  className='linkToLedger'>{account.accountName}</Link></td>
+                                        <div className="toolTip">
+                                    <Link to="/LedgerOfAccounts"  className='linkToLedger'>{account.accountName}</Link>
+                                    <span className = "toolTipText">Link to this accounts Ledger</span>
+                                    </div>
+                                    </td>
                                     <td>{account.accountCategory}</td>
                                     <td>{account.accountSubCategory}</td>
                                     <td>{account.balance}</td>
