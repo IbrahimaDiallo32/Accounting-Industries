@@ -14,7 +14,7 @@ const EventLog = () => {
         const fetchData = async () => {
             try {
                 // Fetch event logs 
-                const logResponse = await axios.get('http://localhost:8080/api/event-logs');  
+                const logResponse = await axios.get('http://localhost:8080/api/event-logs');
                 console.log('Fetched logs:', logResponse.data);
                 setLogs(logResponse.data);
 
@@ -43,11 +43,15 @@ const EventLog = () => {
                         <Avatar name="NAME" />
                         <span className="spanForHome"><button className="profilebtn">Hello Alex</button></span>
                     </div>
-                    <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
-                    <a href="#module2">EXPIRED PASSWORDS</a>
-                    <a href="#module3">MODULE 3</a>
+                    <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
+                    <a href="/Accounts">Accounts</a>
+                    <a href="/EventLog">Event Log</a>
                     <a href="#module4">MODULE 4</a>
                     <a href="#module5">MODULE 5</a>
+                    <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
+                    <a>
+                        <button className="helpButton"> Help</button>
+                    </a>
                 </div>
 
                 {/* Main Content */}
@@ -67,24 +71,24 @@ const EventLog = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                        {logs.map((log) => (
-                            <tr key={log._id}>
-                                <td>{log._id=crypto.randomUUID()}</td>
-                                <td>{log.eventType}</td>
-                                <td>{log.userId}</td>
-                                <td>{log.modifiedBy}</td>
-                                <td>{new Date(log.timestamp).toLocaleString()}</td>
-                                <td>
-                                    <pre>{JSON.stringify(log.beforeChange, null, 2)}</pre>
-                                </td>
-                                <td>
-                                    <pre>{JSON.stringify(log.afterChange, null, 2)}</pre>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
+                                {logs.map((log) => (
+                                    <tr key={log._id}>
+                                        <td>{log._id = crypto.randomUUID()}</td>
+                                        <td>{log.eventType}</td>
+                                        <td>{log.userId}</td>
+                                        <td>{log.modifiedBy}</td>
+                                        <td>{new Date(log.timestamp).toLocaleString()}</td>
+                                        <td>
+                                            <pre>{JSON.stringify(log.beforeChange, null, 2)}</pre>
+                                        </td>
+                                        <td>
+                                            <pre>{JSON.stringify(log.afterChange, null, 2)}</pre>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
                         </table>
-                     ) : (
+                    ) : (
                         <p>No logs available.</p>
                     )}
                 </div>

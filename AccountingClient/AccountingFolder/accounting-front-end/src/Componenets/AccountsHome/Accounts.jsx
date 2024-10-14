@@ -64,7 +64,7 @@ const Accounts = () => {
                 </div>
                 <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
                 <a href="/Accounts">Accounts</a>
-                <a href="#module3">Event Log</a>
+                <a href="/EventLog">Event Log</a>
                 <a href="#module4">Module 4</a>
                 <a href="#module5">Module 5</a>
 
@@ -77,6 +77,7 @@ const Accounts = () => {
             <Modal isOpen={isHelpOpen} onClose={closeHelp}>
                 <AccountsHelp />
             </Modal>
+
 
             <div className="main-content">
                 <h1>Accounts

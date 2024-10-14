@@ -11,9 +11,7 @@ function EditUserForm({ user }) {
     const [email, setEmail] = useState(user?.email || '');
     const [accountType, setAccountType] = useState(user?.accountType || '');
     const [address, setAddress] = useState(user?.address || '');
-    const [birthDate, setBirthDate] = useState(user?.birthDate || '');
-    const [birthMonth, setBirthMonth] = useState(user?.birthMonth || '');
-    const [birthYear, setBirthYear] = useState(user?.birthYear || '');
+    const [accountStatus, setAccountStatus] = useState(user?.accountStatus);
 
 
     const validateEmail = (email) => { //This method makes sure the email is valid
@@ -33,18 +31,8 @@ function EditUserForm({ user }) {
         setFirstName("");
         setLastName("");
         setAddress("");
-        setBirthDate("");
-        setBirthMonth("");
-        setBirthYear("");
         setEmail("");
         setAccountType("role");
-    };
-
-    const accountStatus = () => {
-        if (accountType == 'Admin') {
-            return "active";
-        }
-        return "inactive";
     };
 
     useEffect(() => {
@@ -55,9 +43,6 @@ function EditUserForm({ user }) {
             setEmail(user.email);
             setAccountType(user.accountType);
             setAddress(user.address);
-            setBirthDate(user.birthDate);
-            setBirthMonth(user.birthMonth);
-            setBirthYear(user.birthYear);
         }
     }, [user]);
 
@@ -72,9 +57,10 @@ function EditUserForm({ user }) {
                 lastName,
                 address,
                 email,
-                accountType
+                accountType,
+                accountStatus: accountStatus
             });
-            alert("Account created!"); //notifies user successful
+            alert("User successfully edited!"); //notifies user edit was successful
             window.location.reload(true); //refreshes the page so the chages can be realized
         } catch (error) {
             console.error('Error creating user:', error);
@@ -140,6 +126,13 @@ function EditUserForm({ user }) {
                                 <option value="Admin">Admin</option>
                                 <option value="Accountant">Accountant</option>
                                 <option value="Manager">Manager</option>
+                            </select>
+                        </div>
+                        <div className='Field'>
+                            <label>User Status <sup>*</sup></label>
+                            <select value={accountStatus} onChange={(e) => setAccountStatus(e.target.value)}>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
                             </select>
                         </div>
                         <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Update Account</button>

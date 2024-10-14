@@ -70,7 +70,7 @@ const CreateAccount = () => {
         );
     };
     //added trim so that no leading spaces interfere with the values for proper checking
-  
+
     const handleSubmit = async (e) => {
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sends a a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
@@ -85,7 +85,6 @@ const CreateAccount = () => {
             return; // Exit early if duplicate is found
         }
         console.log('Existing accounts:', existingAccounts);
-        console.log('Checking for duplicates:', { name, number });
         try {
             const response = await axios.post('http://localhost:8080/account/create', { //URL that will create a new account
                 accountName,

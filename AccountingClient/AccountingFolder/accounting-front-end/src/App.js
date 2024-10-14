@@ -1,8 +1,6 @@
-import api from './api/axiosConfiguration'
 import { useState, useEffect } from 'react';
 import { getAllUsers, addUser } from './api/axiosConfiguration'
 import './App.css';
-//import { Routes, Route } from 'react-router-dom'
 import LoginForm from './Componenets/LoginForm/LoginForm';
 
 
@@ -15,17 +13,6 @@ function App() {
     getAllUsers().then((data) => setUsers(data));
     console.log("this that fetch userssss");
   }, []);
-
-  const handleAddUser = () => {
-    //this isnt even being resigered
-    const newUser = { firstName: "John", lastName: "Doe", email: "john@example.com" };
-    addUser(newUser).then(() => {
-      // Refresh the list after adding a new user
-      getAllUsers().then((data) => setUsers(data));
-      console.log("this the add new user");
-    });
-  };
-
 
   return (
     <div>
