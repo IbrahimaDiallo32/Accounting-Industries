@@ -80,10 +80,12 @@
 }
 
 .toolTip {
-    display: inline-block;
+    position: relative;
+    display: inline;
 }
 
 .toolTipText {
+    display: block;
     font-size: 12px;
     visibility: hidden; 
     width: 100px; 
@@ -92,13 +94,17 @@
     text-align: center; 
     border-radius: 5px; 
     padding: 5px;
-    position: relative; 
+    position: absolute; 
+    left:50%;
     transform: translateX(-50%); 
     opacity: 0; 
-    z-index: 1;
     transition: opacity 0.3s; 
+    z-index: 1;
 }
-
+.submitSort:hover .toolTipText {
+    visibility: visible; 
+    opacity: 1; 
+}
 .toolTip:hover .toolTipText {
     visibility: visible; 
     opacity: 1; 

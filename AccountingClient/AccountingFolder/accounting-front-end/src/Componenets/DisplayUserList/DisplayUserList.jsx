@@ -37,11 +37,14 @@ const DisplayUserList = () => {
         fetchUsers();
     }, []);
 
+
     const username = "Ibrahima Diallo"
+
     const openEditModal = (user) => {
         setSelectedUser(user); // Set the user to be edited
         setIsModalOpen(true);
     };
+
 
     return (
         <div className="loginPageContainer">
