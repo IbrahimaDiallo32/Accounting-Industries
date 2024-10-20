@@ -1,0 +1,22 @@
+.journalCalendar {
+    display: flex;
+    justify-content: left;
+    padding: 12px;
+    border-radius: 4px;
+    border: .1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.journalCalendar:hover {
+    background-color: blueviolet;
+    color: azure;
+}
+
+.ciCalendar {
+    margin-right: 10px;
+}

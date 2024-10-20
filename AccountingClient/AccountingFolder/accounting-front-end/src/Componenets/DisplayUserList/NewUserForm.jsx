@@ -21,14 +21,6 @@ function RegistrationForm() {
     };
 
     const getIsFormValid = () => {
-        // console.log({
-        //     firstName,
-        //     emailValid: validateEmail(email),
-        //     accountTypeValid: accountType !== "role",
-
-        // });
-
-        //ensure evertyhing on the form is accurate
         return (
             firstName &&
             validateEmail(email) &&
@@ -68,8 +60,20 @@ function RegistrationForm() {
 
     }, []);
 
+    const dateForUserName = () => {
+        const today = new Date();
+        const thisMonth = today.getMonth() + 1;
+        const thisYear = today.getFullYear();
+        const twoDigitYear = thisYear % 100;
+
+        if (thisMonth < 10) {
+            return `0${thisMonth}${twoDigitYear}`;
+        }
+        return `${thisMonth}${twoDigitYear}`;
+    };
+
     const handleSubmit = async (e) => {
-        const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + getValueFromMap(birthMonth) + birthYear.slice(-2);
+        const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + dateForUserName();
         console.log(dbUserName);
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sensda a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
