@@ -1,27 +1,33 @@
 import './HomePage.css';
-
-import { Link } from 'react-router-dom';
 import Avatar from '../Assets/Avatar';
-import { FaCalendar } from "react-icons/fa";
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
 import React from 'react';
-import { RxAvatar } from "react-icons/rx";
 import { useState, useEffect } from 'react';
 import Modal from '../Modal/Modal';
 import { CiCalendar } from "react-icons/ci";
 import CalandarPopUp from '../Modal/CalandarPopUp';
+import { useNavigate } from 'react-router-dom';
 
-const HomePage = ({ userName }) => {
-  
-  
+
+const HomePage = () => {
+
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    const fullName = storedUser.firstName + " " + storedUser.lastName;
+    const navigate = useNavigate();
     const [isCalandarOpen, setIsCalandarOpen] = useState(false);
-
     const openCalandar = () => setIsCalandarOpen(true);
     const closeCalandar = () => setIsCalandarOpen(false);
 
-    // Using the userName prop, defaulting to "Ibrahima Diallo" if not provided
-    const username = userName || "Ibrahima Diallo";
+    useEffect(() => {
+        if (!storedUser) { //if no one is logged it, it automatically navigates back to login page
+            navigate("/", { replace: true });
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("currentUser"); // Clear user data
+        navigate("/loginForm"); // Redirect to login
+    };
 
     return (
         <div className='outerContainers'>
@@ -29,16 +35,15 @@ const HomePage = ({ userName }) => {
                 {/* Sidebar */}
                 <div className="sidebar">
                     <div className="profile">
-                        <Avatar name={username} />
-                        <span className="spanForHome">Hello Alexa</span>
+                        <Avatar name={fullName} />
+                        <span className="spanForHome">Hello {storedUser.firstName}</span>
                     </div>
-                    <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
-                    <a href="/LedgerOfAccounts">Ledger</a>
+                    <a href="/HomePage" className='spacingHomePage'>Home</a>
+                    <a href="/DisplayUserList">User List</a>
                     <a href="/Accounts">Accounts</a>
-                    <a href="/#">Event Log</a>
-                    <a href="/#">Module 4</a>
-                    <a href="#">Module 5</a>
-                    <a href="/LoginForm"><button className="logout-other-button">Logout</button></a>
+                    <a href="/EventLog">Event Log</a>
+                    <a href="/#">Module 5</a>
+                    <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
 
                 {/* Main Content */}
@@ -49,13 +54,12 @@ const HomePage = ({ userName }) => {
                             <h1>Welcome To Accounting Treasury Industries!</h1>
                         </div>
                         <div className='rightHeader'>
-                        <a href="/LoginForm"><button className="logout-btn">LOGOUT</button></a>
-                        <button className='Calandar' onClick={openCalandar}><CiCalendar/></button>
+                            <button className='Calandar' onClick={openCalandar}><CiCalendar /></button>
                         </div>
                     </div>
                     <Modal isOpen={isCalandarOpen} onClose={closeCalandar}>
-                    <CalandarPopUp />
-                </Modal>
+                        <CalandarPopUp />
+                    </Modal>
                 </div>
             </div>
         </div>

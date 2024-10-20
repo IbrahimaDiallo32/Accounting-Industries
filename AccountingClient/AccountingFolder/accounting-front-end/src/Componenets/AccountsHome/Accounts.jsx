@@ -9,11 +9,13 @@ import AccountsHelp from './AccountsHelp'
 import Modal from '../Modal/Modal';
 import { IoMdAdd } from 'react-icons/io';
 import EditAccount from './EditAccount';
-import { Dropdown } from 'bootstrap';
 import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 const Accounts = () => {
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    const fullName = storedUser.firstName + " " + storedUser.lastName;
+    const navigate = useNavigate();
     const [selectedAccount, setSelectedAccount] = useState(null); // Track the user to edit so that informatoin can be autopopulated later on
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isHelpOpen, setIsHelpOpen] = useState(false);
@@ -44,7 +46,17 @@ const Accounts = () => {
         }
     };
 
+    const handleLogout = () => {
+        localStorage.removeItem("currentUser"); // Clear user data
+        navigate("/loginForm"); // Redirect to login
+    };
+
+
     useEffect(() => {
+        if (!storedUser) { //if no one is logged it, it automatically navigates back to login page
+            navigate("/", { replace: true });
+        }
+
         const fetchAccounts = async () => {
             const accountsData = await axios.get('http://localhost:8080/account');
             setAccounts(accountsData.data); // capture the data returned from the API call into 'accounts'
@@ -59,32 +71,33 @@ const Accounts = () => {
         <div className="homePageOutermostcontainer">
             <div className="sidebar">
                 <div className="profile">
-                    <Avatar name={username} />
-                    <span className="spanForHome">Hello Alexa</span>
+                    <Avatar name={fullName} />
+                    <span className="spanForHome">Hello {storedUser.firstName}</span>
                 </div>
-                <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
+                <a href="/HomePage" className='spacingHomePage'>Home</a>
+                <a href="/DisplayUserList">User List</a>
                 <a href="/Accounts">Accounts</a>
                 <a href="/EventLog">Event Log</a>
-                <a href="#module4">Module 4</a>
-                <a href="#module5">Module 5</a>
-
-                <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
+                <a href="/Journalize">Journalize</a>
+                <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
                 <a>
                     <button className="helpButton" onClick={openHelp}> Help</button>
                 </a>
             </div>
 
+
             <Modal isOpen={isHelpOpen} onClose={closeHelp}>
                 <AccountsHelp />
             </Modal>
-
-
             <div className="main-content">
                 <h1>Accounts
-                    {/* Recently added */}
-                    <span className='toolTip'>
-                        <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>
-                        <span className="toolTipText">Create a new account for the chart of Accounts</span></span>
+                    {storedUser.accountType == 'Admin' || storedUser.accountType == 'Manager' ? (
+                        <span className='toolTip'>
+                            <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>
+                            <span className="toolTipText">Create a new account for the chart of Accounts</span></span>
+                    ) : (
+                        <h1 />
+                    )}
                 </h1>
                 <div className='sortByContainer'>
                     <div className='sortBy'>
@@ -112,7 +125,7 @@ const Accounts = () => {
                             <span className="toolTipText">Sort Chart of Accounts</span></span>
                     </div>
                 </div>
-                {/* Recently added */}
+
                 {/* <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>*/}
                 {/*</h1>*/}
 
@@ -137,14 +150,18 @@ const Accounts = () => {
                                 <th>Debit</th>
                                 <th>Credit</th>
                                 <th>Account Description</th>
-                                <th>Edit</th>
+                                {storedUser.accountType == 'Admin' ? (
+                                    <th>Edit</th>
+                                ) : (
+                                    <h1></h1>
+                                )}
                             </tr>
                         </thead>
                         <tbody>
                             {accounts.map((account) => (
                                 <tr key={account.accountNumber}>
                                     <td>{account.order}</td>
-                                    <td>{account.accountNumber}</td>
+                                    <td><a href="/LedgerOfAccounts">{account.accountNumber}</a></td>
                                     <td>
                                         <div className="toolTip">
                                             <Link to="/LedgerOfAccounts" className='linkToLedger'>{account.accountName}</Link>
@@ -157,9 +174,13 @@ const Accounts = () => {
                                     <td>{account.debit}</td>
                                     <td>{account.credit}</td>
                                     <td>{account.accountDescription}</td>
-                                    <td>
-                                        <button className='buttonForEditUserRecord ' onClick={() => openEditModal(account)}>Edit</button>
-                                    </td>
+                                    {storedUser.accountType == 'Admin' ? (
+                                        < td >
+                                            <button className='buttonForEditUserRecord ' onClick={() => openEditModal(account)}>Edit</button>
+                                        </td>
+                                    ) : (
+                                        <h1></h1>
+                                    )}
                                 </tr>
                             ))}
                         </tbody>
@@ -168,7 +189,7 @@ const Accounts = () => {
                     <p>No accounts found.</p>
                 )}
             </div>
-        </div>
+        </div >
     );
 };
 

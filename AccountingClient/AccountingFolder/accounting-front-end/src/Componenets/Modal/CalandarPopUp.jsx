@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const CalanderPopUp = () => {
 
-    const today = new Date();
+  const today = new Date();
   const [currentDate, setCurrentDate] = useState(today);
 
   const monthNames = [
@@ -42,32 +42,32 @@ const CalanderPopUp = () => {
 
   return (
     <div className='CalandarOuterContainer'>
-        <header className='logoForRegistration'>
-                <a href="/Accounts"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
-                <div className='shiftForRegis'>
-                    <img src="/AIT.PNG" width={100} height={100} alt="Logo" className='shiftForRegistation' />
-                    <h2 className=''>Account Help</h2>
-                    <img src="/AIT.PNG" width={100} height={100} className='regLogo2' alt="Logo" />
-                </div>
-        </header>
-        <div className="calendar">
-            <div className="calendar-header">
-                <button className="calandarChangeMonth" onClick={() => changeMonth(-1)}>&lt;</button>
-                <h2>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
-                <button className="calandarChangeMonth" onClick={() => changeMonth(1)}>&gt;</button>
-            </div>
-
-            <div className="calendar-grid">
-                <div className="day-header">Sun</div>
-                <div className="day-header">Mon</div>
-                <div className="day-header">Tue</div>
-                <div className="day-header">Wed</div>
-                <div className="day-header">Thu</div>
-                <div className="day-header">Fri</div>
-                <div className="day-header">Sat</div>
-                {days}
-            </div>
+      <header className='logoForRegistration'>
+        <a href="/HomePage"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
+        <div className='shiftForRegis'>
+          <img src="/AIT.PNG" width={100} height={100} alt="Logo" className='shiftForRegistation' />
+          <h2 className=''>Account Help</h2>
+          <img src="/AIT.PNG" width={100} height={100} className='regLogo2' alt="Logo" />
         </div>
+      </header>
+      <div className="calendar">
+        <div className="calendar-header">
+          <button className="calandarChangeMonth" onClick={() => changeMonth(-1)}>&lt;</button>
+          <h2>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
+          <button className="calandarChangeMonth" onClick={() => changeMonth(1)}>&gt;</button>
+        </div>
+
+        <div className="calendar-grid">
+          <div className="day-header">Sun</div>
+          <div className="day-header">Mon</div>
+          <div className="day-header">Tue</div>
+          <div className="day-header">Wed</div>
+          <div className="day-header">Thu</div>
+          <div className="day-header">Fri</div>
+          <div className="day-header">Sat</div>
+          {days}
+        </div>
+      </div>
     </div>
   );
 };

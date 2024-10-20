@@ -16,6 +16,7 @@ import LedgerOfAccounts from './Componenets/Ledger/LedgerOfAccounts';
 import NewUserForm from './Componenets/DisplayUserList/NewUserForm';
 import EditUserForm from './Componenets/DisplayUserList/EditUserForm'
 import EditAccount from './Componenets/AccountsHome/EditAccount';
+import Journalize from './Componenets/AccountsHome/Journalize/Journalize';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -35,6 +36,7 @@ root.render(
         <Route path="/LedgerOfAccounts" element={<LedgerOfAccounts />} />
         <Route path="/EditUserForm" element={<EditUserForm />} />
         <Route path="/EditAccount" element={<EditAccount />} />
+        <Route path="/Journalize" element={<Journalize />} />
         {/* <Route path="/handleFetchUsers" element={<handleFetchUsers />} /> */}
       </Routes>
     </BrowserRouter>

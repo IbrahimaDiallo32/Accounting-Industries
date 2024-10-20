@@ -12,21 +12,10 @@ body {
     background-color: white;
 }
 
-.sidebar {
-    background-color: #5DADE2;
-    width: 200px;
-    padding-top: 20px;
-    color: white;
-    display: flex;
-    flex-direction: column;
-}
-
 .sidebar .profile {
-    display: flex;
+    display: column;
     align-items: center;
-    padding: 0 20px;
-    margin-bottom: 20px;
-
+    padding: 0 59px;
 }
 
 .avatarHomePage {
@@ -47,12 +36,6 @@ body {
     min-height: 60vh;
     flex-direction: column;
 }
-
-.spanForHome {
-    margin-left: 7px;
-    font-size: 14px;
-}
-
 
 .sidebar a {
     text-decoration: none;

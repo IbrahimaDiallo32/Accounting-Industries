@@ -8,11 +8,21 @@ import { useNavigate } from 'react-router-dom';
 const handleLogin = async (e, username, password, navigate) => {
     e.preventDefault();
     try {
-        //const user = getUserByUsername();
         const userData = await axios.get(`http://localhost:8080/hey/username/${username}`); //Getting all the information for a user given this username
         console.log(userData)
-        if (userData.data.password == password && (userData.data.accountStatus == 'active' || userData.data.accountStatus == 'Active')) {
-            console.log("passwords match")
+        if (userData.data.password === password && (userData.data.accountStatus.toLowerCase() === 'active')) {
+
+            console.log("passwords match");
+
+            const currentUserInformation = {
+                firstName: userData.data.firstName,
+                lastName: userData.data.lastName,
+                username: userData.data.username,
+                accountType: userData.data.accountType,
+                isActive: userData.data.isActive,
+            };
+            localStorage.setItem("currentUser", JSON.stringify(currentUserInformation));
+
             navigate('/HomePage');
         } else if (userData.data.password != password || userData.data.accountStatus == 'inactive') {
             alert("Either username/password is incorrect or account is inactive")
@@ -34,6 +44,7 @@ const LoginForm = () => {
     return (
         <div>
             <div>
+
                 <img src="/AIT.png" alt="logo" className='logo' />
             </div>
             <div className='outerContainerLogin'>

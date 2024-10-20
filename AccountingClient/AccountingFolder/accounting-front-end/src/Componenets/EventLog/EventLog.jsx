@@ -3,11 +3,19 @@ import './EventLog.css';
 import { getAllUsers } from '../../api/axiosConfiguration';
 import Avatar from '../Assets/Avatar';
 import axios from 'axios';
-import { v4 as uuid } from 'uuid'
+import { useNavigate } from 'react-router-dom';
 
 const EventLog = () => {
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    const fullName = storedUser.firstName + " " + storedUser.lastName;
+    const navigate = useNavigate();
     const [logs, setLogs] = useState([]);
     const [users, setUsers] = useState([]);
+
+    const handleLogout = () => {
+        localStorage.removeItem("currentUser"); // Clear user data
+        navigate("/loginForm"); // Redirect to login
+    };
 
     useEffect(() => {
         // Fetch both logs and users
@@ -40,15 +48,15 @@ const EventLog = () => {
                 {/* Sidebar */}
                 <div className="sidebar">
                     <div className="profile">
-                        <Avatar name="NAME" />
-                        <span className="spanForHome"><button className="profilebtn">Hello Alex</button></span>
+                        <Avatar name={fullName} />
+                        <span className="spanForHome">Hello {storedUser.firstName}</span>
                     </div>
-                    <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
+                    <a href="/HomePage" className='spacingHomePage'>Home</a>
+                    <a href="/DisplayUserList">User List</a>
                     <a href="/Accounts">Accounts</a>
                     <a href="/EventLog">Event Log</a>
                     <a href="#module4">MODULE 4</a>
-                    <a href="#module5">MODULE 5</a>
-                    <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
+                    <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
                     <a>
                         <button className="helpButton"> Help</button>
                     </a>

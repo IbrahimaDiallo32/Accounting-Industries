@@ -1,20 +1,16 @@
+import './Journalize.css';
+import Avatar from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Assets/Avatar.jsx';
+import 'reactjs-popup/dist/index.css';
 import React from 'react';
-import './LedgerOfAccounts.css';
-import { RxAvatar } from "react-icons/rx";
-import Avatar from '../Assets/Avatar';
-import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const LedgerOfAccounts = () => {
+
+const Journalize = () => {
 
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
     const fullName = storedUser.firstName + " " + storedUser.lastName;
     const navigate = useNavigate();
-
-    const handleLogout = () => {
-        localStorage.removeItem("currentUser"); // Clear user data
-        navigate("/loginForm"); // Redirect to login
-    };
 
     useEffect(() => {
         if (!storedUser) { //if no one is logged it, it automatically navigates back to login page
@@ -22,6 +18,11 @@ const LedgerOfAccounts = () => {
         }
     }, []);
 
+
+    const handleLogout = () => {
+        localStorage.removeItem("currentUser"); // Clear user data
+        navigate("/loginForm"); // Redirect to login
+    };
 
     return (
         <div className='outerContainers'>
@@ -39,14 +40,12 @@ const LedgerOfAccounts = () => {
                     <a href="/#">Module 5</a>
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
-
-                {/* Main Content */}
                 <div className="main-content">
-
+                    <h1>Journal Entry</h1>
                 </div>
             </div>
         </div>
     );
 };
 
-export default LedgerOfAccounts;
+export default Journalize;
