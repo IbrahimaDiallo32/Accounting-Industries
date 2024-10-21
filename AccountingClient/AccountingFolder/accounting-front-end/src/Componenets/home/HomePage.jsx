@@ -52,6 +52,7 @@ const HomePage = () => {
                     <a href="/HomePage" className='spacingHomePage'>Home</a>
                     <a href="/DisplayUserList">User List</a>
                     <a href="/Accounts">Accounts</a>
+                    <a href="/Journalize">Journalize</a>
                     <a href="/EventLog">Event Log</a>
                     <a href="/Journalize">Journalize</a>
                     <a href="/Ledger">Ledger</a>

@@ -47,6 +47,7 @@ const CalanderPopUp = () => {
         <div className='shiftForRegis'>
           <img src="/AIT.PNG" width={100} height={100} alt="Logo" className='shiftForRegistation' />
           <h2 className=''>Calendar</h2>
+          <img src="/AIT.PNG" width={100} height={100} className='regLogo2' alt="Logo" />
         </div>
       </header>
       <div className="calendar">
