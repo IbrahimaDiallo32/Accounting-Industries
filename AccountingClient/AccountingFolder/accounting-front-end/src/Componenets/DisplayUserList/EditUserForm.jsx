@@ -71,14 +71,16 @@ function EditUserForm({ user }) {
             });
             alert("Account updated!"); // Notify user of success
 
-            // Prepare the after state of the user
-            const afterChange = {
+              // Prepare the after state of the user
+              const afterChange = {
                 firstName,
                 lastName,
                 email,
                 accountType,
                 address,
             };
+
+            // Determine what has changed
             const changes = [];
             for (const [key, beforeValue] of Object.entries(beforeChange)) {
                 const afterValue = afterChange[key];
@@ -86,15 +88,14 @@ function EditUserForm({ user }) {
                     changes.push(`${key.charAt(0).toUpperCase() + key.slice(1)}: ${beforeValue} → ${afterValue}`);
                 }
             }
-    
             const changeDescription = changes.join(', ');
     
             // Log the user modification event
-            await axios.post('http://localhost:8080/api/event-logs', {
-                username: username, 
-                action: 'User Modified',
-                beforeChange: JSON.stringify(beforeChange),
-                afterChange: JSON.stringify(afterChange),
+            await axios.post('http://localhost:8080/api/modify', {
+                username: originalUsername,
+                action:"User Modified", 
+                beforeChange,
+                afterChange,
                 changeDescription
             });
 
