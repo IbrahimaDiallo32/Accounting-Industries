@@ -77,12 +77,12 @@ const Accounts = () => {
                 <a href="/HomePage" className='spacingHomePage'>Home</a>
                 <a href="/DisplayUserList">User List</a>
                 <a href="/Accounts">Accounts</a>
-                <a href="/EventLog">Event Log</a>
                 <a href="/Journalize">Journalize</a>
-                <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
+                <a href="/EventLog">Event Log</a>
                 <a>
                     <button className="helpButton" onClick={openHelp}> Help</button>
                 </a>
+                <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
             </div>
 
 

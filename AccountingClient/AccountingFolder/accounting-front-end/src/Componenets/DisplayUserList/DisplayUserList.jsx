@@ -65,8 +65,8 @@ const DisplayUserList = () => {
                 <a href="/HomePage" className='spacingHomePage'>Home</a>
                 <a href="/DisplayUserList">User List</a>
                 <a href="/Accounts">Accounts</a>
+                <a href="/Journalize">Journalize</a>
                 <a href="/EventLog">Event Log</a>
-                <a href="#module4">MODULE 4</a>
                 <a href="/LoginsdasdForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
                 <a>
                     <button className="helpButton" onClick={openHelp}> Help</button>

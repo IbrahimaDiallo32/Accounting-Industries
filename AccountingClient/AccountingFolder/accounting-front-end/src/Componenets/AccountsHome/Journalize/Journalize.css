@@ -20,3 +20,11 @@
 .ciCalendar {
     margin-right: 10px;
 }
+
+.Field {
+    position: inherit;
+    margin: auto;
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
