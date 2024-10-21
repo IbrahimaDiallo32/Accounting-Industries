@@ -78,6 +78,15 @@ const EditAccount = ({ account }) => {
         } catch (error) {
             console.error('Error updating account:', error.response ? error.response.data : error.message);
         }
+        try {
+            const response = await axios.put(`/api/users/${userId}`, {
+                username,
+            
+            });
+            console.log(response.data); // Handle successful update
+        } catch (error) {
+            console.error('Update error:', error.response ? error.response.data : error);
+        }
 
     };
 

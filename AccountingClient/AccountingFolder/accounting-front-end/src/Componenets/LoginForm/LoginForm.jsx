@@ -6,25 +6,33 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import HomePage from '../home/HomePage';
 
+const currentTime = new Date().toISOString();
+
 const handleLogin = async (e, username, password, navigate) => {
     e.preventDefault();
+    console.log("Attempting to log in with:", { username, password });
     try {
-        //const user = getUserByUsername();
-        const userData = await axios.get(`http://localhost:8080/hey/username/${username}`); //Getting all the information for a user given this username
-        if (userData.data.password == password && userData.data.accountStatus == 'active') {
-            console.log("passwords match")
+        const userData = await axios.get(`http://localhost:8080/hey/username/${username}`);
+        console.log("User data retrieved:", userData.data);
+        
+        if (userData.data.password === password && userData.data.accountStatus === 'active') {
+            console.log("Passwords match");
+
+            // Log the login event
+            await axios.post('/api/login', { username });
             navigate('/HomePage');
-        } else if (userData.data.password != password) {
-            alert("Either username/password is incorrect")
+        } else if (userData.data.password !== password) {
+            alert("Either username/password is incorrect");
         } else {
-            alert("No")
-            return false;
+            alert("Account is not active");
         }
     } catch (err) {
         alert("Either username/password is incorrect");
-        console.error("Login failed");
+        console.error("Login failed:", err);
     }
+
 };
+
 
 const LoginForm = () => {
     const navigate = useNavigate();

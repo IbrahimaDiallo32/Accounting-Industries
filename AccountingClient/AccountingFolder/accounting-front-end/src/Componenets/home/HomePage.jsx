@@ -21,7 +21,7 @@ const HomePage = ({ userName }) => {
                     </div>
                     <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
                     <a href="/Accounts">Accounts</a>
-                    <a href="/#">Event Log</a>
+                    <a href="/EventLog">Event Log</a>
                     <a href="/#">Module 4</a>
                     <a href="#">Module 5</a>
                     <a href="/LoginForm"><button className="logout-other-button">Logout</button></a>

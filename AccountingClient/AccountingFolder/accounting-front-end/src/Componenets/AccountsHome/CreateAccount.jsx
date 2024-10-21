@@ -23,6 +23,8 @@ const CreateAccount = () => {
     const [statement, setStatement] = useState('');
     const [comment, setComment] = useState('');
     const [existingAccounts, setExistingAccounts] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+
 
     const clearForm = () => {
         setAccountName('');
@@ -58,9 +60,27 @@ const CreateAccount = () => {
             } catch (error) {
                 console.error('Error fetching accounts:', error);
             }
+            try {
+                const response = await axios.post('/api/account', {
+                    username,
+            
+                });
+                console.log(response.data); // Handle successful registration
+            } catch (error) {
+                console.error('Registration error:', error.response ? error.response.data : error);
+            }
         };
         fetchAccounts();
     }, []);
+
+    useEffect(() => {
+        // Reset error message if form becomes valid
+        if (IsFormValid()) {
+            setErrorMessage('');
+        }
+    }, [accountCategory, accountDescription, accountName, accountNumber, accountSubCategory, debit, credit, initialBalance, balance]);
+
+    // Responsible 
 
     //Responsible for checking to see if there is either a duplicate Name or Number before the account is created
     const isDuplicate = (name, number) => {
@@ -72,20 +92,46 @@ const CreateAccount = () => {
     //added trim so that no leading spaces interfere with the values for proper checking
   
     const handleSubmit = async (e) => {
-        e.preventDefault(); // This prevents the page from reloading when the form is submitted.
-        //This sends a a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
-        console.log("the form submitted")
-        console.log("initial balance:" + initialBalance)
-        console.log("balance" + balance);
-        console.log("debit" + debit);
-        console.log("credit" + credit);
+        e.preventDefault();
+        setErrorMessage('');
+
+        if (!IsFormValid()) {
+            setErrorMessage('Please fill out all required fields.');
+            return;
+        }
 
         if (isDuplicate(accountName, accountNumber)) {
             alert('Duplicate account name or number detected. Please use unique values.');
-            return; // Exit early if duplicate is found
+            return;
         }
-        console.log('Existing accounts:', existingAccounts);
-        console.log('Checking for duplicates:', { name, number });
+         
+    const logErrorToBackend = async (errorMessage) => {
+        try {
+            await axios.post('http://localhost:8080/log-error', {
+                errorMessage,
+                userId: 1, // Replace with the actual user ID, if applicable
+                context: 'Account creation form'
+            });
+        } catch (error) {
+            console.error('Failed to log error:', error);
+        }
+    };
+
+
+        const parsedDebit = parseFloat(debit.replace(/,/g, ''));
+        const parsedCredit = parseFloat(credit.replace(/,/g, ''));
+
+        if (isNaN(parsedDebit) || isNaN(parsedCredit)) {
+            setErrorMessage('Debit and Credit must be valid numbers.');
+            return;
+        }
+
+        if (parsedDebit !== parsedCredit) {
+            setErrorMessage('The total of Debits must equal the total of Credits. Please correct the amounts.');
+            return;
+        }
+
+       
         try {
             const response = await axios.post('http://localhost:8080/account/create', { //URL that will create a new account
                 accountName,
@@ -97,14 +143,15 @@ const CreateAccount = () => {
                 accountSubCategory,
                 statement,
                 initialBalance: parseFloat(initialBalance.replace(/,/g, '')), //parses to float because this is what the databse is expecting
-                debit: parseFloat(debit.replace(/,/g, '')), //these were originally strings for easier formatting with automatic commas and decimals
-                credit: parseFloat(credit.replace(/,/g, '')),
+                debit: parsedDebit, //these were originally strings for easier formatting with automatic commas and decimals
+                credit: parsedCredit,
                 balance: parseFloat(balance.replace(/,/g, '')),
                 comment
             });
             alert("Account created!"); //notifies user successful
             clearForm(); //clears data if account successfully created
         } catch (error) {
+            setErrorMessage('Error creating account. Please try again.');
             console.error('Error creating user:', error);
         }
 
@@ -284,6 +331,8 @@ const CreateAccount = () => {
                             <input className="registrationInput" value={comment}
                                 onChange={(e) => setComment(e.target.value)} placeholder='Comment' />
                         </div>
+                        {errorMessage && <p className="error-message">{errorMessage}</p>}
+
                         <button disabled={!IsFormValid()} type="submit" className='RegistrationButton'>Create Account</button>
                     </fieldset>
                 </form>

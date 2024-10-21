@@ -94,7 +94,17 @@ function RegistrationForm() {
         } catch (error) {
             console.error('Error creating user:', error);
         }
-
+       
+            try {
+                // Log the user creation event
+                await axios.post('http://localhost:8080/api/event-logs', {
+                    username: dbUserName,
+                    action: 'User Created',
+                    eventDate: dateToday()
+                });
+            } catch (error) {
+                console.error("Error logging event", error);
+            }
     };
 
     const handleChange = (e) => {

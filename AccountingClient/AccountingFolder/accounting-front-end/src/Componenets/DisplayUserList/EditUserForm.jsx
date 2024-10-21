@@ -5,22 +5,20 @@ import { IoArrowBack } from 'react-icons/io5';
 
 function EditUserForm({ user }) {
     const originalUsername = user.username;
-    //this autopopulates the fields with the user data
+    // This autopopulates the fields with the user data
     const [firstName, setFirstName] = useState(user?.firstName || '');
     const [lastName, setLastName] = useState(user?.lastName || '');
     const [email, setEmail] = useState(user?.email || '');
     const [accountType, setAccountType] = useState(user?.accountType || '');
     const [address, setAddress] = useState(user?.address || '');
-    const [birthDate, setBirthDate] = useState(user?.birthDate || '');
-    const [birthMonth, setBirthMonth] = useState(user?.birthMonth || '');
-    const [birthYear, setBirthYear] = useState(user?.birthYear || '');
 
-
-    const validateEmail = (email) => { //This method makes sure the email is valid
+    // Validate email format
+    const validateEmail = (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
     };
 
+    // Check if the form is valid
     const getIsFormValid = () => {
         return (
             firstName &&
@@ -29,44 +27,41 @@ function EditUserForm({ user }) {
         );
     };
 
+    // Clear the form fields
     const clearForm = () => {
         setFirstName("");
         setLastName("");
         setAddress("");
-        setBirthDate("");
-        setBirthMonth("");
-        setBirthYear("");
         setEmail("");
         setAccountType("role");
     };
 
-    const accountStatus = () => {
-        if (accountType == 'Admin') {
-            return "active";
-        }
-        return "inactive";
-    };
-
+    // Use effect to reset form fields when user changes
     useEffect(() => {
-        // You can re-initialize form fields when user changes
         if (user) {
             setFirstName(user.firstName);
             setLastName(user.lastName);
             setEmail(user.email);
             setAccountType(user.accountType);
             setAddress(user.address);
-            setBirthDate(user.birthDate);
-            setBirthMonth(user.birthMonth);
-            setBirthYear(user.birthYear);
         }
     }, [user]);
 
+    // Submit the form
     const handleSubmit = async (e) => {
-        e.preventDefault(); // This prevents the page from reloading when the form is submitted.
-        //This sensda a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
+        e.preventDefault();
+
+        // Capture the before state of the user
+        const beforeChange = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            accountType: user.accountType,
+            address: user.address,
+        };
 
         try {
-            //patches the user information 
+            // Update the user information
             const response = await axios.patch(`http://localhost:8080/hey/edit/${originalUsername}`, {
                 firstName,
                 lastName,
@@ -74,22 +69,41 @@ function EditUserForm({ user }) {
                 email,
                 accountType
             });
-            alert("Account created!"); //notifies user successful
-            window.location.reload(true); //refreshes the page so the chages can be realized
+            alert("Account updated!"); // Notify user of success
+
+            // Prepare the after state of the user
+            const afterChange = {
+                firstName,
+                lastName,
+                email,
+                accountType,
+                address,
+            };
+            const changes = [];
+            for (const [key, beforeValue] of Object.entries(beforeChange)) {
+                const afterValue = afterChange[key];
+                if (beforeValue !== afterValue) {
+                    changes.push(`${key.charAt(0).toUpperCase() + key.slice(1)}: ${beforeValue} → ${afterValue}`);
+                }
+            }
+    
+            const changeDescription = changes.join(', ');
+    
+            // Log the user modification event
+            await axios.post('http://localhost:8080/api/event-logs', {
+                username: username, 
+                action: 'User Modified',
+                beforeChange: JSON.stringify(beforeChange),
+                afterChange: JSON.stringify(afterChange),
+                changeDescription
+            });
+
+            clearForm(); //clears data if account successfully created
+            window.location.reload(true); 
         } catch (error) {
-            console.error('Error creating user:', error);
+            console.error('Error updating user:', error);
         }
-
     };
-
-    const handleChange = (e) => {
-        const { id, value } = e.target;
-        setState((prevState) => ({
-            ...prevState,
-            [id]: value
-        }));
-    }
-
 
     return (
         <div className='RegistrationContainer'>

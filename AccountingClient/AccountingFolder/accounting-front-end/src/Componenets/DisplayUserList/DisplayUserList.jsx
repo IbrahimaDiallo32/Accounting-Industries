@@ -52,11 +52,12 @@ const DisplayUserList = () => {
                     <Avatar name={username} />
                     <span className="spanForHome">Hello Alexa</span>
                 </div>
-                <a href="/DisplayUserList" className='spacingHomePage'>USER LIST</a>
-                <a href="/Accounts">Accounts</a>
-                <a href="#module3">Event Log</a>
-                <a href="#module4">MODULE 4</a>
-                <a href="#module5">MODULE 5</a>
+                <a href="/DisplayUserList" className='spacingHomePage'>User List</a>
+                    <a href="/Accounts">Accounts</a>
+                    <a href="/EventLog">Event Log</a>
+                    <a href="/#">Module 4</a>
+                    <a href="#">Module 5</a>
+                   
                 <a href="/LoginForm"><button className="logout-other-button">LOGOUT</button></a>
                 <a>
                     <button className="helpButton" onClick={openHelp}> Help</button>

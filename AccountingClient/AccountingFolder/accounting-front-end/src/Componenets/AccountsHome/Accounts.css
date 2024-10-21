@@ -150,3 +150,8 @@
 .accounts-table a:hover {
     color: blueviolet;
 }
+.error-message {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
