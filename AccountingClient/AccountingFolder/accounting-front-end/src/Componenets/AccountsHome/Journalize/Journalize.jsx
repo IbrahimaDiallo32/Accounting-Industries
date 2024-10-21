@@ -1,5 +1,5 @@
 import './Journalize.css';
-import Avatar from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Assets/Avatar.jsx';
+import Avatar from '../../Assets/Avatar.jsx';
 import 'reactjs-popup/dist/index.css';
 import React from 'react';
 import { useState, useEffect } from 'react';

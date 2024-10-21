@@ -46,8 +46,7 @@ const CalanderPopUp = () => {
         <a href="/HomePage"><button className='backButtonRegistration'><IoArrowBack />BACK</button></a>
         <div className='shiftForRegis'>
           <img src="/AIT.PNG" width={100} height={100} alt="Logo" className='shiftForRegistation' />
-          <h2 className=''>Account Help</h2>
-          <img src="/AIT.PNG" width={100} height={100} className='regLogo2' alt="Logo" />
+          <h2 className=''>Calendar</h2>
         </div>
       </header>
       <div className="calendar">

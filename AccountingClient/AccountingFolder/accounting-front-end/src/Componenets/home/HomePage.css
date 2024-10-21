@@ -84,5 +84,7 @@ body {
 }
 
 .header .rightHeader {
+    display: flex;
     justify-content: right;
+    gap: 10px;
 }
