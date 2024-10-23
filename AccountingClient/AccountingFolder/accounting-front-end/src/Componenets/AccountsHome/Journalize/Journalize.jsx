@@ -5,8 +5,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CiCalendar } from "react-icons/ci";
-import CalandarPopUp from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/CalandarPopUp.jsx';
-import Modal from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/Modal.jsx';
+import CalandarPopUp from '../../Modal/CalandarPopUp.jsx';
+import Modal from '../../Modal/Modal.jsx';
 import axios from 'axios';
 import NewJournalEntry from './NewJournalEntry.jsx'
 import { IoMdAdd } from 'react-icons/io';
@@ -76,6 +76,7 @@ const Journalize = () => {
                     <a href="/DisplayUserList">User List</a>
                     <a href="/Accounts">Accounts</a>
                     <a href="/Journalize">Journalize</a>
+                    <a href="/Ledger">Ledger</a>
                     <a href="/EventLog">Event Log</a>
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>

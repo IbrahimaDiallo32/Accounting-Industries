@@ -5,8 +5,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CiCalendar } from "react-icons/ci";
-import CalandarPopUp from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/CalandarPopUp.jsx';
-import Modal from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/Modal.jsx';
+import CalandarPopUp from '../../Modal/CalandarPopUp.jsx';
+import Modal from '../../Modal/Modal.jsx';
 import axios from 'axios';
 import { IoArrowBack } from 'react-icons/io5';
 
