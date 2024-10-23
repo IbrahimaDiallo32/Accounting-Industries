@@ -28,3 +28,52 @@
     display: flex;
     flex-direction: column;
 }
+
+.addEntryButton {
+    margin-left: 600px;
+    justify-content: right;
+    padding: 10px;
+    width: 150px;
+    border-radius: 4px;
+    border: .1px solid;
+    margin-top: 20px;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.addEntryButton:hover {
+    background-color: blueviolet;
+    color: azure;
+}
+
+.CreateNewJournalButton {
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 12px;
+    width: 300px;
+    margin-right: 60px;
+    border-radius: 4px;
+    border: 1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer
+}
+
+.CreateNewJournalButton:hover {
+    background-color: blueviolet;
+    color: azure;
+}
+
+.journalCommentBox {
+    width: 500px;
+    height: 100px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}

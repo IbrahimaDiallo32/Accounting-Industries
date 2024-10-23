@@ -90,7 +90,6 @@ const Accounts = () => {
                 <a href="/Accounts">Accounts</a>
                 <a href="/Journalize">Journalize</a>
                 <a href="/Ledger">Ledger</a>
-                <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
                 <a href="/EventLog">Event Log</a>
                 <a>
                     <button className="helpButton" onClick={openHelp}> Help</button>
@@ -136,9 +135,10 @@ const Accounts = () => {
                             <button className='submitSort' onClick={(e) => { sortedAccount() }}>
                                 Sort</button>
                             <span className="toolTipText">Sort Chart of Accounts</span></span>
-                            <label className='sortByTextField'>Search</label>
-                            <input className="searchByText" onChange={(e) => setSearchTerm(e.target.value)}></input>
-                            <button className ='submitSort' onClick={handleSearch}>Search</button>
+                        <div>
+                            <input className="searchByText" onChange={(e) => setSearchTerm(e.target.value)} placeholder='Filter'></input>
+                            <button className='submitSort' onClick={handleSearch}>Search</button>
+                        </div>
                     </div>
                 </div>
 
@@ -168,7 +168,7 @@ const Accounts = () => {
                                 <th>Account Description</th>
                                 {storedUser.accountType == 'Admin' ? (
                                     <th>Edit</th>
-                                    
+
                                 ) : (
                                     <h1></h1>
                                 )}
@@ -193,9 +193,9 @@ const Accounts = () => {
                                     <td>{account.accountDescription}</td>
                                     {storedUser.accountType == 'Admin' ? (
                                         < td >
-                                        <span className="toolTip">
-                                            <button className='buttonForEditUserRecord ' onClick={() => openEditModal(account)}>Edit</button>
-                                            <span className="toolTipText">Edit Account Information</span>
+                                            <span className="toolTip">
+                                                <button className='buttonForEditUserRecord ' onClick={() => openEditModal(account)}>Edit</button>
+                                                <span className="toolTipText">Edit Account Information</span>
                                             </span>
                                         </td>
                                     ) : (

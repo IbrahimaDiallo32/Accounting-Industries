@@ -20,7 +20,7 @@ const Ledger = () => {
 
     const [ledgerAccount, setLedgerAccount] = useState('');
 
-    return(
+    return (
         <div className="homePageOutermostcontainer">
             <div className="sidebar">
                 <div className="profile">
@@ -32,20 +32,20 @@ const Ledger = () => {
                 <a href="/Accounts">Accounts</a>
                 <a href="/EventLog">Event Log</a>
                 <a href="/Journalize">Journalize</a>
-                <a href="/Ledger">Ledgers</a>
+                <a href="/Ledger">Ledger</a>
                 <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
                 <a>
-                   <button className="helpButton" onClick={openHelp}> Help</button>
+                    <button className="helpButton" onClick={openHelp}> Help</button>
                 </a>
             </div>
-            <div className ="main-content">
+            <div className="main-content">
                 <h1>Ledger Main</h1>
                 <div> <span> Select Account</span>
-                <select className = "chooseAccountForLedger" value = {ledgerAccount} onChange={(e) => setLedgerAccount(e.target.value)}></select>
+                    <select className="chooseAccountForLedger" value={ledgerAccount} onChange={(e) => setLedgerAccount(e.target.value)}></select>
                 </div>
             </div>
         </div>
-        );
-    };
+    );
+};
 
-    export default Ledger;
+export default Ledger;

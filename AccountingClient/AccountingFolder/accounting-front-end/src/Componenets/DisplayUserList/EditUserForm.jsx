@@ -135,7 +135,7 @@ function EditUserForm({ user }) {
                                 <option value="Inactive">Inactive</option>
                             </select>
                         </div>
-                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Update Account</button>
+                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Update User</button>
                         {/* button disabled until form is valid */}
                     </fieldset>
                 </form>

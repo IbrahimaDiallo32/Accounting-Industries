@@ -352,9 +352,7 @@ function RegistrationForm() {
                                 <option value="Manager">Manager</option>
                             </select>
                         </div>
-                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>
-                            Create Account
-                        </button>
+                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Create Account</button>
                     </fieldset>
                 </form>
             </div>
