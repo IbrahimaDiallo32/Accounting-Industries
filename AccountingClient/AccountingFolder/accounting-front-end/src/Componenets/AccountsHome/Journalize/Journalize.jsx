@@ -5,8 +5,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CiCalendar } from "react-icons/ci";
-import CalandarPopUp from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/CalandarPopUp.jsx';
-import Modal from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/Modal.jsx';
+import CalanderPopUp from '../../Modal/CalandarPopUp.jsx';
+import Draggable from 'react-draggable';
 import axios from 'axios';
 
 const Journalize = () => {
@@ -18,9 +18,10 @@ const Journalize = () => {
     const [debitEntries, setDebitEntries] = useState([{ account: 'NULL', amount: '0.00' }]);
     const [creditEntries, setCreditEntries] = useState([{ account: 'NULL', amount: '0.00' }]);
 
-    const [isCalandarOpen, setIsCalandarOpen] = useState(false);
-    const openCalandar = () => setIsCalandarOpen(true);
-    const closeCalandar = () => setIsCalandarOpen(false);
+    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const toggleCalendar = () => {
+        setIsCalendarOpen(!isCalendarOpen);
+      };
 
     useEffect(() => {
         if (!storedUser) {
@@ -109,11 +110,15 @@ const Journalize = () => {
                 <div className="main-content">
                     <h1>Journal Entry
                         <button className='createNewAccountButton' onClick={handleClearForm}>Clear</button>
-                        <button className='journalCalendar' onClick={openCalandar}><CiCalendar />Calendar</button>
+                        <button className='journalCalendar' onClick={toggleCalendar}><CiCalendar /></button>
                     </h1>
-                    <Modal isOpen={isCalandarOpen} onClose={closeCalandar}>
-                        <CalandarPopUp />
-                    </Modal>
+                    {isCalendarOpen && (
+                      <Draggable>
+                        <div>
+                             <CalanderPopUp />
+                       </div>
+                     </Draggable>
+                     )}
 
                     <h3>Debits:</h3>
                     {debitEntries.map((entry, index) => (

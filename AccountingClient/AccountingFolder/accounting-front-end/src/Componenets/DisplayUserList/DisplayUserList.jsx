@@ -67,6 +67,7 @@ const DisplayUserList = () => {
                 <a href="/Accounts">Accounts</a>
                 <a href="/Journalize">Journalize</a>
                 <a href="/EventLog">Event Log</a>
+                <a href="/LedgerOfAccounts">Ledger</a>
                 <a href="/LoginsdasdForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
                 <a>
                     <button className="helpButton" onClick={openHelp}> Help</button>

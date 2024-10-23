@@ -89,8 +89,7 @@ const Accounts = () => {
                 <a href="/DisplayUserList">User List</a>
                 <a href="/Accounts">Accounts</a>
                 <a href="/Journalize">Journalize</a>
-                <a href="/Ledger">Ledger</a>
-                <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
+                <a href="/LedgerOfAccounts">Ledger</a>
                 <a href="/EventLog">Event Log</a>
                 <a>
                     <button className="helpButton" onClick={openHelp}> Help</button>
@@ -178,10 +177,10 @@ const Accounts = () => {
                             {accounts.map((account) => (
                                 <tr key={account.accountNumber}>
                                     <td>{account.order}</td>
-                                    <td><a href="/LedgerOfAccounts">{account.accountNumber}</a></td>
+                                    <td><Link to={`/LedgerOfAccounts`}>{account.accountNumber}</Link></td>
                                     <td>
                                         <div className="toolTip">
-                                            <Link to="/LedgerOfAccounts" className='linkToLedger'>{account.accountName}</Link>
+                                            <Link to={`/LedgerOfAccounts`} className='linkToLedger'>{account.accountName}</Link>
                                             <span className="toolTipText">Link to this accounts Ledger</span>
                                         </div>
                                     </td>
