@@ -22,7 +22,7 @@ const EventLog = () => {
         const fetchData = async () => {
             try {
                 // Fetch event logs 
-                const logResponse = await axios.get('http://localhost:8080/api/event-logs');
+                const logResponse = await axios.get('http://localhost:8080/api/events');
                 console.log('Fetched logs:', logResponse.data);
                 setLogs(logResponse.data);
 
@@ -48,9 +48,10 @@ const EventLog = () => {
                 <a href="/HomePage" className='spacingHomePage'>Home</a>
                 <a href="/DisplayUserList">User List</a>
                 <a href="/Accounts">Accounts</a>
+                <a href="/Journalize">Journalize</a>
+                <a href="/LedgerOfAccounts">Ledger</a>
                 <a href="/EventLog">Event Log</a>
-                <a href="#module4">MODULE 4</a>
-                <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
+                <a href="/LoginsdasdForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
                 <a>
                     <button className="helpButton"> Help</button>
                 </a>
@@ -80,10 +81,10 @@ const EventLog = () => {
                                     <td>{log.modifiedBy}</td>
                                     <td>{new Date(log.timestamp).toLocaleString()}</td>
                                     <td>
-                                        <pre>{JSON.stringify(log.beforeChange, null, 2)}</pre>
+                                        {JSON.stringify(log.beforeChange, null, 2)}
                                     </td>
                                     <td>
-                                        <pre>{JSON.stringify(log.afterChange, null, 2)}</pre>
+                                        {JSON.stringify(log.afterChange, null, 2)}
                                     </td>
                                 </tr>
                             ))}

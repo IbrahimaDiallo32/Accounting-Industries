@@ -5,8 +5,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CiCalendar } from "react-icons/ci";
-import CalandarPopUp from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/CalandarPopUp.jsx';
-import Modal from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/Modal.jsx';
+import CalandarPopUp from '../../Modal/CalandarPopUp.jsx';
+import Modal from '../../Modal/Modal.jsx'
 import axios from 'axios';
 import NewJournalEntry from './NewJournalEntry.jsx'
 import { IoMdAdd } from 'react-icons/io';
@@ -18,10 +18,19 @@ const Journalize = () => {
     const [accounts, setAccounts] = useState([]);
     const [files, setFiles] = useState([]);
 
+
     const [errorMessage, setErrorMessage] = useState('');
     const [isCalandarOpen, setIsCalandarOpen] = useState(false);
     const openCalandar = () => setIsCalandarOpen(true);
     const closeCalandar = () => setIsCalandarOpen(false);
+
+    //tyler changes
+    const [debitEntries, setDebitEntries] = useState([{ account: 'NULL', amount: '0.00' }]);
+    const [creditEntries, setCreditEntries] = useState([{ account: 'NULL', amount: '0.00' }]);
+    const toggleCalendar = () => {
+        setIsCalandarOpen(!isCalandarOpen);
+    };
+
 
     const [journalEntries, setJournalEntries] = useState([]);
     const [error, setError] = useState('');
@@ -76,6 +85,7 @@ const Journalize = () => {
                     <a href="/DisplayUserList">User List</a>
                     <a href="/Accounts">Accounts</a>
                     <a href="/Journalize">Journalize</a>
+                    <a href="/LedgerOfAccounts">Ledger</a>
                     <a href="/EventLog">Event Log</a>
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
@@ -128,9 +138,9 @@ const Journalize = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-        </div>
+                </div >
+            </div >
+        </div >
     );
 };
 

@@ -5,8 +5,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CiCalendar } from "react-icons/ci";
-import CalandarPopUp from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/CalandarPopUp.jsx';
-import Modal from '/Users/ibrahimadiallo/AccountingClient/AccountingFolder/accounting-front-end/src/Componenets/Modal/Modal.jsx';
+import CalandarPopUp from '../../Modal/CalandarPopUp.jsx';
+import Modal from '../../Modal/Modal.jsx';
 import axios from 'axios';
 import { IoArrowBack } from 'react-icons/io5';
 
@@ -119,6 +119,11 @@ const NewJournalEntry = () => {
 
         const debitSum = calculateSum(debitEntries);
         const creditSum = calculateSum(creditEntries);
+
+        if (debitEntries.some((entry) => entry.account === 'NULL' || entry.amount === '0.00' || entry.amount === '') || creditEntries.some((entry) => entry.account === 'NULL' || entry.amount === '0.00' || entry.amount === '')) {
+            alert('One of your entries is empty. Please fill in order to submit.')
+            return;
+        }
 
         const journalEntries = [
             ...debitEntries.map(entry => ({ ...entry, entryType: 'Debit' })),
@@ -260,10 +265,10 @@ const NewJournalEntry = () => {
                         <input type='text' className='journalCommentBox' onChange={(e) => setDescription(e.target.value)}></input>
                     </div>
                     <div>
-                        <button type="button" className='CreateNewJournalButton' onClick={handleSubmitEntry}>Submit entry</button>
+                        <input className='insertDouments' type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.jpg,.jpeg,.png" multiple onChange={handleFileChange} />
                     </div>
                     <div>
-                        <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.jpg,.jpeg,.png" multiple onChange={handleFileChange} />
+                        <button type="button" className='CreateNewJournalButton' onClick={handleSubmitEntry}>Submit entry</button>
                     </div>
                 </form>
             </div>

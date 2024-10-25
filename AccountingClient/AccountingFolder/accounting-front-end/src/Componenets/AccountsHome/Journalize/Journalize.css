@@ -52,9 +52,10 @@
 
 .CreateNewJournalButton {
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 100px;
     padding: 12px;
     width: 300px;
+    margin-top: 20px;
     margin-right: 60px;
     border-radius: 4px;
     border: 1px solid green;
@@ -76,4 +77,9 @@
     height: 100px;
     margin-bottom: 20px;
     margin-top: 10px;
+}
+
+.insertDouments {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
