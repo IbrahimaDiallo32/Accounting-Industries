@@ -2,10 +2,49 @@ import React from 'react';
 import './LedgerOfAccounts.css';
 import { RxAvatar } from "react-icons/rx";
 import Avatar from '../Assets/Avatar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const LedgerOfAccounts = () => {
+
+    const [accounts, setAccounts] = useState([]);
+    const [journals, setJournals] = useState([]);
+
+    const { accountName } = useParams();
+
+    const fetchJournalEntries = async (ledgerAccount) => {
+        try {
+            const responce = await axios.get(`http://localhost:8080/journal/account/${ledgerAccount}`); // ledgerAccount is the account you selected
+            setJournals(responce.data);
+        }
+        catch (error) {
+            console.error('Error fetching options:', error);
+        }
+    }
+
+    useEffect(() => {
+        fetchAccountNames();
+    }, []);
+
+    const fetchAccountNames = async () => {
+        try {
+            const responce = await axios.get(`http://localhost:8080/account/accountName`);
+            setAccounts(responce.data);
+        }
+        catch (error) {
+            console.error('Error fetching options:', error);
+        }
+    }
+
+    const checkEntryType = (journalEntryType) => {
+        if (journalEntryType == "Debit") {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
     const fullName = storedUser.firstName + " " + storedUser.lastName;
@@ -16,34 +55,72 @@ const LedgerOfAccounts = () => {
         navigate("/loginForm"); // Redirect to login
     };
 
-    useEffect(() => {
-        if (!storedUser) { //if no one is logged it, it automatically navigates back to login page
-            navigate("/", { replace: true });
-        }
-    }, []);
+    const openHelp = () => setIsHelpOpen(true);
+    const closeHelp = () => setIsHelpOpen(false);
 
+    const [ledgerAccount, setLedgerAccount] = useState('Select Account');
 
     return (
-        <div className='outerContainers'>
-            <div className="homePageOutermostcontainer">
-                {/* Sidebar */}
-                <div className="sidebar">
-                    <div className="profile">
-                        <Avatar name={fullName} />
-                        <span className="spanForHome">Hello {storedUser.firstName}</span>
-                    </div>
-                    <a href="/HomePage" className='spacingHomePage'>Home</a>
-                    <a href="/DisplayUserList">User List</a>
-                    <a href="/Accounts">Accounts</a>
-                    <a href="/EventLog">Event Log</a>
-                    <a href="/#">Module 5</a>
-                    <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
+        <div className="homePageOutermostcontainer">
+            <div className="sidebar">
+                <div className="profile">
+                    <Avatar name={fullName} />
+                    <span className="spanForHome">Hello {storedUser.firstName}</span>
                 </div>
-
-                {/* Main Content */}
-                <div className="main-content">
-
+                <a href="/HomePage" className='spacingHomePage'>Home</a>
+                <a href="/DisplayUserList">User List</a>
+                <a href="/Accounts">Accounts</a>
+                <a href="/Journalize">Journalize</a>
+                <a href="/LedgerOfAccounts">Ledger</a>
+                <a href="/EventLog">Event Log</a>
+                <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
+            </div>
+            <div className="main-content">
+                <h1>Main Ledger </h1>
+                <div>
+                    <label className='labelSelectAccountLedger'> Select Account</label>
+                    <select className="sortBySelection" value={ledgerAccount} onChange={(e) => setLedgerAccount(e.target.value)} defaultValue="Select Account">
+                        {accounts.map((accountName, index) => (
+                            <option key={index} value={accountName}>{accountName}</option>
+                        ))}
+                    </select>
+                    <button className="submitSort" onClick={(e) => { fetchJournalEntries(ledgerAccount) }}> Go</button>
                 </div>
+                {journals.length > 0 ? (
+                    <table className="accounts-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Completed By</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {journals.map((journal) => (
+                                <tr key={journal.accountName}>
+                                    <td>{journal.dateCreated}</td>
+                                    <td>{journal.status}</td>
+                                    <td>{journal.completedBy}</td>
+
+                                    {checkEntryType(journal) ? (
+                                        <td>{journal.amount}</td>
+                                    ) : (
+                                        <td></td>
+                                    )}
+                                    {!checkEntryType(journal) ? (
+                                        <td>{journal.amount}</td>
+                                    ) : (
+                                        <td></td>
+                                    )}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p></p>
+                )}
             </div>
         </div>
     );

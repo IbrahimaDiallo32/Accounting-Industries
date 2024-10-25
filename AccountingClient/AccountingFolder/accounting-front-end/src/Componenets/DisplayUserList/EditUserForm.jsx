@@ -65,6 +65,18 @@ function EditUserForm({ user }) {
         } catch (error) {
             console.error('Error creating user:', error);
         }
+        try {
+            await axios.post('http://localhost:8080/api/modify', {
+                username: originalUsername,
+                action: "User Modified",
+                beforeChange,
+                afterChange,
+                changeDescription
+            });
+        }
+        catch (error) {
+            console.error('Error logging editing user:', error);
+        }
 
     };
 

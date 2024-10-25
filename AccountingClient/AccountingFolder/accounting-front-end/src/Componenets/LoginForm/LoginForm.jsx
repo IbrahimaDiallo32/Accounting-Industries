@@ -34,6 +34,13 @@ const handleLogin = async (e, username, password, navigate) => {
         alert("Either username/password is incorrect");
         console.error("Login failed");
     }
+    try {
+        // Log the login event
+        await axios.post('http://localhost:8080/api/login', { username });
+    }
+    catch (err) {
+        console.error("Login failed");
+    }
 };
 
 const LoginForm = () => {
