@@ -11,24 +11,24 @@ const LedgerOfAccounts = () => {
     const [accounts, setAccounts] = useState([]);
     const [journals, setJournals] = useState([]);
 
-    const{accountName} = useParams();
+    const { accountName } = useParams();
 
     const fetchJournalEntries = async (ledgerAccount) => {
-        try{
-            const responce = await axios.get(`http://localhost:8080/Journalize/account/${ledgerAccount}`); // ledgerAccount is the account you selected
+        try {
+            const responce = await axios.get(`http://localhost:8080/journal/account/${ledgerAccount}`); // ledgerAccount is the account you selected
             setJournals(responce.data);
         }
-        catch (error){
+        catch (error) {
             console.error('Error fetching options:', error);
         }
     }
 
     useEffect(() => {
-            fetchAccountNames();
+        fetchAccountNames();
     }, []);
 
     const fetchAccountNames = async () => {
-        try{
+        try {
             const responce = await axios.get(`http://localhost:8080/account/accountName`);
             setAccounts(responce.data);
         }
@@ -38,7 +38,7 @@ const LedgerOfAccounts = () => {
     }
 
     const checkEntryType = (journalEntryType) => {
-        if (journalEntryType == "Debit"){
+        if (journalEntryType == "Debit") {
             return true;
         }
         else {
@@ -60,7 +60,7 @@ const LedgerOfAccounts = () => {
 
     const [ledgerAccount, setLedgerAccount] = useState('Select Account');
 
-    return(
+    return (
         <div className="homePageOutermostcontainer">
             <div className="sidebar">
                 <div className="profile">
@@ -70,23 +70,21 @@ const LedgerOfAccounts = () => {
                 <a href="/HomePage" className='spacingHomePage'>Home</a>
                 <a href="/DisplayUserList">User List</a>
                 <a href="/Accounts">Accounts</a>
-                <a href="/EventLog">Event Log</a>
                 <a href="/Journalize">Journalize</a>
-                <a href="/Ledger">Ledgers</a>
+                <a href="/LedgerOfAccounts">Ledger</a>
+                <a href="/EventLog">Event Log</a>
                 <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
-                <a>
-                   <button className="helpButton" onClick={openHelp}> Help</button>
-                </a>
             </div>
-            <div className ="main-content">
-                <h1>Ledger Main</h1>
-                <div> <label> Select Account</label>
-                <select className = "sortBySelection" value = {ledgerAccount} onChange={(e) => setLedgerAccount(e.target.value)} defaultValue= "Select Account">
-                    {accounts.map((accountName, index) =>(
-                        <option key={index} value={accountName}>{accountName}</option>
-                    ))}
-                </select>
-                <button className ="sortBy" onClick={(e) => {fetchJournalEntries(ledgerAccount)}}> Go</button>
+            <div className="main-content">
+                <h1>Main Ledger </h1>
+                <div>
+                    <label className='labelSelectAccountLedger'> Select Account</label>
+                    <select className="sortBySelection" value={ledgerAccount} onChange={(e) => setLedgerAccount(e.target.value)} defaultValue="Select Account">
+                        {accounts.map((accountName, index) => (
+                            <option key={index} value={accountName}>{accountName}</option>
+                        ))}
+                    </select>
+                    <button className="submitSort" onClick={(e) => { fetchJournalEntries(ledgerAccount) }}> Go</button>
                 </div>
                 {journals.length > 0 ? (
                     <table className="accounts-table">
@@ -94,7 +92,7 @@ const LedgerOfAccounts = () => {
                             <tr>
                                 <th>Date</th>
                                 <th>Status</th>
-                                <th>Description</th>
+                                <th>Completed By</th>
                                 <th>Debit</th>
                                 <th>Credit</th>
                             </tr>
@@ -103,28 +101,29 @@ const LedgerOfAccounts = () => {
                             {journals.map((journal) => (
                                 <tr key={journal.accountName}>
                                     <td>{journal.dateCreated}</td>
-                                    <td>{journal.comment}</td>
+                                    <td>{journal.status}</td>
+                                    <td>{journal.completedBy}</td>
 
                                     {checkEntryType(journal) ? (
-                                         <td>{journal.amount}</td>
-                                            ) : (
-                                          <td></td>
-                                            )}
+                                        <td>{journal.amount}</td>
+                                    ) : (
+                                        <td></td>
+                                    )}
                                     {!checkEntryType(journal) ? (
                                         <td>{journal.amount}</td>
-                                            ) : (
-                                            <td></td>
+                                    ) : (
+                                        <td></td>
                                     )}
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 ) : (
-                    <p>No accounts found.</p>
+                    <p></p>
                 )}
             </div>
         </div>
-        );
+    );
 };
 
 export default LedgerOfAccounts;

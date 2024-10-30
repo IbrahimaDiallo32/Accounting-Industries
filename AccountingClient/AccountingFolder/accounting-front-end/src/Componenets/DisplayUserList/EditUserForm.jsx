@@ -65,6 +65,18 @@ function EditUserForm({ user }) {
         } catch (error) {
             console.error('Error creating user:', error);
         }
+        try {
+            await axios.post('http://localhost:8080/api/modify', {
+                username: originalUsername,
+                action: "User Modified",
+                beforeChange,
+                afterChange,
+                changeDescription
+            });
+        }
+        catch (error) {
+            console.error('Error logging editing user:', error);
+        }
 
     };
 
@@ -135,7 +147,7 @@ function EditUserForm({ user }) {
                                 <option value="Inactive">Inactive</option>
                             </select>
                         </div>
-                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Update Account</button>
+                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Update User</button>
                         {/* button disabled until form is valid */}
                     </fieldset>
                 </form>

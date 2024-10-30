@@ -28,3 +28,228 @@
     display: flex;
     flex-direction: column;
 }
+
+.addEntryButton {
+    margin-left: 600px;
+    justify-content: right;
+    padding: 10px;
+    width: 150px;
+    border-radius: 4px;
+    border: .1px solid;
+    margin-top: 20px;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.addEntryButton:hover {
+    background-color: blueviolet;
+    color: azure;
+}
+
+.CreateNewJournalButton {
+    justify-content: center;
+    margin-bottom: 100px;
+    padding: 12px;
+    width: 300px;
+    margin-top: 20px;
+    margin-right: 60px;
+    border-radius: 4px;
+    border: 1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer
+}
+
+.CreateNewJournalButton:hover {
+    background-color: blueviolet;
+    color: azure;
+}
+
+.journalCommentBox {
+    width: 500px;
+    height: 100px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+
+.insertDouments {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* 
+.JournalTabs {
+    margin-top: 10px;
+    display: flex;
+}
+
+.jounalButtonTabs {
+    justify-content: left;
+    padding: 16px;
+    border-radius: 4px;
+    border: .1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 100px;
+    width: 200px;
+    margin-top: 10px;
+} */
+
+/* Container for the tabs */
+.JournalTabs {
+    display: flex;
+    justify-content: space-between;
+    /* Distributes tabs with equal space */
+    margin-right: 0;
+    /* Remove unnecessary margin */
+    gap: 16px;
+    /* Adds consistent spacing between tabs */
+}
+
+/* Individual tab buttons */
+.jounalButtonTabs {
+    padding: 16px;
+    border-radius: 4px;
+    border: 0.1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 200px;
+    margin-top: 10px;
+}
+
+.removeEntryPlaceholder {
+    visibility: hidden;
+    /* Makes the button invisible */
+    margin-left: auto;
+    font-size: 23px;
+    border: none;
+    margin-left: 8px;
+}
+
+.removeEntryButton {
+    color: red;
+    border: none;
+    font-size: 23px;
+    background-color: #FBF7F6;
+    margin-left: 8px;
+}
+
+.jounalButtonTabs a {
+    text-decoration: none;
+    color: aliceblue;
+}
+
+.jounalButtonTabs:hover {
+    background-color: blueviolet;
+    color: azure;
+}
+
+.journal-entry-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.journal-card {
+    font-family: "Poppins", sans-serif;
+    width: calc(50% - 20px);
+    /* Ensures two cards per row */
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.journal-card:hover {
+    transform: scale(1.01);
+    /* Slightly less intense hover effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-content {
+    font-family: "Poppins", sans-serif;
+    margin-top: 10px;
+    color: #555;
+}
+
+.card-content p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-footer .action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.card-footer a {
+    color: #1e90ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.card-footer a:hover {
+    text-decoration: underline;
+}
+
+.approveJournalEntry {
+    display: flex;
+    justify-content: left;
+    padding: 8px;
+    border-radius: 4px;
+    border: .1px solid green;
+    background-color: green;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    color: aliceblue;
+}
+
+.denyJournalEntry {
+    display: flex;
+    justify-content: left;
+    padding: 8px;
+    border-radius: 4px;
+    border: .1px solid green;
+    background-color: red;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}

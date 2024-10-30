@@ -22,7 +22,7 @@ const EventLog = () => {
         const fetchData = async () => {
             try {
                 // Fetch event logs 
-                const logResponse = await axios.get('http://localhost:8080/api/event-logs');
+                const logResponse = await axios.get('http://localhost:8080/api/events');
                 console.log('Fetched logs:', logResponse.data);
                 setLogs(logResponse.data);
 
@@ -39,67 +39,62 @@ const EventLog = () => {
 
 
     return (
-        <div className='outerContainers'>
-            <form action="">
-                {/* Placeholder for form */}
-            </form>
-
-            <div className="homePageOutermostcontainer">
-                {/* Sidebar */}
-                <div className="sidebar">
-                    <div className="profile">
-                        <Avatar name={fullName} />
-                        <span className="spanForHome">Hello {storedUser.firstName}</span>
-                    </div>
-                    <a href="/HomePage" className='spacingHomePage'>Home</a>
-                    <a href="/DisplayUserList">User List</a>
-                    <a href="/Accounts">Accounts</a>
-                    <a href="/EventLog">Event Log</a>
-                    <a href="#module4">MODULE 4</a>
-                    <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
-                    <a>
-                        <button className="helpButton"> Help</button>
-                    </a>
+        <div className="homePageOutermostcontainer">
+            <div className="sidebar">
+                <div className="profile">
+                    <Avatar name={fullName} />
+                    <span className="spanForHome">Hello {storedUser.firstName}</span>
                 </div>
+                <a href="/HomePage" className='spacingHomePage'>Home</a>
+                <a href="/DisplayUserList">User List</a>
+                <a href="/Accounts">Accounts</a>
+                <a href="/Journalize">Journalize</a>
+                <a href="/LedgerOfAccounts">Ledger</a>
+                <a href="/EventLog">Event Log</a>
+                <a href="/LoginsdasdForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
+                <a>
+                    <button className="helpButton"> Help</button>
+                </a>
+            </div>
 
-                {/* Main Content */}
-                <div className="event-log-container">
-                    <h1>Event Log</h1>
-                    {logs.length > 0 ? (
-                        <table className="event-log-table">
-                            <thead>
-                                <tr>
-                                    <th>Event ID</th>
-                                    <th>Event Type</th>
-                                    <th>User ID</th>
-                                    <th>Modified By</th>
-                                    <th>Date/Time</th>
-                                    <th>Before Image</th>
-                                    <th>After Image</th>
+            <div className="event-log-container">
+                <h1>Event Log</h1>
+                {logs.length > 0 ? (
+                    <table className="event-log-table">
+                        <thead>
+                            <tr>
+                                <th>Event ID</th>
+                                <th>Event Type</th>
+                                <th>Username</th>
+                                <th>Modified By</th>
+                                <th>Date/Time</th>
+                                <th>Before Image</th>
+                                <th>After Image</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {logs.map((log) => (
+                                <tr key={log._id}>
+                                    <td>{log.eventID}</td>
+                                    <td>{log.eventType}</td>
+                                    <td>{log.userId}</td>
+                                    <td>{log.modifiedBy}</td>
+                                    <td>{new Date(log.timestamp).toLocaleString()}</td>
+                                    <td>
+                                        {/* {log.beforeChange} */}
+                                        {/* {JSON.stringify(log.beforeChange, null, 2)} */}
+                                    </td>
+                                    <td>
+                                        {/* {log.afterChange} */}
+                                        {/* {JSON.stringify(log.afterChange, null, 2)} */}
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {logs.map((log) => (
-                                    <tr key={log._id}>
-                                        <td>{log._id = crypto.randomUUID()}</td>
-                                        <td>{log.eventType}</td>
-                                        <td>{log.userId}</td>
-                                        <td>{log.modifiedBy}</td>
-                                        <td>{new Date(log.timestamp).toLocaleString()}</td>
-                                        <td>
-                                            <pre>{JSON.stringify(log.beforeChange, null, 2)}</pre>
-                                        </td>
-                                        <td>
-                                            <pre>{JSON.stringify(log.afterChange, null, 2)}</pre>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    ) : (
-                        <p>No logs available.</p>
-                    )}
-                </div>
+                            ))}
+                        </tbody>
+                    </table>
+                ) : (
+                    <p>No logs available.</p>
+                )}
             </div>
         </div>
     );

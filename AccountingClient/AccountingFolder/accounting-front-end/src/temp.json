@@ -1,0 +1,37 @@
+[
+    {
+        "accountName": "Cash",
+        "amount": 15000.00,
+        "entryType": "Debit",
+        "uniqueID": "ACC123456",
+        "fileURL": "https://example.com/files/cash.pdf"
+    },
+    {
+        "accountName": "Accounts Receivable",
+        "amount": 25000.00,
+        "entryType": "Credit",
+        "uniqueID": "ACC789101",
+        "fileURL": "https://example.com/files/accounts_receivable.pdf"
+    },
+    {
+        "accountName": "Accounts Payable",
+        "amount": 18000.00,
+        "entryType": "Debit",
+        "uniqueID": "ACC112131",
+        "fileURL": "https://example.com/files/accounts_payable.pdf"
+    },
+    {
+        "accountName": "Sales Revenue",
+        "amount": 50000.00,
+        "entryType": "Credit",
+        "uniqueID": "ACC415161",
+        "fileURL": "https://example.com/files/sales_revenue.pdf"
+    },
+    {
+        "accountName": "Rent Expense",
+        "amount": 12000.00,
+        "entryType": "Debit",
+        "uniqueID": "ACC718192",
+        "fileURL": "https://example.com/files/rent_expense.pdf"
+    }
+]

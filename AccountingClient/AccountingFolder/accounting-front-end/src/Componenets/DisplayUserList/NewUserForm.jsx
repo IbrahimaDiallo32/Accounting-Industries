@@ -99,6 +99,17 @@ function RegistrationForm() {
             console.error('Error creating user:', error);
         }
 
+        try {
+            // Log the user creation event
+            await axios.post('http://localhost:8080/api/event-logs', {
+                username: dbUserName,
+                action: 'User Created',
+                eventDate: dateToday()
+            });
+        } catch (error) {
+            console.error("Error logging event", error);
+        }
+
     };
 
     const handleChange = (e) => {
@@ -315,7 +326,7 @@ function RegistrationForm() {
                                 <option value="Manager">Manager</option>
                             </select>
                         </div>
-                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Create Account</button>
+                        <button type="submit" disabled={!getIsFormValid()} className='RegistrationButton'>Create User</button>
                         {/* button disabled until form is valid */}
                     </fieldset>
                 </form>

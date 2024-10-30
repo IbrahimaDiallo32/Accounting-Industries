@@ -22,12 +22,12 @@ const HomePage = () => {
     }
     const closeCalculator = () => {
         setIsCalculatorOpen(false);
-      };
+    };
 
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const toggleCalendar = () => {
         setIsCalendarOpen(!isCalendarOpen);
-      };
+    };
 
     useEffect(() => {
         if (!storedUser) { //if no one is logged it, it automatically navigates back to login page
@@ -53,10 +53,12 @@ const HomePage = () => {
                     <a href="/DisplayUserList">User List</a>
                     <a href="/Accounts">Accounts</a>
                     <a href="/Journalize">Journalize</a>
-                    <a href="/EventLog">Event Log</a>
-                    <a href="/Journalize">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
+<<<<<<< HEAD
                     <a href="/Statements">Statements</a>
+=======
+                    <a href="/EventLog">Event Log</a>
+>>>>>>> 43e0e91f97f1281aa8ec7d65ea4e6981ee81b23a
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
 
@@ -68,30 +70,30 @@ const HomePage = () => {
                             <h1>Welcome To Accounting Treasury Industries!</h1>
                         </div>
                         <div className='rightHeader'>
-                            <button className='Calandar' onClick={toggleCalculator}><CiCalculator1/></button>
-                            <button className='Calandar' onClick={toggleCalendar}><CiCalendar/></button>
+                            <button className='Calandar' onClick={toggleCalculator}><CiCalculator1 /></button>
+                            <button className='Calandar' onClick={toggleCalendar}><CiCalendar /></button>
                         </div>
                     </div>
                     {isCalendarOpen && (
-                      <Draggable>
-                        <div>
-                             <CalandarPopUp />
-                       </div>
-                     </Draggable>
-                     )}
+                        <Draggable>
+                            <div>
+                                <CalandarPopUp />
+                            </div>
+                        </Draggable>
+                    )}
                     {isCalculatorOpen && (
                         <Draggable>
                             <div className="CalculatorOuterContainer">
-                                 <h4>Calculator</h4>
-                                 <button onClick={closeCalculator} className="close-button">
-                                  X
-                                 </button>
-                            <div>
-                                <CalculatorPopUp/>
-                            </div>
+                                <h4>Calculator</h4>
+                                <button onClick={closeCalculator} className="close-button">
+                                    X
+                                </button>
+                                <div>
+                                    <CalculatorPopUp />
+                                </div>
                             </div>
                         </Draggable>
-    
+
                     )}
                 </div>
             </div>

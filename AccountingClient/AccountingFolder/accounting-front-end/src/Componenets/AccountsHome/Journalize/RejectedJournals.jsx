@@ -11,7 +11,7 @@ import axios from 'axios';
 import NewJournalEntry from './NewJournalEntry.jsx'
 import { IoMdAdd } from 'react-icons/io';
 
-const Journalize = () => {
+const RejectedJournals = () => {
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
     const fullName = storedUser.firstName + " " + storedUser.lastName;
     const navigate = useNavigate();
@@ -54,7 +54,7 @@ const Journalize = () => {
     useEffect(() => {
         const fetchJournalEntries = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/journal/status/Pending');
+                const response = await axios.get('http://localhost:8080/journal/status/Rejected');
                 const entries = Array.isArray(response.data) ? response.data : [];
                 const grouped = groupEntriesByID(entries);
                 setJournalEntries(grouped);
@@ -69,15 +69,6 @@ const Journalize = () => {
             navigate("/", { replace: true });
         }
     }, [storedUser, navigate]);
-
-    const dateToday = () => {
-        const today = new Date();
-        const month = today.getMonth() + 1;
-        const year = today.getFullYear();
-        const date = today.getDate();
-        const currentDate = month + "/" + date + "/" + year;
-        return currentDate;
-    };
 
 
     const groupEntriesByID = (entries) => {
@@ -109,8 +100,7 @@ const Journalize = () => {
 
         try {
             const response = await axios.patch(`http://localhost:8080/journal/updateStatus/${uniqueID}`, { //URL that will create a new account
-                status: "Approved",
-                dateApproved: dateToday()
+                status: "Approved"
             });
             window.location.reload();
 
@@ -128,8 +118,7 @@ const Journalize = () => {
 
         try {
             const response = await axios.patch(`http://localhost:8080/journal/updateStatus/${uniqueID}`, { //URL that will create a new account
-                status: "Rejected",
-                dateRejected: dateToday()
+                status: "Rejected"
             });
             window.location.reload();
 
@@ -161,10 +150,9 @@ const Journalize = () => {
                         <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Create Entry</button>
                         <button className='journalCalendar' onClick={openCalandar}><CiCalendar />Calendar</button>
                         <div className='JournalTabs'>
-                            <button className='jounalButtonTabs' onClick={openCalandar}>All Entries</button>
-                            <button className='jounalButtonTabs' onClick={openCalandar}>Pending Entries</button>
+                            <button className='jounalButtonTabs'><a href='Journalize'>Pending Entries</a></button>
                             <button className='jounalButtonTabs' onClick={openCalandar}>Approved Entries</button>
-                            <button className='jounalButtonTabs'><a href='/RejectedJournals'>Rejected Entries </a></button>
+                            <button className='jounalButtonTabs' onClick={openCalandar}>Rejected Entries </button>
                         </div>
                     </h1>
                     <Modal isOpen={isCalandarOpen} onClose={closeCalandar}>
@@ -200,10 +188,6 @@ const Journalize = () => {
                                         </div>
                                     </div>
                                     <div className="card-footer">
-                                        <div className="action-buttons">
-                                            <button className="approveJournalEntry" onClick={(e) => handleApproveEntry(entryGroup.uniqueID)}>Approve</button>
-                                            <button className='denyJournalEntry' onClick={(e) => handleDenyEntry(entryGroup.uniqueID)}>Deny</button>
-                                        </div>
                                         <span>Completed By: {entryGroup.completedBy}</span>
                                         <a href={entryGroup.fileURL} target="_blank" rel="noopener noreferrer">
                                             View File
@@ -215,54 +199,10 @@ const Journalize = () => {
                             <p>No journal entries found.</p>
                         )}
                     </div>
-
-
-
-
-                    {/* <div>
-                        {error && <p>{error}</p>}
-
-                        <table className='user-table'>
-                            <thead>
-                                <tr>
-                                    <th>Completed By</th>
-                                    <th>Account Name</th>
-                                    <th>Amount</th>
-                                    <th>Account Type</th>
-                                    <th>Entry ID</th>
-                                    <th>Status</th>
-                                    <th>File URL</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {journalEntries.length === 0 ? (
-                                    <tr>
-                                        <td colSpan="5">No journal entries found</td>
-                                    </tr>
-                                ) : (
-                                    journalEntries.map((entry, index) => (
-                                        <tr key={index}>
-                                            <td>{entry.completedBy}</td>
-                                            <td>{entry.accountName}</td>
-                                            <td>{entry.amount}</td>
-                                            <td>{entry.entryType}</td>
-                                            <td>{entry.uniqueID}</td>
-                                            <td>{entry.status}</td>
-                                            <td>
-                                                <a href={entry.fileURL} target="_blank" rel="noopener noreferrer">
-                                                    View File
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div> */}
                 </div >
             </div >
         </div >
     );
 };
 
-export default Journalize;
+export default RejectedJournals;

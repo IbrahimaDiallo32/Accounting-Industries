@@ -106,7 +106,6 @@ const CreateAccount = () => {
         } catch (error) {
             console.error('Error creating user:', error);
         }
-
     };
 
 
