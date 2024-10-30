@@ -17,6 +17,7 @@ import NewUserForm from './Componenets/DisplayUserList/NewUserForm';
 import EditUserForm from './Componenets/DisplayUserList/EditUserForm'
 import EditAccount from './Componenets/AccountsHome/EditAccount';
 import Journalize from './Componenets/AccountsHome/Journalize/Journalize';
+import Statements from './Componenets/FinancialStatements/Statements';
 import NewJournalEntry from './Componenets/AccountsHome/Journalize/NewJournalEntry'
 import RejectedJournals from './Componenets/AccountsHome/Journalize/RejectedJournals';
 
@@ -39,6 +40,7 @@ root.render(
         <Route path="/EditUserForm" element={<EditUserForm />} />
         <Route path="/EditAccount" element={<EditAccount />} />
         <Route path="/Journalize" element={<Journalize />} />
+        <Route path= "/Statements" element={<Statements/>} />
         <Route path="/NewJournalEntry" element={<NewJournalEntry />} />
         <Route path="/RejectedJournals" element={<RejectedJournals />} />
         {/* <Route path="/handleFetchUsers" element={<handleFetchUsers />} /> */}

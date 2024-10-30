@@ -54,6 +54,7 @@ const HomePage = () => {
                     <a href="/Accounts">Accounts</a>
                     <a href="/Journalize">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
+                    <a href="/Statements">Statements</a>
                     <a href="/EventLog">Event Log</a>
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
