@@ -17,12 +17,9 @@ import NewUserForm from './Componenets/DisplayUserList/NewUserForm';
 import EditUserForm from './Componenets/DisplayUserList/EditUserForm'
 import EditAccount from './Componenets/AccountsHome/EditAccount';
 import Journalize from './Componenets/AccountsHome/Journalize/Journalize';
-<<<<<<< HEAD
 import Statements from './Componenets/FinancialStatements/Statements';
-=======
 import NewJournalEntry from './Componenets/AccountsHome/Journalize/NewJournalEntry'
 import RejectedJournals from './Componenets/AccountsHome/Journalize/RejectedJournals';
->>>>>>> 43e0e91f97f1281aa8ec7d65ea4e6981ee81b23a
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -43,12 +40,9 @@ root.render(
         <Route path="/EditUserForm" element={<EditUserForm />} />
         <Route path="/EditAccount" element={<EditAccount />} />
         <Route path="/Journalize" element={<Journalize />} />
-<<<<<<< HEAD
         <Route path= "/Statements" element={<Statements/>} />
-=======
         <Route path="/NewJournalEntry" element={<NewJournalEntry />} />
         <Route path="/RejectedJournals" element={<RejectedJournals />} />
->>>>>>> 43e0e91f97f1281aa8ec7d65ea4e6981ee81b23a
         {/* <Route path="/handleFetchUsers" element={<handleFetchUsers />} /> */}
       </Routes>
     </BrowserRouter>

@@ -54,11 +54,8 @@ const HomePage = () => {
                     <a href="/Accounts">Accounts</a>
                     <a href="/Journalize">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
-<<<<<<< HEAD
                     <a href="/Statements">Statements</a>
-=======
                     <a href="/EventLog">Event Log</a>
->>>>>>> 43e0e91f97f1281aa8ec7d65ea4e6981ee81b23a
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
 
