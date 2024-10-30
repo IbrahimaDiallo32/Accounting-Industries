@@ -17,6 +17,7 @@ import NewUserForm from './Componenets/DisplayUserList/NewUserForm';
 import EditUserForm from './Componenets/DisplayUserList/EditUserForm'
 import EditAccount from './Componenets/AccountsHome/EditAccount';
 import Journalize from './Componenets/AccountsHome/Journalize/Journalize';
+import Statements from './Componenets/FinancialStatements/Statements';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -37,6 +38,7 @@ root.render(
         <Route path="/EditUserForm" element={<EditUserForm />} />
         <Route path="/EditAccount" element={<EditAccount />} />
         <Route path="/Journalize" element={<Journalize />} />
+        <Route path= "/Statements" element={<Statements/>} />
         {/* <Route path="/handleFetchUsers" element={<handleFetchUsers />} /> */}
       </Routes>
     </BrowserRouter>
