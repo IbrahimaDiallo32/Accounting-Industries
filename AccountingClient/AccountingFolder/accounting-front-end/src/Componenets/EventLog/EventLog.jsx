@@ -65,7 +65,7 @@ const EventLog = () => {
                             <tr>
                                 <th>Event ID</th>
                                 <th>Event Type</th>
-                                <th>User ID</th>
+                                <th>Username</th>
                                 <th>Modified By</th>
                                 <th>Date/Time</th>
                                 <th>Before Image</th>
@@ -75,16 +75,18 @@ const EventLog = () => {
                         <tbody>
                             {logs.map((log) => (
                                 <tr key={log._id}>
-                                    <td>{log._id = crypto.randomUUID()}</td>
+                                    <td>{log.eventID}</td>
                                     <td>{log.eventType}</td>
                                     <td>{log.userId}</td>
                                     <td>{log.modifiedBy}</td>
                                     <td>{new Date(log.timestamp).toLocaleString()}</td>
                                     <td>
-                                        {JSON.stringify(log.beforeChange, null, 2)}
+                                        {/* {log.beforeChange} */}
+                                        {/* {JSON.stringify(log.beforeChange, null, 2)} */}
                                     </td>
                                     <td>
-                                        {JSON.stringify(log.afterChange, null, 2)}
+                                        {/* {log.afterChange} */}
+                                        {/* {JSON.stringify(log.afterChange, null, 2)} */}
                                     </td>
                                 </tr>
                             ))}

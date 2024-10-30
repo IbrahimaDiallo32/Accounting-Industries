@@ -106,18 +106,6 @@ const CreateAccount = () => {
         } catch (error) {
             console.error('Error creating user:', error);
         }
-
-        try {
-            const response = await axios.post('http://localhost:8080/api/account', {
-                username: dbUserName,
-                action: 'Account Created',
-                eventDate: dateToday()
-            });
-            console.log(response.data); // Handle successful registration
-        } catch (error) {
-            console.error('Registration error:', error.response ? error.response.data : error);
-        }
-
     };
 
 

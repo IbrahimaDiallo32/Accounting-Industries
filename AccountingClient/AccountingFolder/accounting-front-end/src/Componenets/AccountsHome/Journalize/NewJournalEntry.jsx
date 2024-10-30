@@ -9,6 +9,7 @@ import CalandarPopUp from '../../Modal/CalandarPopUp.jsx';
 import Modal from '../../Modal/Modal.jsx';
 import axios from 'axios';
 import { IoArrowBack } from 'react-icons/io5';
+import { FaMinusCircle } from "react-icons/fa";
 
 const NewJournalEntry = () => {
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -34,6 +35,7 @@ const NewJournalEntry = () => {
     };
 
 
+
     useEffect(() => {
         if (!storedUser) {
             navigate("/", { replace: true });
@@ -48,8 +50,17 @@ const NewJournalEntry = () => {
     const handleClearForm = () => {
         setDebitEntries(initialEntryState); // Reset debit entries to initial state
         setCreditEntries(initialEntryState); // Reset credit entries to initial state
-        setAccounts(fetchAccounts()); // Clear selected accounts
+        // setAccounts(fetchAccounts()); // Clear selected accounts
         setErrorMessage(''); // Clear error message
+        setDescription('');
+    };
+
+    const handleRemoveEntry = (type, index) => {
+        if (type === 'debit') {
+            setDebitEntries(debitEntries.filter((_, i) => i !== index));
+        } else if (type === 'credit') {
+            setCreditEntries(creditEntries.filter((_, i) => i !== index));
+        }
     };
 
     const handleDebitChange = (index, field, value) => {
@@ -113,6 +124,12 @@ const NewJournalEntry = () => {
     };
     const date = dateToday();
 
+    const creditEqualDebit = () => {
+        const debitSum = calculateSum(debitEntries);
+        const creditSum = calculateSum(creditEntries);
+        return debitSum === creditSum;
+    };
+
     const handleSubmitEntry = async (e) => {
 
         e.preventDefault(); // Prevent page reload on form submission
@@ -125,16 +142,17 @@ const NewJournalEntry = () => {
             return;
         }
 
+        if (!creditEqualDebit()) {
+            alert('Credits and debits must be equal!')
+            setErrorMessage('Credits and debits must be equal');
+            console.log(errorMessage);
+            return false; // Stop submission if credits and debits are not equal
+        }
+
         const journalEntries = [
             ...debitEntries.map(entry => ({ ...entry, entryType: 'Debit' })),
             ...creditEntries.map(entry => ({ ...entry, entryType: 'Credit' }))
         ];
-
-        // Ensure debit and credit sums are equal
-        if (debitSum !== creditSum) {
-            alert('Debit and credit totals are not equal.');
-            return;
-        }
 
         setErrorMessage(''); // Clear any existing error message
 
@@ -160,6 +178,14 @@ const NewJournalEntry = () => {
             console.error('Error creating journal entries:', error);
             setErrorMessage('An error occurred while creating journal entries.');
         }
+    };
+
+    const getSelectedAccounts = () => {
+        // Collect all selected accounts from both debits and credits
+        return [
+            ...debitEntries.map(entry => entry.account),
+            ...creditEntries.map(entry => entry.account)
+        ];
     };
 
     const getNextAvailableId = () => {
@@ -209,10 +235,7 @@ const NewJournalEntry = () => {
             <hr className='solidLineRegister' />
             <div className="registrationInnerContainer">
                 <form className='RegForm'>
-                    <button type="button" className='journalCalendar' onClick={openCalandar}><CiCalendar />Calendar</button>
-                    <Modal isOpen={isCalandarOpen} onClose={closeCalandar}>
-                        <CalandarPopUp />
-                    </Modal>
+                    <button type="button" className='journalCalendar' onClick={handleClearForm}>Clear Entries</button>
 
                     <h3>Debits:</h3>
                     {debitEntries.map((entry, index) => (
@@ -222,17 +245,38 @@ const NewJournalEntry = () => {
                                 onChange={(e) => handleDebitChange(index, 'account', e.target.value)}
                             >
                                 <option value="">Select Account</option>
-                                {accounts.map((account, i) => (
-                                    <option key={i} value={account.accountName}>
-                                        {account.accountName}
-                                    </option>
-                                ))}
+                                {accounts
+                                    .filter(account =>
+                                        !getSelectedAccounts().includes(account.accountName) ||
+                                        account.accountName === entry.account // Ensure selected account remains visible
+                                    )
+                                    .map((account, i) => (
+                                        <option key={i} value={account.accountName}>
+                                            {account.accountName}
+                                        </option>
+                                    ))}
                             </select>
                             $ <input
                                 type="text"
                                 value={entry.amount}
                                 onChange={(e) => handleDebitChange(index, 'amount', e.target.value)}
                             />
+
+                            {index > 0 ? (
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemoveEntry('debit', index)}
+                                    className="removeEntryButton"
+                                >
+                                    <FaMinusCircle />
+                                </button>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="removeEntryPlaceholder"
+                                    aria-hidden="true"
+                                ><FaMinusCircle /></button>
+                            )}
                         </div>
                     ))}
                     <button type="button" onClick={handleAddDebitEntry} className='addEntryButton'>Add Entry</button>
@@ -246,19 +290,39 @@ const NewJournalEntry = () => {
                                 onChange={(e) => handleCreditChange(index, 'account', e.target.value)}
                             >
                                 <option value="">Select Account</option>
-                                {accounts.map((account, i) => (
-                                    <option key={i} value={account.accountName}>
-                                        {account.accountName}
-                                    </option>
-                                ))}
+                                {accounts
+                                    .filter(account =>
+                                        !getSelectedAccounts().includes(account.accountName) ||
+                                        account.accountName === entry.account // Ensure selected account remains visible
+                                    )
+                                    .map((account, i) => (
+                                        <option key={i} value={account.accountName}>
+                                            {account.accountName}
+                                        </option>
+                                    ))}
                             </select>
                             $ <input
-                                placeholder='Amount'
-                                value={entry.amount}
+                                placeholder='Amount' value={entry.amount}
                                 onChange={(e) => handleCreditChange(index, 'amount', e.target.value)}
                             />
+                            {index > 0 ? (
+                                <button
+                                    type="button"
+                                    onClick={() => handleRemoveEntry('credit', index)}
+                                    className="removeEntryButton"
+                                >
+                                    <FaMinusCircle />
+                                </button>
+                            ) : (
+                                <button
+                                    type="button"
+                                    className="removeEntryPlaceholder"
+                                    aria-hidden="true"
+                                ><FaMinusCircle /></button>
+                            )}
                         </div>
                     ))}
+                    you need to put an input box for adjjstuing or regualr
                     <button type="button" className='addEntryButton' onClick={handleAddCreditEntry}>Add Entry</button>
                     <div>
                         <h5 className='space'>Description/Comments</h5>
@@ -269,6 +333,9 @@ const NewJournalEntry = () => {
                     </div>
                     <div>
                         <button type="button" className='CreateNewJournalButton' onClick={handleSubmitEntry}>Submit entry</button>
+                        {errorMessage && (
+                            <p style={{ color: 'red' }}>{errorMessage}</p>
+                        )}
                     </div>
                 </form>
             </div>

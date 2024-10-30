@@ -331,17 +331,35 @@ function RegistrationForm() {
                                 onChange={(e) => setPassword({ ...password, value: e.target.value })}
                                 onBlur={() => setPassword({ ...password, isTouched: true })}
                                 placeholder="Password" />
+                            {password.isTouched && password.value.length < 8 ? (
+                                <div>
+                                    <p>Your password must be 8+ Characters</p>
+                                </div>
+                            ) : null}
+                            {password.isTouched && !passwordHasNumber.test(password.value) ? (
+                                <div>
+                                    <p>Your password must contain a number</p>
+                                </div>
+                            ) : null}
+                            {password.isTouched && !hasSpecialCharacter(password.value) ? (
+                                <div>
+                                    <p>Your password must have a special character</p>
+                                </div>
+                            ) : null}
+                            {password.isTouched && !startsWithLetter(password.value) ? (
+                                <div>
+                                    <p>Your passowrd must begin with a letter</p>
+                                </div>
+                            ) : null}
                         </div>
-                        <div className='Field'>
+
+                        <div className='passwordFieldRegistration'>
                             <label>Confirm Password <sup>*</sup></label>
                             <input
-                                type='password'
-                                className={`registrationInput ${passwordMatch ? "" : "input-error-border"}`}
-                                placeholder="Confirm Password"
-                                value={confirmPassword}
+                                type='password' className='registrationInput' placeholder="Confirm Password" value={confirmPassword}
                                 onChange={handleConfirmPassword}
                             />
-                            {!passwordMatch && <div className="input-error">Passwords do not match</div>}
+                            {!passwordMatch && <p>Passwords do not match</p>}
                         </div>
                         <div className='Field'>
                             <label>Role <sup>*</sup></label>
