@@ -48,7 +48,7 @@ const EventLog = () => {
                 <a href="/HomePage" className='spacingHomePage'>Home</a>
                 <a href="/DisplayUserList">User List</a>
                 <a href="/Accounts">Accounts</a>
-                <a href="/Journalize">Journalize</a>
+                <a href="/AllJournalEntries">Journalize</a>
                 <a href="/LedgerOfAccounts">Ledger</a>
                 <a href="/EventLog">Event Log</a>
                 <a href="/LoginsdasdForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
@@ -82,11 +82,11 @@ const EventLog = () => {
                                     <td>{new Date(log.timestamp).toLocaleString()}</td>
                                     <td>
                                         {/* {log.beforeChange} */}
-                                        {/* {JSON.stringify(log.beforeChange, null, 2)} */}
+                                        {JSON.stringify(log.beforeChange, null, 2)}
                                     </td>
                                     <td>
                                         {/* {log.afterChange} */}
-                                        {/* {JSON.stringify(log.afterChange, null, 2)} */}
+                                        {JSON.stringify(log.afterChange, null, 2)}
                                     </td>
                                 </tr>
                             ))}

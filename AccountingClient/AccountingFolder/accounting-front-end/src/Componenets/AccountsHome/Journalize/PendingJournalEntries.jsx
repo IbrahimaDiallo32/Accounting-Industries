@@ -20,11 +20,13 @@ const Journalize = () => {
     const [isCalandarOpen, setIsCalandarOpen] = useState(false);
     const openCalandar = () => setIsCalandarOpen(true);
     const closeCalandar = () => setIsCalandarOpen(false);
+    const [denyReason, setDenyReason] = useState("");
+    const [showDenyBox, setShowDenyBox] = useState(null); // Track which entry's text box is visible
+
 
     const toggleCalendar = () => {
         setIsCalandarOpen(!isCalandarOpen);
     };
-
 
     const [journalEntries, setJournalEntries] = useState([]);
     const [error, setError] = useState('');
@@ -82,7 +84,7 @@ const Journalize = () => {
 
     const groupEntriesByID = (entries) => {
         const groupedEntries = entries.reduce((acc, entry) => {
-            const { uniqueID, completedBy, status, fileURL } = entry;
+            const { uniqueID, completedBy, status, fileURL, comments } = entry;
             if (!acc[uniqueID]) {
                 acc[uniqueID] = {
                     uniqueID,
@@ -90,7 +92,8 @@ const Journalize = () => {
                     status,
                     fileURL,
                     debits: [],
-                    credits: []
+                    credits: [],
+                    comments
                 };
             }
             if (entry.entryType === 'Debit') {
@@ -122,6 +125,10 @@ const Journalize = () => {
     }
 
     const handleDenyEntry = async (uniqueID) => {
+        if (!denyReason) {
+            alert("Please provide a reason for denying the entry.");
+            return;
+        }
 
         //e.preventDefault(); // Prevent page reload on form submission
         console.log(uniqueID)
@@ -129,7 +136,9 @@ const Journalize = () => {
         try {
             const response = await axios.patch(`http://localhost:8080/journal/updateStatus/${uniqueID}`, { //URL that will create a new account
                 status: "Rejected",
-                dateRejected: dateToday()
+                dateRejected: dateToday(),
+                reasonForRejection: denyReason,
+                rejectedBy: fullName
             });
             window.location.reload();
 
@@ -157,14 +166,14 @@ const Journalize = () => {
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
                 <div className="main-content">
-                    <h1>Journal Entries
+                    <h1>Pending Journal Entries
                         <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Create Entry</button>
                         <button className='journalCalendar' onClick={openCalandar}><CiCalendar />Calendar</button>
                         <div className='JournalTabs'>
-                            <button className='jounalButtonTabs' onClick={openCalandar}>All Entries</button>
-                            <button className='jounalButtonTabs' onClick={openCalandar}>Pending Entries</button>
-                            <button className='jounalButtonTabs' onClick={openCalandar}>Approved Entries</button>
-                            <button className='jounalButtonTabs'><a href='/RejectedJournals'>Rejected Entries </a></button>
+                            <button className='jounalButtonTabs' ><a href='/AllJournalEntries'>All Entries</a></button>
+                            <button className='jounalButtonTabs' ><a href='/PendingJournalEntries'>Pending Entries</a></button>
+                            <button className='jounalButtonTabs' ><a href='/ApprovedJournalEntries'>Approved Entries</a></button>
+                            <button className='jounalButtonTabs' ><a href='/RejectedJournals'>Rejected Entries </a></button>
                         </div>
                     </h1>
                     <Modal isOpen={isCalandarOpen} onClose={closeCalandar}>
@@ -202,12 +211,26 @@ const Journalize = () => {
                                     <div className="card-footer">
                                         <div className="action-buttons">
                                             <button className="approveJournalEntry" onClick={(e) => handleApproveEntry(entryGroup.uniqueID)}>Approve</button>
-                                            <button className='denyJournalEntry' onClick={(e) => handleDenyEntry(entryGroup.uniqueID)}>Deny</button>
+                                            <button className='denyJournalEntry' onClick={() => setShowDenyBox(entryGroup.uniqueID)}>Deny</button>
                                         </div>
                                         <span>Completed By: {entryGroup.completedBy}</span>
+                                        {showDenyBox === entryGroup.uniqueID && (
+                                            <div className="deny-reason-box">
+                                                <input
+                                                    type="text"
+                                                    placeholder="Enter reason for denial"
+                                                    value={denyReason}
+                                                    onChange={(e) => setDenyReason(e.target.value)}
+                                                />
+                                                <button onClick={() => handleDenyEntry(entryGroup.uniqueID)}>Submit Reason</button>
+                                            </div>
+                                        )}
                                         <a href={entryGroup.fileURL} target="_blank" rel="noopener noreferrer">
                                             View File
                                         </a>
+                                    </div>
+                                    <div className='additional-details'>
+                                        <span>Description/Comments: {entryGroup.comments} </span>
                                     </div>
                                 </div>
                             ))
@@ -215,50 +238,6 @@ const Journalize = () => {
                             <p>No journal entries found.</p>
                         )}
                     </div>
-
-
-
-
-                    {/* <div>
-                        {error && <p>{error}</p>}
-
-                        <table className='user-table'>
-                            <thead>
-                                <tr>
-                                    <th>Completed By</th>
-                                    <th>Account Name</th>
-                                    <th>Amount</th>
-                                    <th>Account Type</th>
-                                    <th>Entry ID</th>
-                                    <th>Status</th>
-                                    <th>File URL</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {journalEntries.length === 0 ? (
-                                    <tr>
-                                        <td colSpan="5">No journal entries found</td>
-                                    </tr>
-                                ) : (
-                                    journalEntries.map((entry, index) => (
-                                        <tr key={index}>
-                                            <td>{entry.completedBy}</td>
-                                            <td>{entry.accountName}</td>
-                                            <td>{entry.amount}</td>
-                                            <td>{entry.entryType}</td>
-                                            <td>{entry.uniqueID}</td>
-                                            <td>{entry.status}</td>
-                                            <td>
-                                                <a href={entry.fileURL} target="_blank" rel="noopener noreferrer">
-                                                    View File
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
-                    </div> */}
                 </div >
             </div >
         </div >

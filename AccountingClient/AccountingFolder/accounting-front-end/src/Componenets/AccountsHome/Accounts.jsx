@@ -88,7 +88,7 @@ const Accounts = () => {
                 <a href="/HomePage" className='spacingHomePage'>Home</a>
                 <a href="/DisplayUserList">User List</a>
                 <a href="/Accounts">Accounts</a>
-                <a href="/Journalize">Journalize</a>
+                <a href="/AllJournalEntries">Journalize</a>
                 <a href="/LedgerOfAccounts">Ledger</a>
                 <a href="/EventLog">Event Log</a>
                 <a>

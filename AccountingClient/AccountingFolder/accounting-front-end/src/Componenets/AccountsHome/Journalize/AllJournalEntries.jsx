@@ -11,7 +11,7 @@ import axios from 'axios';
 import NewJournalEntry from './NewJournalEntry.jsx'
 import { IoMdAdd } from 'react-icons/io';
 
-const RejectedJournals = () => {
+const AllJournalEntries = () => {
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
     const fullName = storedUser.firstName + " " + storedUser.lastName;
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ const RejectedJournals = () => {
     useEffect(() => {
         const fetchJournalEntries = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/journal/status/Rejected');
+                const response = await axios.get('http://localhost:8080/journal/getAll');
                 const entries = Array.isArray(response.data) ? response.data : [];
                 const grouped = groupEntriesByID(entries);
                 setJournalEntries(grouped);
@@ -53,22 +53,19 @@ const RejectedJournals = () => {
         }
     }, [storedUser, navigate]);
 
-
     const groupEntriesByID = (entries) => {
         const groupedEntries = entries.reduce((acc, entry) => {
-            const { uniqueID, completedBy, status, fileURL, dateCreated, dateRejected, rejectedBy, reasonForRejection } = entry; // Include additional fields
+            const { uniqueID, completedBy, status, fileURL, comments, dateCreated } = entry;
             if (!acc[uniqueID]) {
                 acc[uniqueID] = {
                     uniqueID,
                     completedBy,
                     status,
                     fileURL,
-                    dateCreated,
-                    dateRejected,
-                    rejectedBy,
-                    reasonForRejection,
                     debits: [],
-                    credits: []
+                    credits: [],
+                    comments,
+                    dateCreated
                 };
             }
             if (entry.entryType === 'Debit') {
@@ -81,7 +78,6 @@ const RejectedJournals = () => {
         return Object.values(groupedEntries);
     };
 
-
     return (
         <div className='outerContainers'>
             <div className="homePageOutermostcontainer">
@@ -93,13 +89,13 @@ const RejectedJournals = () => {
                     <a href="/HomePage" className='spacingHomePage'>Home</a>
                     <a href="/DisplayUserList">User List</a>
                     <a href="/Accounts">Accounts</a>
-                    <a href="/Journalize">Journalize</a>
+                    <a href="/AllJournalEntries">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
                     <a href="/EventLog">Event Log</a>
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
                 <div className="main-content">
-                    <h1>Rejected Journal Entries
+                    <h1>All Journal Entries
                         <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Create Entry</button>
                         <button className='journalCalendar' onClick={openCalandar}><CiCalendar />Calendar</button>
                         <div className='JournalTabs'>
@@ -117,62 +113,7 @@ const RejectedJournals = () => {
                     </Modal>
 
 
-
                     <div className="journal-entry-cards">
-                        {journalEntries && journalEntries.length > 0 ? (
-                            journalEntries.map((entryGroup) => {
-                                console.log(entryGroup); // Log each entryGroup here
-                                return (
-                                    <div key={entryGroup.uniqueID} className="journal-card">
-                                        <div className="card-header">
-                                            <span>Entry ID: {entryGroup.uniqueID}</span>
-                                            <span>Status: {entryGroup.status}</span>
-                                        </div>
-
-                                        <div className="card-content">
-                                            <div className="debits-credits-container">
-                                                <div className="debits-section">
-                                                    <h3>Debits</h3>
-                                                    {entryGroup.debits.map((debit, index) => (
-                                                        <p key={index}>{debit.accountName}: ${debit.amount}</p>
-                                                    ))}
-                                                </div>
-                                                <div className="credits-section">
-                                                    <h3>Credits</h3>
-                                                    {entryGroup.credits.map((credit, index) => (
-                                                        <p key={index}>{credit.accountName}: ${credit.amount}</p>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="rejected-card-footer">
-                                            <div className="footer-details">
-                                                <span>Completed By: {entryGroup.completedBy}</span>
-                                                <a href={entryGroup.fileURL} target="_blank" rel="noopener noreferrer">
-                                                    View File
-                                                </a>
-                                            </div>
-
-                                            <div className="additional-details">
-                                                <span>Created Date: {entryGroup.dateCreated}</span>
-                                                <span>Date Rejected: {entryGroup.dateRejected}</span>
-                                                <span>Rejected By: {entryGroup.rejectedBy}</span>
-                                                <span>Reason for Rejection: {entryGroup.reasonForRejection || "N/A"}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                );
-                            })
-                        ) : (
-                            <p>No journal entries found.</p>
-                        )}
-                    </div>
-
-
-
-
-                    {/* <div className="journal-entry-cards">
                         {journalEntries && journalEntries.length > 0 ? (
                             journalEntries.map((entryGroup) => (
                                 <div key={entryGroup.uniqueID} className="journal-card">
@@ -197,21 +138,26 @@ const RejectedJournals = () => {
                                         </div>
                                     </div>
                                     <div className="card-footer">
+
                                         <span>Completed By: {entryGroup.completedBy}</span>
                                         <a href={entryGroup.fileURL} target="_blank" rel="noopener noreferrer">
                                             View File
                                         </a>
+                                    </div>
+                                    <div className='additional-details'>
+                                        <span>Date Created: {entryGroup.dateCreated} </span>
+                                        <span>Description/Comments: {entryGroup.comments} </span>
                                     </div>
                                 </div>
                             ))
                         ) : (
                             <p>No journal entries found.</p>
                         )}
-                    </div> */}
+                    </div>
                 </div >
             </div >
         </div >
     );
 };
 
-export default RejectedJournals;
+export default AllJournalEntries;

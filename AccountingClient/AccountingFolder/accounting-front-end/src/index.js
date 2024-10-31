@@ -16,10 +16,12 @@ import LedgerOfAccounts from './Componenets/Ledger/LedgerOfAccounts';
 import NewUserForm from './Componenets/DisplayUserList/NewUserForm';
 import EditUserForm from './Componenets/DisplayUserList/EditUserForm'
 import EditAccount from './Componenets/AccountsHome/EditAccount';
-import Journalize from './Componenets/AccountsHome/Journalize/Journalize';
 import Statements from './Componenets/FinancialStatements/Statements';
+import PendingJournalEntries from './Componenets/AccountsHome/Journalize/PendingJournalEntries';
 import NewJournalEntry from './Componenets/AccountsHome/Journalize/NewJournalEntry'
 import RejectedJournals from './Componenets/AccountsHome/Journalize/RejectedJournals';
+import AllJournalEntries from './Componenets/AccountsHome/Journalize/AllJournalEntries';
+import ApprovedJournalEntries from './Componenets/AccountsHome/Journalize/ApprovedJournalEntries';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -39,10 +41,12 @@ root.render(
         <Route path="/LedgerOfAccounts" element={<LedgerOfAccounts />} />
         <Route path="/EditUserForm" element={<EditUserForm />} />
         <Route path="/EditAccount" element={<EditAccount />} />
-        <Route path="/Journalize" element={<Journalize />} />
-        <Route path= "/Statements" element={<Statements/>} />
+        <Route path="/Statements" element={<Statements />} />
+        <Route path="/PendingJournalEntries" element={<PendingJournalEntries />} />
         <Route path="/NewJournalEntry" element={<NewJournalEntry />} />
         <Route path="/RejectedJournals" element={<RejectedJournals />} />
+        <Route path="/AllJournalEntries" element={<AllJournalEntries />} />
+        <Route path="/ApprovedJournalEntries" element={<ApprovedJournalEntries />} />
         {/* <Route path="/handleFetchUsers" element={<handleFetchUsers />} /> */}
       </Routes>
     </BrowserRouter>

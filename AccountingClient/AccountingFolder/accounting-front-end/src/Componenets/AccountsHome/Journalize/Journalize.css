@@ -84,28 +84,6 @@
     margin-bottom: 20px;
 }
 
-/* 
-.JournalTabs {
-    margin-top: 10px;
-    display: flex;
-}
-
-.jounalButtonTabs {
-    justify-content: left;
-    padding: 16px;
-    border-radius: 4px;
-    border: .1px solid green;
-    background-color: cornflowerblue;
-    color: aliceblue;
-    text-transform: uppercase;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-right: 100px;
-    width: 200px;
-    margin-top: 10px;
-} */
-
 /* Container for the tabs */
 .JournalTabs {
     display: flex;
@@ -205,6 +183,7 @@
     line-height: 1.4;
 }
 
+
 .card-footer {
     display: flex;
     justify-content: space-between;
@@ -215,6 +194,7 @@
     display: flex;
     gap: 10px;
 }
+
 
 .card-footer a {
     color: #1e90ff;
@@ -252,4 +232,36 @@
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
+}
+
+.debits-section {
+    margin-right: 70px;
+}
+
+.credits-section {
+    margin-left: 60px;
+}
+
+.rejected-card-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.footer-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.additional-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-top: 10px;
+    font-size: 0.9em;
+    color: #666;
+    border-top: 1px solid #e0e0e0;
 }
