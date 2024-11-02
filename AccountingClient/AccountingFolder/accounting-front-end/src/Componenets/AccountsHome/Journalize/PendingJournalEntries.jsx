@@ -84,7 +84,7 @@ const Journalize = () => {
 
     const groupEntriesByID = (entries) => {
         const groupedEntries = entries.reduce((acc, entry) => {
-            const { uniqueID, completedBy, status, fileURL, comments } = entry;
+            const { uniqueID, completedBy, status, fileURL, comments, journalType } = entry;
             if (!acc[uniqueID]) {
                 acc[uniqueID] = {
                     uniqueID,
@@ -93,7 +93,8 @@ const Journalize = () => {
                     fileURL,
                     debits: [],
                     credits: [],
-                    comments
+                    comments,
+                    journalType
                 };
             }
             if (entry.entryType === 'Debit') {
@@ -222,7 +223,7 @@ const Journalize = () => {
                                                     value={denyReason}
                                                     onChange={(e) => setDenyReason(e.target.value)}
                                                 />
-                                                <button onClick={() => handleDenyEntry(entryGroup.uniqueID)}>Submit Reason</button>
+                                                <button class='buttonForRejection' onClick={() => handleDenyEntry(entryGroup.uniqueID)}>Submit Reason</button>
                                             </div>
                                         )}
                                         <a href={entryGroup.fileURL} target="_blank" rel="noopener noreferrer">
@@ -230,6 +231,7 @@ const Journalize = () => {
                                         </a>
                                     </div>
                                     <div className='additional-details'>
+                                        <span>Entry Type: {entryGroup.journalType} </span>
                                         <span>Description/Comments: {entryGroup.comments} </span>
                                     </div>
                                 </div>

@@ -55,7 +55,7 @@ const AllJournalEntries = () => {
 
     const groupEntriesByID = (entries) => {
         const groupedEntries = entries.reduce((acc, entry) => {
-            const { uniqueID, completedBy, status, fileURL, comments, dateCreated } = entry;
+            const { uniqueID, completedBy, status, fileURL, comments, dateCreated, journalType } = entry;
             if (!acc[uniqueID]) {
                 acc[uniqueID] = {
                     uniqueID,
@@ -65,7 +65,8 @@ const AllJournalEntries = () => {
                     debits: [],
                     credits: [],
                     comments,
-                    dateCreated
+                    dateCreated,
+                    journalType
                 };
             }
             if (entry.entryType === 'Debit') {
@@ -145,6 +146,7 @@ const AllJournalEntries = () => {
                                         </a>
                                     </div>
                                     <div className='additional-details'>
+                                        <span>Entry Type: {entryGroup.journalType} </span>
                                         <span>Date Created: {entryGroup.dateCreated} </span>
                                         <span>Description/Comments: {entryGroup.comments} </span>
                                     </div>

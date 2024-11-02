@@ -12,6 +12,12 @@
     cursor: pointer;
 }
 
+.typeOfEntry {
+    margin-right: 570px;
+    margin-top: 20px;
+    width: 170px;
+}
+
 .journalCalendar:hover {
     background-color: blueviolet;
     color: azure;
@@ -264,4 +270,16 @@
     font-size: 0.9em;
     color: #666;
     border-top: 1px solid #e0e0e0;
+}
+
+.buttonForRejection {
+    padding: 4px;
+    border-radius: 4px;
+    border: 0.1px solid green;
+    background-color: cornflowerblue;
+    color: aliceblue;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 3px;
 }

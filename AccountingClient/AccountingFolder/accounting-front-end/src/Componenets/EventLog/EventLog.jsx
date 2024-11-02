@@ -22,7 +22,7 @@ const EventLog = () => {
         const fetchData = async () => {
             try {
                 // Fetch event logs 
-                const logResponse = await axios.get('http://localhost:8080/api/events');
+                const logResponse = await axios.get('http://localhost:8080/api/getAll');
                 console.log('Fetched logs:', logResponse.data);
                 setLogs(logResponse.data);
 
@@ -77,16 +77,16 @@ const EventLog = () => {
                                 <tr key={log._id}>
                                     <td>{log.eventID}</td>
                                     <td>{log.eventType}</td>
-                                    <td>{log.userId}</td>
+                                    <td>{log.username}</td>
                                     <td>{log.modifiedBy}</td>
-                                    <td>{new Date(log.timestamp).toLocaleString()}</td>
+                                    <td>{log.dateAndTime}</td>
                                     <td>
-                                        {/* {log.beforeChange} */}
-                                        {JSON.stringify(log.beforeChange, null, 2)}
+                                        {log.beforeChange}
+                                        {/* {JSON.stringify(log.beforeChange, null, 2)} */}
                                     </td>
                                     <td>
-                                        {/* {log.afterChange} */}
-                                        {JSON.stringify(log.afterChange, null, 2)}
+                                        {log.afterChange}
+                                        {/* {JSON.stringify(log.afterChange, null, 2)} */}
                                     </td>
                                 </tr>
                             ))}

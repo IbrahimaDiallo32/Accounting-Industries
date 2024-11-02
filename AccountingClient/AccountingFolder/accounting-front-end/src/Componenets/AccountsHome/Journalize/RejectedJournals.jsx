@@ -56,7 +56,7 @@ const RejectedJournals = () => {
 
     const groupEntriesByID = (entries) => {
         const groupedEntries = entries.reduce((acc, entry) => {
-            const { uniqueID, completedBy, status, fileURL, dateCreated, dateRejected, rejectedBy, reasonForRejection } = entry; // Include additional fields
+            const { uniqueID, completedBy, status, fileURL, dateCreated, dateRejected, rejectedBy, reasonForRejection, journalType } = entry; // Include additional fields
             if (!acc[uniqueID]) {
                 acc[uniqueID] = {
                     uniqueID,
@@ -68,7 +68,8 @@ const RejectedJournals = () => {
                     rejectedBy,
                     reasonForRejection,
                     debits: [],
-                    credits: []
+                    credits: [],
+                    journalType
                 };
             }
             if (entry.entryType === 'Debit') {
@@ -155,6 +156,7 @@ const RejectedJournals = () => {
                                             </div>
 
                                             <div className="additional-details">
+                                                <span>Entry type: {entryGroup.journalType}</span>
                                                 <span>Created Date: {entryGroup.dateCreated}</span>
                                                 <span>Date Rejected: {entryGroup.dateRejected}</span>
                                                 <span>Rejected By: {entryGroup.rejectedBy}</span>
@@ -168,46 +170,6 @@ const RejectedJournals = () => {
                             <p>No journal entries found.</p>
                         )}
                     </div>
-
-
-
-
-                    {/* <div className="journal-entry-cards">
-                        {journalEntries && journalEntries.length > 0 ? (
-                            journalEntries.map((entryGroup) => (
-                                <div key={entryGroup.uniqueID} className="journal-card">
-                                    <div className="card-header">
-                                        <span>Entry ID: {entryGroup.uniqueID}</span>
-                                        <span>Status: {entryGroup.status}</span>
-                                    </div>
-                                    <div className="card-content">
-                                        <div className="debits-credits-container">
-                                            <div className="debits-section">
-                                                <h3>Debits</h3>
-                                                {entryGroup.debits.map((debit, index) => (
-                                                    <p key={index}>{debit.accountName}: ${debit.amount}</p>
-                                                ))}
-                                            </div>
-                                            <div className="credits-section">
-                                                <h3>Credits</h3>
-                                                {entryGroup.credits.map((credit, index) => (
-                                                    <p key={index}>{credit.accountName}: ${credit.amount}</p>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="card-footer">
-                                        <span>Completed By: {entryGroup.completedBy}</span>
-                                        <a href={entryGroup.fileURL} target="_blank" rel="noopener noreferrer">
-                                            View File
-                                        </a>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p>No journal entries found.</p>
-                        )}
-                    </div> */}
                 </div >
             </div >
         </div >

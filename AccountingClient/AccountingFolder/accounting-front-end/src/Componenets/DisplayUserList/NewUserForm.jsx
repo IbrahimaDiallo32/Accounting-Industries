@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './NewUserForm.css'
 import { IoArrowBack } from 'react-icons/io5';
@@ -11,6 +11,8 @@ function RegistrationForm() {
     const [birthDate, setBirthDate] = useState('');
     const [birthYear, setBirthYear] = useState('');
     const [email, setEmail] = useState('');
+    const [existingIds, setExistingIds] = useState(new Set()); // Track existing IDs
+    const [newEventId, setNewEventId] = useState(''); // Store generated ID  
 
     const [accountType, setAccountType] = useState("role");
 
@@ -47,6 +49,7 @@ function RegistrationForm() {
         return "inactive";
     };
 
+
     const dateToday = () => {
         const today = new Date();
         const month = today.getMonth() + 1;
@@ -56,9 +59,29 @@ function RegistrationForm() {
         return currentDate;
     };
 
-    React.useEffect(() => {
-
+    useEffect(() => {
+        const fetchEventLogs = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/getAll');
+                const ids = response.data.map(event => event.eventID); // Extract event IDs
+                setExistingIds(new Set(ids)); // Store IDs in a Set for quick lookup
+            } catch (error) {
+                console.error('Error fetching event logs:', error);
+            }
+        };
+        fetchEventLogs();
     }, []);
+
+    const generateEventId = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let eventId;
+
+        do {
+            eventId = Array.from({ length: 5 }, () => characters[Math.floor(Math.random() * characters.length)]).join('');
+        } while (existingIds.has(eventId)); // Check uniqueness
+
+        return eventId;
+    };
 
     const dateForUserName = () => {
         const today = new Date();
@@ -73,8 +96,17 @@ function RegistrationForm() {
     };
 
     const handleSubmit = async (e) => {
+        const today = new Date();
+        const currentTime = today.toLocaleTimeString("en-US", {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+        generateEventId();
         const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + dateForUserName();
-        console.log(dbUserName);
+        const fullName = firstName + lastName;
+        const dateTime = dateToday() + ", " + currentTime;
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
         //This sensda a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
         try {
@@ -101,10 +133,14 @@ function RegistrationForm() {
 
         try {
             // Log the user creation event
-            await axios.post('http://localhost:8080/api/event-logs', {
+            const response2 = await axios.post('http://localhost:8080/api/create', {
                 username: dbUserName,
-                action: 'User Created',
-                eventDate: dateToday()
+                modifiedBy: fullName,
+                eventType: 'User Created',
+                dateAndTime: dateTime,
+                beforeChange: "~",
+                afterChange: "User is created",
+                eventID: newEventId
             });
         } catch (error) {
             console.error("Error logging event", error);

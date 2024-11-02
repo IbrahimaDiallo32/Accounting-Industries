@@ -19,22 +19,13 @@ const NewJournalEntry = () => {
     const [description, setDescription] = useState([]);
     const [entries, setEntries] = useState([]);
     const [newEntry, setNewEntry] = useState("");
+    const [journalType, setJournaType] = useState("Regular Entry");
     const initialEntryState = [{ account: 'NULL', amount: '0.00' }];
     const [files, setFiles] = useState([]);
     const [debitEntries, setDebitEntries] = useState([{ account: 'NULL', amount: '0.00' }]);
     const [creditEntries, setCreditEntries] = useState([{ account: 'NULL', amount: '0.00' }]);
 
     const [errorMessage, setErrorMessage] = useState('');
-    const [isCalandarOpen, setIsCalandarOpen] = useState(false);
-    const openCalandar = () => setIsCalandarOpen(true);
-    const closeCalandar = () => setIsCalandarOpen(false);
-
-    const openModal = () => setIsModalOpen(true);
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
-
-
 
     useEffect(() => {
         if (!storedUser) {
@@ -169,7 +160,8 @@ const NewJournalEntry = () => {
                     completedBy: fullName,
                     uniqueID: uniqueID,
                     status: "Pending",
-                    description: description
+                    description: description,
+                    journalType: journalType
                 });
             }
 
@@ -235,7 +227,14 @@ const NewJournalEntry = () => {
             <hr className='solidLineRegister' />
             <div className="registrationInnerContainer">
                 <form className='RegForm'>
-                    <button type="button" className='journalCalendar' onClick={handleClearForm}>Clear Entries</button>
+                    <div className='inlineHeaderElements'>
+                        <button type="button" className='journalCalendar' onClick={handleClearForm}>Clear Entries</button>
+                        {/* <label className='entryLabel'>Type of Entry:</label> */}
+                        Entry Type<select className='typeOfEntry' onChange={(e) => setJournaType(e.target.value)}>Journal Type
+                            <option>Regular Entry</option>
+                            <option>Adjusting Entry</option>
+                        </select>
+                    </div>
 
                     <h3>Debits:</h3>
                     {debitEntries.map((entry, index) => (
@@ -322,7 +321,6 @@ const NewJournalEntry = () => {
                             )}
                         </div>
                     ))}
-                    you need to put an input box for adjjstuing or regualr
                     <button type="button" className='addEntryButton' onClick={handleAddCreditEntry}>Add Entry</button>
                     <div>
                         <h5 className='space'>Description/Comments</h5>
