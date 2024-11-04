@@ -4,6 +4,10 @@ import './NewUserForm.css'
 import { IoArrowBack } from 'react-icons/io5';
 
 function RegistrationForm() {
+
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    const StoredFullName = storedUser.firstName + " " + storedUser.lastName;
+    const storedUsername = storedUser.username;
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [address, setAddress] = useState('');
@@ -131,6 +135,7 @@ function RegistrationForm() {
             console.error('Error creating user:', error);
         }
 
+        const afterChangeString = StoredFullName + " (" + storedUsername + ") created a new user with the username of: " + dbUserName;
         try {
             // Log the user creation event
             const response2 = await axios.post('http://localhost:8080/api/create', {
@@ -139,8 +144,8 @@ function RegistrationForm() {
                 eventType: 'User Created',
                 dateAndTime: dateTime,
                 beforeChange: "~",
-                afterChange: "User is created",
-                eventID: newEventId
+                afterChange: afterChangeString,
+                eventID: generateEventId()
             });
         } catch (error) {
             console.error("Error logging event", error);

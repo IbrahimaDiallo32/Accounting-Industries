@@ -9,6 +9,9 @@ import axios from 'axios';
 const CreateAccount = () => {
 
     //all variables match from MongoDB 
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    const fullName = storedUser.firstName + " " + storedUser.lastName;
+    const storedUsername = storedUser.username;
     const [accountName, setAccountName] = useState('');
     const [accountNumber, setAccountNumber] = useState('');
     const [accountDescription, setAccountDescription] = useState('');
@@ -23,6 +26,7 @@ const CreateAccount = () => {
     const [statement, setStatement] = useState('');
     const [comment, setComment] = useState('');
     const [existingAccounts, setExistingAccounts] = useState([]);
+    const [existingIds, setExistingIds] = useState(new Set());
 
     const clearForm = () => {
         setAccountName('');
@@ -60,6 +64,17 @@ const CreateAccount = () => {
             }
         };
         fetchAccounts();
+
+        const fetchEventLogs = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/getAll');
+                const ids = response.data.map(event => event.eventID); // Extract event IDs
+                setExistingIds(new Set(ids)); // Store IDs in a Set for quick lookup
+            } catch (error) {
+                console.error('Error fetching event logs:', error);
+            }
+        };
+        fetchEventLogs();
     }, []);
 
     //Responsible for checking to see if there is either a duplicate Name or Number before the account is created
@@ -104,11 +119,51 @@ const CreateAccount = () => {
             alert("Account created!"); //notifies user successful
             clearForm(); //clears data if account successfully created
         } catch (error) {
-            console.error('Error creating user:', error);
+            console.error('Error creating account:', error);
+        }
+
+        const afterChangeString = fullName + " (" + storedUsername + ") created a new account with the Account name of: " + accountName;
+        try {
+            // Log the user creation event
+            const response2 = await axios.post('http://localhost:8080/api/create', {
+                username: storedUsername,
+                modifiedBy: fullName,
+                eventType: 'Account Created',
+                dateAndTime: dateAndTimeToday(),
+                beforeChange: "~",
+                afterChange: afterChangeString,
+                eventID: generateEventId()
+            });
+        } catch (error) {
+            console.error("Error logging event", error);
         }
     };
 
+    const generateEventId = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let eventId;
 
+        do {
+            eventId = Array.from({ length: 5 }, () => characters[Math.floor(Math.random() * characters.length)]).join('');
+        } while (existingIds.has(eventId)); // Check uniqueness
+
+        return eventId;
+    };
+
+    const dateAndTimeToday = () => {
+        const today = new Date();
+        const thisMonth = today.getMonth() + 1;
+        const thisDate = today.getDate();
+        const thisYear = today.getFullYear();
+        const date = `${thisMonth}/${thisDate}/${thisYear}`;
+        const currentTime = today.toLocaleTimeString("en-US", {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+        return date + ", " + currentTime;
+    };
 
     return (
         <div className='RegistrationContainer'>

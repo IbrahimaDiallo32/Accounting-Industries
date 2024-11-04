@@ -14,6 +14,7 @@ import { FaMinusCircle } from "react-icons/fa";
 const NewJournalEntry = () => {
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
     const fullName = storedUser.firstName + " " + storedUser.lastName;
+    const username = storedUser.username;
     const navigate = useNavigate();
     const [accounts, setAccounts] = useState([]);
     const [description, setDescription] = useState([]);
@@ -25,6 +26,7 @@ const NewJournalEntry = () => {
     const [debitEntries, setDebitEntries] = useState([{ account: 'NULL', amount: '0.00' }]);
     const [creditEntries, setCreditEntries] = useState([{ account: 'NULL', amount: '0.00' }]);
 
+    const [existingIds, setExistingIds] = useState(new Set());
     const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
@@ -56,13 +58,13 @@ const NewJournalEntry = () => {
 
     const handleDebitChange = (index, field, value) => {
         const newEntries = [...debitEntries];
-        newEntries[index][field] = value;
+        newEntries[index][field] = value.replace(/,/g, ''); // Store value without commas
         setDebitEntries(newEntries);
     };
 
     const handleCreditChange = (index, field, value) => {
         const newEntries = [...creditEntries];
-        newEntries[index][field] = value;
+        newEntries[index][field] = value.replace(/,/g, ''); // Store value without commas
         setCreditEntries(newEntries);
     };
 
@@ -141,9 +143,14 @@ const NewJournalEntry = () => {
         }
 
         const journalEntries = [
-            ...debitEntries.map(entry => ({ ...entry, entryType: 'Debit' })),
-            ...creditEntries.map(entry => ({ ...entry, entryType: 'Credit' }))
+            ...debitEntries.map(entry => ({
+                ...entry, entryType: 'Debit', amount: parseFloat(entry.amount).toFixed(2)
+            })),
+            ...creditEntries.map(entry => ({
+                ...entry, entryType: 'Credit', amount: parseFloat(entry.amount).toFixed(2)
+            }))
         ];
+
 
         setErrorMessage(''); // Clear any existing error message
 
@@ -170,6 +177,47 @@ const NewJournalEntry = () => {
             console.error('Error creating journal entries:', error);
             setErrorMessage('An error occurred while creating journal entries.');
         }
+        const newEventID = generateEventId();
+        const afterChangeString = fullName + " (" + username + ") created a new journal entry ID: " + uniqueID;
+        try {
+            const response2 = await axios.post('http://localhost:8080/api/create', {
+                username: username,
+                modifiedBy: fullName,
+                eventType: 'New Journal Entry',
+                dateAndTime: dateAndTimeToday(),
+                beforeChange: "~",
+                afterChange: afterChangeString,
+                eventID: newEventID
+            });
+        } catch (error) {
+            console.error("Error logging event", error);
+        }
+    };
+
+    const dateAndTimeToday = () => {
+        const today = new Date();
+        const thisMonth = today.getMonth() + 1;
+        const thisDate = today.getDate();
+        const thisYear = today.getFullYear();
+        const date = `${thisMonth}/${thisDate}/${thisYear}`;
+        const currentTime = today.toLocaleTimeString("en-US", {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+        return date + ", " + currentTime;
+    };
+
+    const generateEventId = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let eventId;
+
+        do {
+            eventId = Array.from({ length: 5 }, () => characters[Math.floor(Math.random() * characters.length)]).join('');
+        } while (existingIds.has(eventId)); // Check uniqueness
+
+        return eventId;
     };
 
     const getSelectedAccounts = () => {
@@ -258,7 +306,22 @@ const NewJournalEntry = () => {
                             $ <input
                                 type="text"
                                 value={entry.amount}
-                                onChange={(e) => handleDebitChange(index, 'amount', e.target.value)}
+                                // onChange={(e) => handleDebitChange(index, 'amount', e.target.value)}
+                                onChange={(e) => {
+                                    handleDebitChange(index, 'amount', e.target.value.replace(/,/g, '')); // This removes commas to save the number in the database accurately
+                                }}
+                                onBlur={(e) => {
+                                    let value = parseFloat(e.target.value.replace(/,/g, '')).toFixed(2); // Remove commas and ensure 2 decimals
+                                    if (!isNaN(value)) {
+                                        const updatedEntries = [...debitEntries];
+                                        updatedEntries[index].amount = value; // Set formatted value in the state
+                                        setDebitEntries(updatedEntries);
+                                    }
+                                }}
+
+                                onFocus={(e) => {
+                                    e.target.value = e.target.value.replace(/,/g, ''); // Remove commas for editing
+                                }}
                             />
 
                             {index > 0 ? (
@@ -302,7 +365,21 @@ const NewJournalEntry = () => {
                             </select>
                             $ <input
                                 placeholder='Amount' value={entry.amount}
-                                onChange={(e) => handleCreditChange(index, 'amount', e.target.value)}
+                                onChange={(e) => {
+                                    handleCreditChange(index, 'amount', e.target.value.replace(/,/g, '')); // This removes commas to save the number in the database accurately
+                                }}
+                                onBlur={(e) => {
+                                    let value = parseFloat(e.target.value.replace(/,/g, '')).toFixed(2); // Remove commas and ensure 2 decimals
+                                    if (!isNaN(value)) {
+                                        const updatedEntries = [...debitEntries];
+                                        updatedEntries[index].amount = value; // Set formatted value in the state
+                                        setCreditEntries(updatedEntries);
+                                    }
+                                }}
+
+                                onFocus={(e) => {
+                                    e.target.value = e.target.value.replace(/,/g, ''); // Remove commas for editing
+                                }}
                             />
                             {index > 0 ? (
                                 <button

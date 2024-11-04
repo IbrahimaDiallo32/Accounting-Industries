@@ -1,5 +1,5 @@
 import './RegistrationForm.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { IoArrowBack } from "react-icons/io5";
 
@@ -18,6 +18,7 @@ function RegistrationForm() {
     });
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordMatch, setPasswordMatch] = useState(true);
+    const [existingIds, setExistingIds] = useState(new Set());
 
     const passwordHasNumber = /\d/;
 
@@ -72,6 +73,19 @@ function RegistrationForm() {
         return "inactive";
     };
 
+    useEffect(() => {
+        const fetchEventLogs = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/getAll');
+                const ids = response.data.map(event => event.eventID); // Extract event IDs
+                setExistingIds(new Set(ids)); // Store IDs in a Set for quick lookup
+            } catch (error) {
+                console.error('Error fetching event logs:', error);
+            }
+        };
+        fetchEventLogs();
+    }, []);
+
     const dateToday = () => {
         const today = new Date();
         const thisMonth = today.getMonth() + 1;
@@ -94,6 +108,7 @@ function RegistrationForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const fullName = firstName + " " + lastName;
         const dbUserName = firstName.charAt(0) + lastName.toLowerCase() + dateForUserName();
 
         try {
@@ -120,19 +135,51 @@ function RegistrationForm() {
         }
 
         try {
-            await axios.post('http://localhost:8080/api/events/log', {
-                dbUserName,
-                action: 'User Created',
-                accountCreatedDate: dateToday()
+            // Log the user creation event
+            const response2 = await axios.post('http://localhost:8080/api/create', {
+                username: dbUserName,
+                modifiedBy: fullName,
+                eventType: 'User Created',
+                dateAndTime: dateAndTimeToday(),
+                beforeChange: "~",
+                afterChange: "User is created",
+                eventID: generateEventId()
             });
         } catch (error) {
             console.error("Error logging event", error);
         }
+
     };
 
     const handleConfirmPassword = (e) => {
         setConfirmPassword(e.target.value);
         setPasswordMatch(password.value === e.target.value);
+    };
+
+    const generateEventId = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let eventId;
+
+        do {
+            eventId = Array.from({ length: 5 }, () => characters[Math.floor(Math.random() * characters.length)]).join('');
+        } while (existingIds.has(eventId)); // Check uniqueness
+
+        return eventId;
+    };
+
+    const dateAndTimeToday = () => {
+        const today = new Date();
+        const thisMonth = today.getMonth() + 1;
+        const thisDate = today.getDate();
+        const thisYear = today.getFullYear();
+        const date = `${thisMonth}/${thisDate}/${thisYear}`;
+        const currentTime = today.toLocaleTimeString("en-US", {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+        return date + ", " + currentTime;
     };
 
     return (

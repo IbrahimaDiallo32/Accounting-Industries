@@ -53,7 +53,7 @@ const LoginForm = () => {
         }
     };
 
-    const [existingIds, setExistingIds] = useState(new Set()); // Track existing IDs
+    const [existingIds, setExistingIds] = useState(new Set());
 
     const generateEventId = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -78,7 +78,7 @@ const LoginForm = () => {
             second: 'numeric',
             hour12: true
         });
-        return date + " " + currentTime;
+        return date + ", " + currentTime;
     };
 
     useEffect(() => {

@@ -7,8 +7,11 @@ function EditUserForm({ user }) {
     const originalUsername = user.username;
     //this autopopulates the fields with the user data
     const [firstName, setFirstName] = useState(user?.firstName || '');
+    const oldFirstName = user?.firstName;
     const [lastName, setLastName] = useState(user?.lastName || '');
+    const oldLastName = user?.lastName;
     const [email, setEmail] = useState(user?.email || '');
+    const oldEmail = user?.email;
     const [accountType, setAccountType] = useState(user?.accountType || '');
     const [address, setAddress] = useState(user?.address || '');
     const [accountStatus, setAccountStatus] = useState(user?.accountStatus);
