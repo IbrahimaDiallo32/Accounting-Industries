@@ -99,7 +99,7 @@ const Statements = () => {
 
             {correctDisplay("balance-sheet") && (                                 //Start of Blance Sheet
 
-                <div className="statement-outer-countainer">
+                <div className="statement-outer-container">
                     <h2>Balance Sheet</h2> 
                     <table className="statement-table">
                         <thead>
