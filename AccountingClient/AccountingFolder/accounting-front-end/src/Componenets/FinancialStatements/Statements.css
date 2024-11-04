@@ -1,20 +1,25 @@
-.balance-sheet-outer-countainer{
-    width: 80%;
+.statement-selector{
+  width: 100%;
 }
-.balance-sheet-table {
+
+
+.statement-outer-countainer{
+    width: 90%;
+}
+.statement-table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
   }
   
-  .balance-sheet-table th,
-  .balance-sheet-table td {
+  .statement-table th,
+  .statement-table td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
   }
   
-  .balance-sheet-table th {
+  .statement-table th {
     background-color: #f2f2f2;
     font-weight: bold;
   }
@@ -28,9 +33,15 @@
     padding-top: 10px;
     padding-bottom: 10px;
   }
+  .indent{
+   padding-left: 80px;
+  }
+  .statement-table td.indent{
+    padding-left: 80px;
+  }
   .no-border{
     border: none;
   }
-  .balance-sheet-table td.no-border{
+  .statement-table td.no-border{
     border: none;
   }
