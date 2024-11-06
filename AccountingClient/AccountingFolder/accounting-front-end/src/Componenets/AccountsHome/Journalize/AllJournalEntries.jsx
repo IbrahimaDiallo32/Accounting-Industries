@@ -23,7 +23,7 @@ const AllJournalEntries = () => {
 
     const [journalEntries, setJournalEntries] = useState([]);
     const storedJournal = localStorage.getItem("currentPostRef");
-    const [searchTerm,setSearchTerm] = useState("");
+    const [searchTerm,setSearchTerm] = useState(storedJournal);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => setIsModalOpen(true);
