@@ -118,14 +118,14 @@ const EditAccount = ({ account }) => {
         return date + ", " + currentTime;
     };
 
-    const IsFormValid = () => {
-        return (
-            accountCategory &&
-            accountDescription && accountName && accountNumber
-            && accountSubCategory && debit && credit && initialBalance
-            && balance
-        );
-    };
+    // const IsFormValid = () => {
+    //     return (
+    //         accountCategory &&
+    //         accountDescription && accountName && accountNumber
+    //         && accountSubCategory && debit && credit && initialBalance
+    //         && balance
+    //     );
+    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // This prevents the page from reloading when the form is submitted.
@@ -356,11 +356,11 @@ const EditAccount = ({ account }) => {
                             <input className="registrationInput" value={formData.comment}
                                 onChange={(e) => handleChange('comment', e.target.value)} placeholder='Comment' />
                         </div>
-                        <button disabled={!IsFormValid()} type="submit" className='RegistrationButton'>Save Changes</button>
+                        <button type="submit" className='RegistrationButton'>Save Changes</button>
+                        {/* disabled={!IsFormValid()} */}
                     </fieldset>
                 </form>
             </div>
-            <button onClick={checkme}>dsf</button>
         </div >
     );
 };
