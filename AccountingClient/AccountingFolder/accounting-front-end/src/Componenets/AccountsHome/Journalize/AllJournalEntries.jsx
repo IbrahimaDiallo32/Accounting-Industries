@@ -22,6 +22,8 @@ const AllJournalEntries = () => {
     const closeCalandar = () => setIsCalandarOpen(false);
 
     const [journalEntries, setJournalEntries] = useState([]);
+    const storedJournal = localStorage.getItem("currentPostRef");
+    const [searchTerm,setSearchTerm] = useState("");
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => setIsModalOpen(true);
@@ -34,24 +36,10 @@ const AllJournalEntries = () => {
         navigate("/loginForm");
     };
 
-    useEffect(() => {
-        const fetchJournalEntries = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/journal/getAll');
-                const entries = Array.isArray(response.data) ? response.data : [];
-                const grouped = groupEntriesByID(entries);
-                setJournalEntries(grouped);
-            } catch (error) {
-                setErrorMessage('Failed to fetch journal entries');
-                console.error(error);
-            }
-        };
-        fetchJournalEntries();
-
-        if (!storedUser) {
-            navigate("/", { replace: true });
-        }
-    }, [storedUser, navigate]);
+    const saveSelectedAccount = (account) => {
+        console.log("Saving to localStorage:", account); // Log to confirm saving
+        localStorage.setItem("currentAccount", account);
+    }
 
     const groupEntriesByID = (entries) => {
         const groupedEntries = entries.reduce((acc, entry) => {
@@ -79,6 +67,52 @@ const AllJournalEntries = () => {
         return Object.values(groupedEntries);
     };
 
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/journal/filter?query=${searchTerm}`);
+            const entries = Array.isArray(response.data) ? response.data : [];
+            const grouped = groupEntriesByID(entries);
+            setJournalEntries(grouped);
+        } catch (error) {
+            setErrorMessage('Failed to fetch journal entries');
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        const storedJournal = localStorage.getItem("currentPostRef");
+    
+        if (storedJournal) {
+            setSearchTerm(storedJournal); // Sets searchTerm if storedJournal is present
+            localStorage.removeItem("currentPostRef");
+        } else {
+            // Only fetch all entries if there's no storedJournal
+            const fetchJournalEntries = async () => {
+                try {
+                    const response = await axios.get('http://localhost:8080/journal/getAll');
+                    const entries = Array.isArray(response.data) ? response.data : [];
+                    const grouped = groupEntriesByID(entries);
+                    setJournalEntries(grouped);
+                } catch (error) {
+                    setErrorMessage('Failed to fetch journal entries');
+                    console.error(error);
+                }
+            };
+            fetchJournalEntries();
+        }
+    
+        if (!storedUser) {
+            navigate("/", { replace: true });
+        }
+    }, []);
+    
+    // Separate useEffect to run `handleSearch` only when `searchTerm` is updated
+    useEffect(() => {
+        if (searchTerm) {
+            handleSearch();
+        }
+    }, [searchTerm]);
+
     return (
         <div className='outerContainers'>
             <div className="homePageOutermostcontainer">
@@ -105,6 +139,10 @@ const AllJournalEntries = () => {
                             <button className='jounalButtonTabs' ><a href='/PendingJournalEntries'>Pending Entries</a></button>
                             <button className='jounalButtonTabs' ><a href='/ApprovedJournalEntries'>Approved Entries</a></button>
                             <button className='jounalButtonTabs' ><a href='/RejectedJournals'>Rejected Entries </a></button>
+                            <span className='searchJournals' >
+                            <input className ='journalSearch' value ={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></input>
+                            <button className='jounalButtonTabs' onClick = {handleSearch}>Search</button>
+                            </span>
                         </div>
                     </h1>
                     <Modal isOpen={isCalandarOpen} onClose={closeCalandar}>
@@ -129,13 +167,15 @@ const AllJournalEntries = () => {
                                                 <h3>Debits</h3>
                                                 {/* <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td> */}
                                                 {entryGroup.debits.map((debit, index) => (
-                                                    <p key={index}>{debit.accountName}: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                                    <p key={index}><a href = "/LedgerOfAccounts" onClick={ () => {saveSelectedAccount(debit.accountName)}}>{debit.accountName}</a>: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+//                                                     <p key={index}>{debit.accountName}: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                             <div className="credits-section">
                                                 <h3>Credits</h3>
                                                 {entryGroup.credits.map((credit, index) => (
-                                                    <p key={index}>{credit.accountName}: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                                    <p key={index}><a href = "/LedgerOfAccounts" onClick={ () => {saveSelectedAccount(credit.accountName)}}>{credit.accountName}</a>: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+//                                                     <p key={index}>{credit.accountName}: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                         </div>

@@ -58,7 +58,21 @@ const LedgerOfAccounts = () => {
     const openHelp = () => setIsHelpOpen(true);
     const closeHelp = () => setIsHelpOpen(false);
 
-    const [ledgerAccount, setLedgerAccount] = useState('Select Account');
+    const [ledgerAccount, setLedgerAccount] = useState('Select-Account');
+
+    useEffect(() => {
+        const storedAccount = localStorage.getItem("currentAccount");
+        if (storedAccount) {
+            fetchJournalEntries(storedAccount);
+            setLedgerAccount(storedAccount);
+            localStorage.removeItem("currentAccount");
+        }
+    }, [])
+
+    const saveSelectedPostReference = (postRef) => {
+        console.log("Saving to localStorage:", postRef); // Log to confirm saving
+        localStorage.setItem("currentPostRef", postRef);
+    }
 
     return (
         <div className="homePageOutermostcontainer">
@@ -81,6 +95,7 @@ const LedgerOfAccounts = () => {
                 <div>
                     <label className='labelSelectAccountLedger'> Select Account</label>
                     <select className="sortBySelection" value={ledgerAccount} onChange={(e) => setLedgerAccount(e.target.value)} defaultValue="Select Account">
+                        <option value="Select-Account" disabled >Select Account</option>
                         {accounts.map((accountName, index) => (
                             <option key={index} value={accountName}>{accountName}</option>
                         ))}
@@ -94,6 +109,7 @@ const LedgerOfAccounts = () => {
                                 <th>Date</th>
                                 <th>Status</th>
                                 <th>Completed By</th>
+                                <th>Post Reference</th>
                                 <th>Debit</th>
                                 <th>Credit</th>
                             </tr>
@@ -104,14 +120,15 @@ const LedgerOfAccounts = () => {
                                     <td>{journal.dateCreated}</td>
                                     <td>{journal.status}</td>
                                     <td>{journal.completedBy}</td>
+                                    <td><a href = "/AllJournalEntries" onClick={ () => {saveSelectedPostReference(journal.uniqueID)}}>{journal.uniqueID}</a></td>
 
-                                    {checkEntryType(journal) ? (
-                                        <td>{journal.amount}</td>
+                                    {checkEntryType(journal.entryType) ? (
+                                        <td>${journal.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     ) : (
                                         <td></td>
                                     )}
-                                    {!checkEntryType(journal) ? (
-                                        <td>{journal.amount}</td>
+                                    {!checkEntryType(journal.entryType) ? (
+                                        <td>${journal.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     ) : (
                                         <td></td>
                                     )}

@@ -51,7 +51,7 @@ const RejectedJournals = () => {
         if (!storedUser) {
             navigate("/", { replace: true });
         }
-    }, [storedUser, navigate]);
+    }, []);
 
 
     const groupEntriesByID = (entries) => {
@@ -82,6 +82,19 @@ const RejectedJournals = () => {
         return Object.values(groupedEntries);
     };
 
+    const [searchTerm,setSearchTerm] = useState('');
+
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/journal/filter-rejected?query=${searchTerm}`);
+            const entries = Array.isArray(response.data) ? response.data : [];
+            const grouped = groupEntriesByID(entries);
+            setJournalEntries(grouped);
+        } catch (error) {
+            setErrorMessage('Failed to fetch journal entries');
+            console.error(error);
+        }
+    }
 
     return (
         <div className='outerContainers'>
@@ -109,6 +122,10 @@ const RejectedJournals = () => {
                             <button className='jounalButtonTabs' ><a href='/PendingJournalEntries'>Pending Entries</a></button>
                             <button className='jounalButtonTabs' ><a href='/ApprovedJournalEntries'>Approved Entries</a></button>
                             <button className='jounalButtonTabs' ><a href='/RejectedJournals'>Rejected Entries </a></button>
+                            <span className='searchJournals' >
+                            <input className ='journalSearch' onChange={(e) => setSearchTerm(e.target.value)}></input>
+                            <button className='jounalButtonTabs' onClick = {handleSearch}>Search</button>
+                            </span>
                         </div>
                     </h1>
                     <Modal isOpen={isCalandarOpen} onClose={closeCalandar}>
