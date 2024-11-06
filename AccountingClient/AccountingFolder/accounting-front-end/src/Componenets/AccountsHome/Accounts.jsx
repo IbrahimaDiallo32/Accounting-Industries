@@ -110,9 +110,7 @@ const Accounts = () => {
             <div className="main-content">
                 <h1>Accounts
                     {storedUser.accountType == 'Admin' || storedUser.accountType == 'Manager' ? (
-                        <span className='toolTip'>
-                            <button className='createNewAccountButton' onClick={openModal}><IoMdAdd />Account</button>
-                            <span className="toolTipText">Create a new account for the chart of Accounts</span></span>
+                            <button className='createNewAccountButton' onClick={openModal} title = "Create a new Account"><IoMdAdd />Account</button>
                     ) : (
                         <h1 />
                     )}
@@ -137,13 +135,10 @@ const Accounts = () => {
                             <option value="DESC">Descending</option>
                         </select>
                         <input placeholder='' hidden></input>
-                        <span className='toolTip'>
-                            <button className='submitSort' onClick={(e) => { sortedAccount() }}>
-                                Sort</button>
-                            <span className="toolTipText">Sort Chart of Accounts</span></span>
+                            <button className='submitSort' onClick={(e) => { sortedAccount() }} title = "Sort Accounts">Sort</button>
                         <div>
                             <input className="searchByText" onChange={(e) => setSearchTerm(e.target.value)} placeholder='Filter'></input>
-                            <button className='submitSort' onClick={handleSearch}>Search</button>
+                            <button className='submitSort' onClick={handleSearch} title = "Search Accounts">Search</button>
                         </div>
                     </div>
                 </div>
@@ -184,12 +179,9 @@ const Accounts = () => {
                             {accounts.map((account) => (
                                 <tr key={account.accountNumber}>
                                     <td>{account.order}</td>
-                                    <td><Link to={`/LedgerOfAccounts`} onClick={ () => {saveSelectedAccount(account.accountName)}}>{account.accountNumber}</Link></td>
+                                    <td><Link to={`/LedgerOfAccounts`} onClick={ () => {saveSelectedAccount(account.accountName)}} title="Link to Ledger">{account.accountNumber}</Link></td>
                                     <td>
-                                        <div className="toolTip">
-                                            <Link to={`/LedgerOfAccounts`} className='linkToLedger' onClick={ () => {saveSelectedAccount(account.accountName)}}>{account.accountName} </Link>
-                                            <span className="toolTipText">Link to this accounts Ledger</span>
-                                        </div>
+                                            <Link to={`/LedgerOfAccounts`} className='linkToLedger' onClick={ () => {saveSelectedAccount(account.accountName)}} title="Link to Ledger">{account.accountName} </Link>
                                     </td>
                                     <td>{account.accountCategory}</td>
                                     <td>{account.accountSubCategory}</td>
@@ -199,10 +191,7 @@ const Accounts = () => {
                                     <td>{account.accountDescription}</td>
                                     {storedUser.accountType == 'Admin' ? (
                                         < td >
-                                            <span className="toolTip">
-                                                <button className='buttonForEditUserRecord ' onClick={() => openEditModal(account)}>Edit</button>
-                                                <span className="toolTipText">Edit Account Information</span>
-                                            </span>
+                                                <button className='buttonForEditUserRecord ' onClick={() => openEditModal(account)} title = "Edit Account">Edit</button>
                                         </td>
                                     ) : (
                                         <h1></h1>
