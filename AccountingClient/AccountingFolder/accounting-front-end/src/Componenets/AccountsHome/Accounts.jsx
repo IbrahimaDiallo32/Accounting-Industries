@@ -75,6 +75,10 @@ const Accounts = () => {
 
         fetchAccounts();
     }, []);
+    const saveSelectedAccount = (account) => {
+        console.log("Saving to localStorage:", account); // Log to confirm saving
+        localStorage.setItem("currentAccount", account);
+    }
 
     const username = "Ibrahima Diallo";
 
@@ -178,18 +182,18 @@ const Accounts = () => {
                             {accounts.map((account) => (
                                 <tr key={account.accountNumber}>
                                     <td>{account.order}</td>
-                                    <td><Link to={`/LedgerOfAccounts`}>{account.accountNumber}</Link></td>
+                                    <td><Link to={`/LedgerOfAccounts`} onClick={ () => {saveSelectedAccount(account.accountName)}}>{account.accountNumber}</Link></td>
                                     <td>
                                         <div className="toolTip">
-                                            <Link to={`/LedgerOfAccounts`} className='linkToLedger'>{account.accountName}</Link>
+                                            <Link to={`/LedgerOfAccounts`} className='linkToLedger' onClick={ () => {saveSelectedAccount(account.accountName)}}>{account.accountName} </Link>
                                             <span className="toolTipText">Link to this accounts Ledger</span>
                                         </div>
                                     </td>
                                     <td>{account.accountCategory}</td>
                                     <td>{account.accountSubCategory}</td>
-                                    <td>{account.balance}</td>
-                                    <td>{account.debit}</td>
-                                    <td>{account.credit}</td>
+                                    <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                    <td>${account.debit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                    <td>${account.credit.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     <td>{account.accountDescription}</td>
                                     {storedUser.accountType == 'Admin' ? (
                                         < td >

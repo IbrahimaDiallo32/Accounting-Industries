@@ -52,7 +52,7 @@ const ApprovedJournalEntries = () => {
         if (!storedUser) {
             navigate("/", { replace: true });
         }
-    }, [storedUser, navigate]);
+    }, []);
 
     const groupEntriesByID = (entries) => {
         const groupedEntries = entries.reduce((acc, entry) => {
@@ -81,6 +81,20 @@ const ApprovedJournalEntries = () => {
         return Object.values(groupedEntries);
     };
 
+    const [searchTerm,setSearchTerm] = useState('');
+
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/journal/filter-approved?query=${searchTerm}`);
+            const entries = Array.isArray(response.data) ? response.data : [];
+            const grouped = groupEntriesByID(entries);
+            setJournalEntries(grouped);
+        } catch (error) {
+            setErrorMessage('Failed to fetch journal entries');
+            console.error(error);
+        }
+    }
+
     return (
         <div className='outerContainers'>
             <div className="homePageOutermostcontainer">
@@ -106,6 +120,10 @@ const ApprovedJournalEntries = () => {
                             <button className='jounalButtonTabs' ><a href='/PendingJournalEntries'>Pending Entries</a></button>
                             <button className='jounalButtonTabs' ><a href='/ApprovedJournalEntries'>Approved Entries</a></button>
                             <button className='jounalButtonTabs' ><a href='/RejectedJournals'>Rejected Entries </a></button>
+                            <span className='searchJournals' >
+                            <input className ='journalSearch' onChange={(e) => setSearchTerm(e.target.value)}></input>
+                            <button className='jounalButtonTabs' onClick = {handleSearch}>Search</button>
+                            </span>
                         </div>
                     </h1>
                     <Modal isOpen={isCalandarOpen} onClose={closeCalandar}>
@@ -129,13 +147,13 @@ const ApprovedJournalEntries = () => {
                                             <div className="debits-section">
                                                 <h3>Debits</h3>
                                                 {entryGroup.debits.map((debit, index) => (
-                                                    <p key={index}>{debit.accountName}: ${debit.amount}</p>
+                                                    <p key={index}>{debit.accountName}: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                             <div className="credits-section">
                                                 <h3>Credits</h3>
                                                 {entryGroup.credits.map((credit, index) => (
-                                                    <p key={index}>{credit.accountName}: ${credit.amount}</p>
+                                                    <p key={index}>{credit.accountName}: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                         </div>
