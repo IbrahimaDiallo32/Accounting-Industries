@@ -23,21 +23,99 @@ const EditAccount = ({ account }) => {
     const [order, setOrder] = useState(account?.order || '');
     const [statement, setStatement] = useState(account?.statement || '');
     const [comment, setComment] = useState(account?.comment || '');
+    const [existingIds, setExistingIds] = useState(new Set());
 
-    const clearForm = () => {
-        setAccountName('');
-        setAccountNumber('');
-        setAccountDescription('');
-        setNormalSide('');
-        setAccountCategory('');
-        setBalance('');
-        setAccountSubCategory('');
-        setInitialBalance('');
-        setDebit('');
-        setCredit('');
-        setOrder('');
-        setStatement('');
-        setComment('');
+    const [formData, setFormData] = useState({
+        accountName: account?.accountName || '',
+        accountNumber: account?.accountNumber || '',
+        accountDescription: account?.accountDescription || '',
+        normalSide: account?.normalSide || '',
+        accountCategory: account?.accountCategory || '',
+        balance: account?.balance || '',
+        accountSubCategory: account?.accountSubCategory || '',
+        initialBalance: account?.initialBalance || '',
+        debit: account?.debit || '',
+        credit: account?.credit || '',
+        order: account?.order || '',
+        statement: account?.statement || '',
+        comment: account?.comment || '',
+    });
+
+    // Original data for comparison
+    const originalData = {
+        accountName: account?.accountName,
+        accountNumber: account?.accountNumber,
+        accountDescription: account?.accountDescription,
+        normalSide: account?.normalSide,
+        accountCategory: account?.accountCategory,
+        balance: account?.balance,
+        accountSubCategory: account?.accountSubCategory,
+        initialBalance: account?.initialBalance,
+        debit: account?.debit,
+        credit: account?.credit,
+        order: account?.order,
+        statement: account?.statement,
+        comment: account?.comment,
+    };
+
+    // Function to get change strings
+    const getChangeStrings = () => {
+        let beforeChanges = '';
+        let afterChanges = '';
+
+        const fields = ['accountName', 'accountNumber', 'accountDescription', 'normalSide', 'accountCategory', 'balance', 'accountSubCategory', 'initialBalance', 'debit', 'credit', 'order', 'statement', 'comment'];
+
+        fields.forEach((field) => {
+            if (formData[field] !== originalData[field]) {
+                beforeChanges += `${field}: ${originalData[field] || 'N/A'}. `;
+                afterChanges += `${field}: ${formData[field]}. `;
+            }
+        });
+
+        console.log("Before Changes:", beforeChanges);
+        console.log("After Changes:", afterChanges);
+        return { beforeChanges, afterChanges };
+    };
+
+    const checkme = () => {
+
+        const { beforeChanges, afterChanges } = getChangeStrings();
+        console.log(beforeChanges)
+        console.log(afterChanges)
+    }
+
+    // Example usage of setFormData
+    const handleChange = (field, value) => {
+        setFormData(prevData => ({
+            ...prevData,
+            [field]: value,
+        }));
+    };
+
+    const generateEventId = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let eventId;
+
+        do {
+            eventId = Array.from({ length: 5 }, () => characters[Math.floor(Math.random() * characters.length)]).join('');
+        } while (existingIds.has(eventId)); // Check uniqueness
+
+        return eventId;
+    };
+
+    const dateAndTimeToday = () => {
+        const today = new Date();
+        const thisMonth = today.getMonth() + 1;
+        const thisDate = today.getDate();
+        const thisYear = today.getFullYear();
+        const date = `${thisMonth}/${thisDate}/${thisYear}`;
+        const currentTime = today.toLocaleTimeString("en-US", {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+        return date + ", " + currentTime;
     };
 
     const IsFormValid = () => {
@@ -73,15 +151,43 @@ const EditAccount = ({ account }) => {
                 comment: comment
             });
             alert("Account successfully edited!"); //notifies user successful
-            clearForm(); //clears data if account successfully created
             window.location.reload(true); //refreshes the page so the chages can be realized
         } catch (error) {
             console.error('Error updating account:', error.response ? error.response.data : error.message);
         }
 
+        try {
+            // Log the edit event
+            const { beforeChanges, afterChanges } = getChangeStrings();
+            const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+            const fullName = storedUser.firstName + " " + storedUser.lastName;
+            const response2 = await axios.post('http://localhost:8080/api/create', {
+                username: storedUser.username,
+                modifiedBy: fullName,
+                eventType: 'Account Edited',
+                dateAndTime: dateAndTimeToday(),
+                beforeChange: beforeChanges,
+                afterChange: afterChanges,
+                eventID: generateEventId()
+            });
+        } catch (error) {
+            console.error("Error logging event", error);
+        }
+
     };
 
     useEffect(() => {
+
+        const fetchEventLogs = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/getAll');
+                const ids = response.data.map(event => event.eventID); // Extract event IDs
+                setExistingIds(new Set(ids)); // Store IDs in a Set for quick lookup
+            } catch (error) {
+                console.error('Error fetching event logs:', error);
+            }
+        };
+        fetchEventLogs();
     }, [accountDescription]); // Dependency array, triggers when accountDescription changes
 
 
@@ -104,14 +210,14 @@ const EditAccount = ({ account }) => {
                     <fieldset>
                         <div className='Field'>
                             <label>Account name<sup>*</sup></label>
-                            <input value={accountName} className='registrationInput'
-                                onChange={(e) => setAccountName(e.target.value)}
+                            <input value={formData.accountName} className='registrationInput'
+                                onChange={(e) => handleChange('accountName', e.target.value)}
                                 placeholder='e.g (Cash)' />
                         </div>
                         <div className='Field'>
                             <label>Account Number <sup>*</sup></label>
-                            <input value={accountNumber} className='registrationInput'
-                                onChange={(e) => setAccountNumber(e.target.value)}
+                            <input value={formData.accountNumber} className='registrationInput'
+                                onChange={(e) => handleChange('accountNumber', e.target.value)}
                                 placeholder='e.g (1001)' type='number' onKeyPress={(e) => {
                                     if (!/[0-9]/.test(e.key)) {
                                         e.preventDefault();
@@ -120,29 +226,29 @@ const EditAccount = ({ account }) => {
                         </div>
                         <div className='Field'>
                             <label>Account Description <sup>*</sup></label>
-                            <input value={accountDescription} className='registrationInput'
-                                onChange={(e) => setAccountDescription(e.target.value)}
+                            <input value={formData.accountDescription} className='registrationInput'
+                                onChange={(e) => handleChange('accountDescription', e.target.value)}
                                 placeholder='Account Description e.g (Main cash account)' />
                         </div>
                         <div className='Field'>
                             <label>Normal Side <sup>*</sup></label>
-                            <select className='dateOfBirthRegistration' value={normalSide}
-                                onChange={(e) => setNormalSide(e.target.value)}>
+                            <select className='dateOfBirthRegistration' value={formData.normalSide}
+                                onChange={(e) => handleChange('normalSide', e.target.value)}>
                                 <option value="Left">Left</option>
                                 <option value="Right">Right</option>
                             </select>
                         </div>
                         <div className='Field'>
                             <label>Order<sup>*</sup></label>
-                            <input value={order} className='registrationInput'
-                                onChange={(e) => setOrder(e.target.value)}
+                            <input value={formData.order} className='registrationInput'
+                                onChange={(e) => handleChange('order', e.target.value)}
                                 placeholder='Order # (e.g cash can be 01)' type='number' />
 
                         </div>
                         <div className='Field'>
                             <label className='birthDateTextField'>Account Category<sup>*</sup></label>
-                            <select className='dateOfBirthRegistration' value={accountCategory}
-                                onChange={(e) => setAccountCategory(e.target.value)}>
+                            <select className='dateOfBirthRegistration' value={formData.accountCategory}
+                                onChange={(e) => handleChange('accountCategory', e.target.value)}>
                                 <option value="Asset">Asset</option>
                                 <option value="Liability">Liability</option>
                                 <option value="Equity">Equity</option>
@@ -152,8 +258,8 @@ const EditAccount = ({ account }) => {
                         </div>
                         <div className='Field'>
                             <label>Sub-Category <sup>*</sup></label>
-                            <select className='registrationInput' value={accountSubCategory}
-                                onChange={(e) => setAccountSubCategory(e.target.value)} placeholder='e.g (current assets)'>
+                            <select className='registrationInput' value={formData.accountSubCategory}
+                                onChange={(e) => handleChange('accountSubCategory', e.target.value)} placeholder='e.g (current assets)'>
                                 <option value="Current Asset">Current Asset</option>
                                 <option value="Long-Term Asset">Long-Term Asset</option>
                                 <option value="Current Liability">Current Liability</option>
@@ -162,8 +268,8 @@ const EditAccount = ({ account }) => {
                         </div>
                         <div className='Field'>
                             <label className='birthDateTextField'>Statement<sup>*</sup></label>
-                            <select name="birthDate" className='dateOfBirthRegistration' value={statement}
-                                onChange={(e) => setStatement(e.target.value)} >
+                            <select name="birthDate" className='dateOfBirthRegistration' value={formData.statement}
+                                onChange={(e) => handleChange('statement', e.target.value)}>
                                 <option value="Income statement">Income statement</option>
                                 <option value="Balance sheet">Balance sheet</option>
                                 <option value="Retained Earnings statement">Retained Earnings statement</option>
@@ -172,11 +278,9 @@ const EditAccount = ({ account }) => {
                         </div>
                         <div className='Field'>
                             <label>Initial Balance<sup>*</sup></label>
-                            <input value={initialBalance} className='registrationInput'
+                            <input value={formData.initialBalance} className='registrationInput'
                                 placeholder='0.00' type='text'
-                                onChange={(e) => {
-                                    setInitialBalance(e.target.value.replace(/,/g, '')); // This removes commas to save the number in the database accurately
-                                }}
+                                onChange={(e) => handleChange('initialBalance', e.target.value.replace(/,/g, ''))}
                                 onBlur={(e) => { //OnBlur activates the code when the user leaves the input box
                                     let value = parseFloat(e.target.value).toFixed(2); // Format to two decimal places when the user leaves the input box 
                                     if (!isNaN(value)) {
@@ -195,10 +299,8 @@ const EditAccount = ({ account }) => {
                         </div>
                         <div className='passwordFieldRegistration'>
                             <label>Debit<sup>*</sup></label>
-                            <input value={debit} className='registrationInput'
-                                placeholder="0.00" type='text' onChange={(e) => {
-                                    setDebit(e.target.value.replace(/,/g, ''));
-                                }}
+                            <input value={formData.debit} className='registrationInput'
+                                placeholder="0.00" type='text' onChange={(e) => handleChange('debit', e.target.value.replace(/,/g, ''))}
                                 onBlur={(e) => {
                                     let value = parseFloat(e.target.value).toFixed(2);
                                     if (!isNaN(value)) {
@@ -216,9 +318,7 @@ const EditAccount = ({ account }) => {
                         <div className='Field'>
                             <label>Credit<sup>*</sup></label>
                             <input className="registrationInput" placeholder="0.00" type='text'
-                                value={credit} onChange={(e) => {
-                                    setCredit(e.target.value.replace(/,/g, ''));
-                                }}
+                                value={formData.credit} onChange={(e) => handleChange('credit', e.target.value.replace(/,/g, ''))}
                                 onBlur={(e) => {
                                     let value = parseFloat(e.target.value).toFixed(2);
                                     if (!isNaN(value)) {
@@ -235,10 +335,8 @@ const EditAccount = ({ account }) => {
                         </div>
                         <div className='Field'>
                             <label>Balance <sup>*</sup></label>
-                            <input className="registrationInput" value={balance} placeholder='0.00' type='text'
-                                onChange={(e) => {
-                                    setBalance(e.target.value.replace(/,/g, ''));
-                                }}
+                            <input className="registrationInput" value={formData.balance} placeholder='0.00' type='text'
+                                onChange={(e) => handleChange('balance', e.target.value.replace(/,/g, ''))}
                                 onBlur={(e) => {
                                     let value = parseFloat(e.target.value).toFixed(2);
                                     if (!isNaN(value)) {
@@ -255,13 +353,14 @@ const EditAccount = ({ account }) => {
                         </div>
                         <div className='Field'>
                             <label>Comment</label>
-                            <input className="registrationInput" value={comment}
-                                onChange={(e) => setComment(e.target.value)} placeholder='Comment' />
+                            <input className="registrationInput" value={formData.comment}
+                                onChange={(e) => handleChange('comment', e.target.value)} placeholder='Comment' />
                         </div>
                         <button disabled={!IsFormValid()} type="submit" className='RegistrationButton'>Save Changes</button>
                     </fieldset>
                 </form>
             </div>
+            <button onClick={checkme}>dsf</button>
         </div >
     );
 };

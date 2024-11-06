@@ -126,6 +126,7 @@ const AllJournalEntries = () => {
                     <a href="/Accounts">Accounts</a>
                     <a href="/AllJournalEntries">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
+                    <a href="/Statements">Statements</a>
                     <a href="/EventLog">Event Log</a>
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
@@ -164,14 +165,17 @@ const AllJournalEntries = () => {
                                         <div className="debits-credits-container">
                                             <div className="debits-section">
                                                 <h3>Debits</h3>
+                                                {/* <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td> */}
                                                 {entryGroup.debits.map((debit, index) => (
                                                     <p key={index}><a href = "/LedgerOfAccounts" onClick={ () => {saveSelectedAccount(debit.accountName)}}>{debit.accountName}</a>: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+//                                                     <p key={index}>{debit.accountName}: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                             <div className="credits-section">
                                                 <h3>Credits</h3>
                                                 {entryGroup.credits.map((credit, index) => (
                                                     <p key={index}><a href = "/LedgerOfAccounts" onClick={ () => {saveSelectedAccount(credit.accountName)}}>{credit.accountName}</a>: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+//                                                     <p key={index}>{credit.accountName}: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                         </div>
