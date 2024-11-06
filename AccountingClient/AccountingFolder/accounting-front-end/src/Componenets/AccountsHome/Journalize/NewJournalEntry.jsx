@@ -230,25 +230,38 @@ const NewJournalEntry = () => {
 
     const getNextAvailableId = () => {
         let currentId = localStorage.getItem('journalIdCounter');
+        const exceededCounter = 0;
 
-        // Initialize the counter if it doesn't exist
         if (!currentId) {
-            currentId = 1; // Set to 1 if it's the first time
+            currentId = 1; // Start at 1 for the first entry if it doesnt exisit
         } else {
-            currentId = parseInt(currentId, 10); // Parse the ID from localStorage
+            currentId = parseInt(currentId, 10); // Parse ID from localStorage
         }
 
-        // Ensure the ID doesn't already exist in current entries (conflict handling)
+        // Making sure the ID doesnt exceed 5 digits in length 
+        const maxId = 99999;
         let uniqueId = currentId;
+        let hasWrapped = false;
         while (entries.find(entry => entry.id === uniqueId)) {
-            uniqueId++; // Increment until we find a unique ID
+            uniqueId++;
+
+            // Reset to a counter starting at 1 if maxId is exceeded in order to continue searching
+            if (uniqueId > maxId) {
+                if (hasWrapped) {
+                    console.warn("All possible IDs are taken. Consider clearing old entries.");
+                    exceededCounter++;
+                    break;
+                }
+                uniqueId = exceededCounter;
+                hasWrapped = true; // Indicate we've wrapped around once
+            }
         }
 
-        // Save the next ID in localStorage for future journal entries
+        // Save the next ID in localStorage for future entries
         localStorage.setItem('journalIdCounter', uniqueId + 1);
-
-        return uniqueId; // Return the valid unique ID
+        return uniqueId;
     };
+
 
     const uniqueID = getNextAvailableId();
 

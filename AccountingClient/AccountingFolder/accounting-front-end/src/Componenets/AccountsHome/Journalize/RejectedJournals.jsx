@@ -94,8 +94,9 @@ const RejectedJournals = () => {
                     <a href="/HomePage" className='spacingHomePage'>Home</a>
                     <a href="/DisplayUserList">User List</a>
                     <a href="/Accounts">Accounts</a>
-                    <a href="/Journalize">Journalize</a>
+                    <a href="/AllJournalEntries">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
+                    <a href="/Statements">Statements</a>
                     <a href="/EventLog">Event Log</a>
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
@@ -135,13 +136,13 @@ const RejectedJournals = () => {
                                                 <div className="debits-section">
                                                     <h3>Debits</h3>
                                                     {entryGroup.debits.map((debit, index) => (
-                                                        <p key={index}>{debit.accountName}: ${debit.amount}</p>
+                                                        <p key={index}>{debit.accountName}: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                     ))}
                                                 </div>
                                                 <div className="credits-section">
                                                     <h3>Credits</h3>
                                                     {entryGroup.credits.map((credit, index) => (
-                                                        <p key={index}>{credit.accountName}: ${credit.amount}</p>
+                                                        <p key={index}>{credit.accountName}: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                     ))}
                                                 </div>
                                             </div>

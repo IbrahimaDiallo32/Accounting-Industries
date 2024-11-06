@@ -15,7 +15,7 @@ const Journalize = () => {
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
     const fullName = storedUser.firstName + " " + storedUser.lastName;
     const navigate = useNavigate();
-
+    const [existingIds, setExistingIds] = useState(new Set());
     const [errorMessage, setErrorMessage] = useState('');
     const [isCalandarOpen, setIsCalandarOpen] = useState(false);
     const openCalandar = () => setIsCalandarOpen(true);
@@ -53,6 +53,32 @@ const Journalize = () => {
         navigate("/loginForm");
     };
 
+    const generateEventId = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let eventId;
+
+        do {
+            eventId = Array.from({ length: 5 }, () => characters[Math.floor(Math.random() * characters.length)]).join('');
+        } while (existingIds.has(eventId)); // Check uniqueness
+
+        return eventId;
+    };
+
+    const dateAndTimeToday = () => {
+        const today = new Date();
+        const thisMonth = today.getMonth() + 1;
+        const thisDate = today.getDate();
+        const thisYear = today.getFullYear();
+        const date = `${thisMonth}/${thisDate}/${thisYear}`;
+        const currentTime = today.toLocaleTimeString("en-US", {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+        return date + ", " + currentTime;
+    };
+
     useEffect(() => {
         const fetchJournalEntries = async () => {
             try {
@@ -66,6 +92,17 @@ const Journalize = () => {
             }
         };
         fetchJournalEntries();
+
+        const fetchEventLogs = async () => {
+            try {
+                const response = await axios.get('http://localhost:8080/api/getAll');
+                const ids = response.data.map(event => event.eventID); // Extract event IDs
+                setExistingIds(new Set(ids)); // Store IDs in a Set for quick lookup
+            } catch (error) {
+                console.error('Error fetching event logs:', error);
+            }
+        };
+        fetchEventLogs();
 
         if (!storedUser) {
             navigate("/", { replace: true });
@@ -123,6 +160,22 @@ const Journalize = () => {
             console.error('Error approving journal entries:', error);
             setErrorMessage('An error occurred while approving journal entry.');
         }
+
+        try {
+            // Log the login event
+            const response2 = await axios.post('http://localhost:8080/api/create', {
+                username: storedUser.username,
+                modifiedBy: fullName,
+                eventType: 'Journal Entry Approved',
+                dateAndTime: dateAndTimeToday(),
+                beforeChange: "Journal Entry was pending",
+                afterChange: "Journal Entry is now approved",
+                eventID: generateEventId()
+            });
+        } catch (error) {
+            console.error("Error logging event", error);
+        }
+
     }
 
     const handleDenyEntry = async (uniqueID) => {
@@ -148,6 +201,21 @@ const Journalize = () => {
             console.error('Error rejecting journal entries:', error);
             setErrorMessage('An error occurred while rejecting journal entry.');
         }
+
+        try {
+            // Log the login event
+            const response2 = await axios.post('http://localhost:8080/api/create', {
+                username: storedUser.username,
+                modifiedBy: fullName,
+                eventType: 'Journal Entry Rejected',
+                dateAndTime: dateAndTimeToday(),
+                beforeChange: "Journal Entry was pending",
+                afterChange: "Journal Entry is now rejected",
+                eventID: generateEventId()
+            });
+        } catch (error) {
+            console.error("Error logging event", error);
+        }
     }
 
     return (
@@ -161,8 +229,9 @@ const Journalize = () => {
                     <a href="/HomePage" className='spacingHomePage'>Home</a>
                     <a href="/DisplayUserList">User List</a>
                     <a href="/Accounts">Accounts</a>
-                    <a href="/Journalize">Journalize</a>
+                    <a href="/AllJournalEntries">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
+                    <a href="/Statements">Statements</a>
                     <a href="/EventLog">Event Log</a>
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
@@ -198,13 +267,13 @@ const Journalize = () => {
                                             <div className="debits-section">
                                                 <h3>Debits</h3>
                                                 {entryGroup.debits.map((debit, index) => (
-                                                    <p key={index}>{debit.accountName}: ${debit.amount}</p>
+                                                    <p key={index}>{debit.accountName}: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                             <div className="credits-section">
                                                 <h3>Credits</h3>
                                                 {entryGroup.credits.map((credit, index) => (
-                                                    <p key={index}>{credit.accountName}: ${credit.amount}</p>
+                                                    <p key={index}>{credit.accountName}: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                         </div>
