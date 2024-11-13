@@ -95,12 +95,13 @@ const Accounts = () => {
                 <a href="/AllJournalEntries">Journalize</a>
                 <a href="/LedgerOfAccounts">Ledger</a>
                 <a href="/Statements">Statements</a>
-                <a href="/EventLog">Event Log</a>
-                <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
+                {storedUser.accountType === 'Admin' || storedUser.accountType === 'Manager' ? (
+                    <a href="/EventLog">Event Log</a>
+                ) : ""}
                 <a>
                     <button className="helpButton" onClick={openHelp}> Help</button>
                 </a>
-                <a href="/LoginForm"><button className="logout-other-button" onClick={handleLogout}>LOGOUT</button></a>
+                <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
             </div>
 
 
@@ -110,7 +111,7 @@ const Accounts = () => {
             <div className="main-content">
                 <h1>Accounts
                     {storedUser.accountType == 'Admin' || storedUser.accountType == 'Manager' ? (
-                            <button className='createNewAccountButton' onClick={openModal} title = "Create a new Account"><IoMdAdd />Account</button>
+                        <button className='createNewAccountButton' onClick={openModal} title="Create a new Account"><IoMdAdd />Account</button>
                     ) : (
                         <h1 />
                     )}
@@ -135,10 +136,10 @@ const Accounts = () => {
                             <option value="DESC">Descending</option>
                         </select>
                         <input placeholder='' hidden></input>
-                            <button className='submitSort' onClick={(e) => { sortedAccount() }} title = "Sort Accounts">Sort</button>
+                        <button className='submitSort' onClick={(e) => { sortedAccount() }} title="Sort Accounts">Sort</button>
                         <div>
                             <input className="searchByText" onChange={(e) => setSearchTerm(e.target.value)} placeholder='Filter'></input>
-                            <button className='submitSort' onClick={handleSearch} title = "Search Accounts">Search</button>
+                            <button className='submitSort' onClick={handleSearch} title="Search Accounts">Search</button>
                         </div>
                     </div>
                 </div>
@@ -179,9 +180,9 @@ const Accounts = () => {
                             {accounts.map((account) => (
                                 <tr key={account.accountNumber}>
                                     <td>{account.order}</td>
-                                    <td><Link to={`/LedgerOfAccounts`} onClick={ () => {saveSelectedAccount(account.accountName)}} title="Link to Ledger">{account.accountNumber}</Link></td>
+                                    <td><Link to={`/LedgerOfAccounts`} onClick={() => { saveSelectedAccount(account.accountName) }} title="Link to Ledger">{account.accountNumber}</Link></td>
                                     <td>
-                                            <Link to={`/LedgerOfAccounts`} className='linkToLedger' onClick={ () => {saveSelectedAccount(account.accountName)}} title="Link to Ledger">{account.accountName} </Link>
+                                        <Link to={`/LedgerOfAccounts`} className='linkToLedger' onClick={() => { saveSelectedAccount(account.accountName) }} title="Link to Ledger">{account.accountName} </Link>
                                     </td>
                                     <td>{account.accountCategory}</td>
                                     <td>{account.accountSubCategory}</td>
@@ -191,7 +192,7 @@ const Accounts = () => {
                                     <td>{account.accountDescription}</td>
                                     {storedUser.accountType == 'Admin' ? (
                                         < td >
-                                                <button className='buttonForEditUserRecord ' onClick={() => openEditModal(account)} title = "Edit Account">Edit</button>
+                                            <button className='buttonForEditUserRecord ' onClick={() => openEditModal(account)} title="Edit Account">Edit</button>
                                         </td>
                                     ) : (
                                         <h1></h1>

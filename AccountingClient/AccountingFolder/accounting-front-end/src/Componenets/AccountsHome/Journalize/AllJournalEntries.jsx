@@ -23,7 +23,7 @@ const AllJournalEntries = () => {
 
     const [journalEntries, setJournalEntries] = useState([]);
     const storedJournal = localStorage.getItem("currentPostRef");
-    const [searchTerm,setSearchTerm] = useState(storedJournal);
+    const [searchTerm, setSearchTerm] = useState(storedJournal);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const openModal = () => setIsModalOpen(true);
@@ -81,7 +81,7 @@ const AllJournalEntries = () => {
 
     useEffect(() => {
         const storedJournal = localStorage.getItem("currentPostRef");
-    
+
         if (storedJournal) {
             setSearchTerm(storedJournal); // Sets searchTerm if storedJournal is present
             localStorage.removeItem("currentPostRef");
@@ -100,12 +100,12 @@ const AllJournalEntries = () => {
             };
             fetchJournalEntries();
         }
-    
+
         if (!storedUser) {
             navigate("/", { replace: true });
         }
     }, []);
-    
+
     // Separate useEffect to run `handleSearch` only when `searchTerm` is updated
     useEffect(() => {
         if (searchTerm) {
@@ -127,7 +127,9 @@ const AllJournalEntries = () => {
                     <a href="/AllJournalEntries">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
                     <a href="/Statements">Statements</a>
-                    <a href="/EventLog">Event Log</a>
+                    {storedUser.accountType === 'Admin' || storedUser.accountType === 'Manager' ? (
+                        <a href="/EventLog">Event Log</a>
+                    ) : ""}
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
                 <div className="main-content">
@@ -140,8 +142,8 @@ const AllJournalEntries = () => {
                             <button className='jounalButtonTabs' ><a href='/ApprovedJournalEntries'>Approved Entries</a></button>
                             <button className='jounalButtonTabs' ><a href='/RejectedJournals'>Rejected Entries </a></button>
                             <span className='searchJournals' >
-                            <input className ='journalSearch' value ={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></input>
-                            <button className='jounalButtonTabs' onClick = {handleSearch}>Search</button>
+                                <input className='journalSearch' value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}></input>
+                                <button className='jounalButtonTabs' onClick={handleSearch}>Search</button>
                             </span>
                         </div>
                     </h1>
@@ -167,15 +169,15 @@ const AllJournalEntries = () => {
                                                 <h3>Debits</h3>
                                                 {/* <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td> */}
                                                 {entryGroup.debits.map((debit, index) => (
-                                                    <p key={index}><a href = "/LedgerOfAccounts" onClick={ () => {saveSelectedAccount(debit.accountName)}}>{debit.accountName}</a>: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-//                                                     <p key={index}>{debit.accountName}: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                                    <p key={index}><a href="/LedgerOfAccounts" onClick={() => { saveSelectedAccount(debit.accountName) }}>{debit.accountName}</a>: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                                    //                                                     <p key={index}>{debit.accountName}: ${debit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                             <div className="credits-section">
                                                 <h3>Credits</h3>
                                                 {entryGroup.credits.map((credit, index) => (
-                                                    <p key={index}><a href = "/LedgerOfAccounts" onClick={ () => {saveSelectedAccount(credit.accountName)}}>{credit.accountName}</a>: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
-//                                                     <p key={index}>{credit.accountName}: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                                    <p key={index}><a href="/LedgerOfAccounts" onClick={() => { saveSelectedAccount(credit.accountName) }}>{credit.accountName}</a>: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                                                    //                                                     <p key={index}>{credit.accountName}: ${credit.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                                 ))}
                                             </div>
                                         </div>

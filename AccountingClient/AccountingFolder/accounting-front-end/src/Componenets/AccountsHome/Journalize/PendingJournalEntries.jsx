@@ -144,22 +144,146 @@ const Journalize = () => {
         return Object.values(groupedEntries);
     };
 
+    const updateAccountBalance = async (entry, isDebit) => {
+        try {
+            // Get the current account information
+            const accountResponse = await axios.get(`http://localhost:8080/account/GetByAccountName/${entry.accountName}`);
+            const account = accountResponse.data;
+            console.log("this the accoiunt data: " + account)
+
+            // Calculate the new balance based on the account's normal side
+            let newBalance;
+            let debitTotal;
+            let creditTotal;
+
+            if (account.normalSide === "left") {
+                newBalance = account.balance + (isDebit ? entry.amount : -entry.amount);
+                debitTotal = account.debit + (isDebit ? entry.amount : 0);
+                creditTotal = account.credit + (isDebit ? 0 : entry.amount); // Maintain the existing credit total
+            } else {
+                newBalance = account.balance + (isDebit ? -entry.amount : entry.amount);
+                creditTotal = account.credit + (isDebit ? 0 : entry.amount);
+                debitTotal = account.debit + (isDebit ? entry.amount : 0); // Maintain the existing debit total
+            }
+
+            console.log("everything before teh API call??")
+            // Patch the account with the updated balance, debit, and credit values
+            await axios.patch(`http://localhost:8080/account/edit/${account.accountNumber}`, {
+                balance: newBalance,
+                debit: debitTotal,
+                credit: creditTotal
+            });
+
+            console.log(`Account ${entry.accountName} updated successfully`);
+        } catch (error) {
+            console.error("Error updating account balance:", error);
+        }
+    };
+
     const handleApproveEntry = async (uniqueID) => {
-
-        console.log(uniqueID)
-
         try {
             const response = await axios.patch(`http://localhost:8080/journal/updateStatus/${uniqueID}`, { //URL that will create a new account
                 status: "Approved",
                 dateApproved: dateToday()
             });
-            window.location.reload();
+            // window.location.reload();
 
             alert("Journal entries successfully approved!"); // Notify user on success
         } catch (error) {
             console.error('Error approving journal entries:', error);
             setErrorMessage('An error occurred while approving journal entry.');
         }
+
+
+        const entriesToApprove = journalEntries.filter(entry => entry.uniqueID === uniqueID);
+
+        console.log("Entries to approve:", entriesToApprove);
+        if (entriesToApprove.length > 0) {
+            // Loop through each entry and handle debits and credits
+            for (const entry of entriesToApprove) {
+                // Process debits
+                for (const debit of entry.debits) {
+                    await updateAccountBalance(debit, true);
+                }
+
+                // Process credits
+                for (const credit of entry.credits) {
+                    await updateAccountBalance(credit, false);
+                }
+            }
+
+            // // Update the state to reflect the approved status
+            // const updatedEntries = journalEntries.map(entry =>
+            //     entriesToApprove.includes(entry)
+            //         ? { ...entry, status: 'approved' } // Mark the status as approved
+            //         : entry
+            // );
+            // setJournalEntries(updatedEntries);
+
+            console.log("Entries approved successfully");
+        } else {
+            console.error("No entries found for approval with the given uniqueID");
+        }
+
+
+
+        // Fetch journal entry details to access its debits and credits
+        // const response = await axios.get(`http://localhost:8080/journal/getEntry/${uniqueID}`);
+        // const journalEntry = response.data;
+
+        // // Loop through debits and credits and update respective accounts
+        // const updateAccountBalance = async (entry, isDebit) => {
+        //     // Get the current account info
+        //     const accountResponse = await axios.get(`http://localhost:8080/account/GetByAccountName/${entry.accountName}`);
+        //     const account = accountResponse.data;
+
+        //     // Calculate the new balance based on the account's normal side
+        //     let newBalance;
+        //     let debitTotal;
+        //     let creditTotal;
+        //     if (account.normalSide === "Debit") {
+        //         newBalance = account.balance + (isDebit ? entry.amount : -entry.amount);
+        //         debitTotal = account.debit + entry.amount;
+        //     } else {
+        //         newBalance = account.balance + (isDebit ? -entry.amount : entry.amount);
+        //         creditTotal = account.credit + entry.amount;
+        //     }
+
+        //     // Patch the account with the updated balance
+        //     await axios.patch(`http://localhost:8080/account/edit/${account.accountNumber}`, {
+        //         balance: newBalance,
+        //         debit: debitTotal,
+        //         credit: creditTotal
+        //     });
+        // };
+
+        // // Process debits
+        // for (const debit of journalEntry.debits) {
+        //     await updateAccountBalance(debit, true);
+        // }
+
+        // // Process credits
+        // for (const credit of journalEntry.credits) {
+        //     await updateAccountBalance(credit, false);
+        // }
+
+        // // e.preventDefault(); // This prevents the page from reloading when the form is submitted.
+        // // //This sends a a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
+        // // try {
+        // //     const response = await axios.patch(`http://localhost:8080/account/edit/${originalAccountNumber}`, { //URL that will edit an account given the original Accountnumner 
+        // //         accountName: accountName,
+        // //         accountNumber: Number(accountNumber),
+        // //         initialBalance: parseFloat(String(initialBalance).replace(/,/g, '')),
+        // //         debit: parseFloat(String(debit).replace(/,/g, '')),
+        // //         credit: parseFloat(String(credit).replace(/,/g, '')),
+        // //         balance: parseFloat(String(balance).replace(/,/g, ''))
+        // //     });
+        // //     alert("Account successfully edited!"); //notifies user successful
+        // //     window.location.reload(true); //refreshes the page so the chages can be realized
+        // // } catch (error) {
+        // //     console.error('Error updating account:', error.response ? error.response.data : error.message);
+        // // }
+        console.log("eveything but event log")
 
         try {
             // Log the login event
@@ -218,7 +342,7 @@ const Journalize = () => {
         }
     }
 
-    const [searchTerm,setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearch = async () => {
         try {
@@ -246,7 +370,9 @@ const Journalize = () => {
                     <a href="/AllJournalEntries">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
                     <a href="/Statements">Statements</a>
-                    <a href="/EventLog">Event Log</a>
+                    {storedUser.accountType === 'Admin' || storedUser.accountType === 'Manager' ? (
+                        <a href="/EventLog">Event Log</a>
+                    ) : ""}
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
                 <div className="main-content">
@@ -259,8 +385,8 @@ const Journalize = () => {
                             <button className='jounalButtonTabs' ><a href='/ApprovedJournalEntries'>Approved Entries</a></button>
                             <button className='jounalButtonTabs' ><a href='/RejectedJournals'>Rejected Entries </a></button>
                             <span className='searchJournals' >
-                            <input className ='journalSearch' onChange={(e) => setSearchTerm(e.target.value)}></input>
-                            <button className='jounalButtonTabs' onClick = {handleSearch}>Search</button>
+                                <input className='journalSearch' onChange={(e) => setSearchTerm(e.target.value)}></input>
+                                <button className='jounalButtonTabs' onClick={handleSearch}>Search</button>
                             </span>
                         </div>
                     </h1>

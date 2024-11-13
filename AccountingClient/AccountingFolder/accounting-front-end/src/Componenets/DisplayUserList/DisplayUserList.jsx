@@ -68,11 +68,11 @@ const DisplayUserList = () => {
                 <a href="/AllJournalEntries">Journalize</a>
                 <a href="/LedgerOfAccounts">Ledger</a>
                 <a href="/Statements">Statements</a>
-                <a href="/EventLog">Event Log</a>
+                {storedUser.accountType === 'Admin' || storedUser.accountType === 'Manager' ? (
+                    <a href="/EventLog">Event Log</a>
+                ) : ""}
+                <a><button className="helpButton" onClick={openHelp}> Help</button></a>
                 <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
-                <a>
-                    <button className="helpButton" onClick={openHelp}> Help</button>
-                </a>
             </div>
 
             <Modal isOpen={isHelpOpen} onClose={closeHelp}>

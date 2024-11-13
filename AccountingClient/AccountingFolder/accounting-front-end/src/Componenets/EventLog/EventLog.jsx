@@ -58,45 +58,47 @@ const EventLog = () => {
                 </a>
             </div>
 
-            <div className="event-log-container">
-                <h1>Event Log</h1>
-                {logs.length > 0 ? (
-                    <table className="event-log-table">
-                        <thead>
-                            <tr>
-                                <th>Event ID</th>
-                                <th>Event Type</th>
-                                <th>Username</th>
-                                <th>Modified By</th>
-                                <th>Date/Time</th>
-                                <th>Before Image</th>
-                                <th>After Image</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {logs.map((log) => (
-                                <tr key={log._id}>
-                                    <td>{log.eventID}</td>
-                                    <td>{log.eventType}</td>
-                                    <td>{log.username}</td>
-                                    <td>{log.modifiedBy}</td>
-                                    <td>{log.dateAndTime}</td>
-                                    <td>
-                                        {log.beforeChange}
-                                        {/* {JSON.stringify(log.beforeChange, null, 2)} */}
-                                    </td>
-                                    <td>
-                                        {log.afterChange}
-                                        {/* {JSON.stringify(log.afterChange, null, 2)} */}
-                                    </td>
+            {storedUser.accountType === 'Admin' || storedUser.accountType === 'Manager' ? (
+                <div className="event-log-container">
+                    <h1>Event Log</h1>
+                    {logs.length > 0 ? (
+                        <table className="event-log-table">
+                            <thead>
+                                <tr>
+                                    <th>Event ID</th>
+                                    <th>Event Type</th>
+                                    <th>Username</th>
+                                    <th>Modified By</th>
+                                    <th>Date/Time</th>
+                                    <th>Before Image</th>
+                                    <th>After Image</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                ) : (
-                    <p>No logs available.</p>
-                )}
-            </div>
+                            </thead>
+                            <tbody>
+                                {logs.map((log) => (
+                                    <tr key={log._id}>
+                                        <td>{log.eventID}</td>
+                                        <td>{log.eventType}</td>
+                                        <td>{log.username}</td>
+                                        <td>{log.modifiedBy}</td>
+                                        <td>{log.dateAndTime}</td>
+                                        <td>
+                                            {log.beforeChange}
+                                            {/* {JSON.stringify(log.beforeChange, null, 2)} */}
+                                        </td>
+                                        <td>
+                                            {log.afterChange}
+                                            {/* {JSON.stringify(log.afterChange, null, 2)} */}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <p>No logs available.</p>
+                    )}
+                </div>
+            ) : <h1>You do not have access to this page. nice try</h1>}
         </div>
     );
 };

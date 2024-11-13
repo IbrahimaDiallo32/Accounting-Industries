@@ -320,20 +320,29 @@ const NewJournalEntry = () => {
                                 type="text"
                                 value={entry.amount}
                                 // onChange={(e) => handleDebitChange(index, 'amount', e.target.value)}
-                                onChange={(e) => {
-                                    handleDebitChange(index, 'amount', e.target.value.replace(/,/g, '')); // This removes commas to save the number in the database accurately
-                                }}
+                                onChange={(e) => handleDebitChange(index, 'amount', e.target.value)}
                                 onBlur={(e) => {
+
                                     let value = parseFloat(e.target.value.replace(/,/g, '')).toFixed(2); // Remove commas and ensure 2 decimals
+
                                     if (!isNaN(value)) {
+
                                         const updatedEntries = [...debitEntries];
+
                                         updatedEntries[index].amount = value; // Set formatted value in the state
+
                                         setDebitEntries(updatedEntries);
+
                                     }
+
                                 }}
 
+
+
                                 onFocus={(e) => {
+
                                     e.target.value = e.target.value.replace(/,/g, ''); // Remove commas for editing
+
                                 }}
                             />
 
@@ -378,21 +387,16 @@ const NewJournalEntry = () => {
                             </select>
                             $ <input
                                 placeholder='Amount' value={entry.amount}
-                                onChange={(e) => {
-                                    handleCreditChange(index, 'amount', e.target.value.replace(/,/g, '')); // This removes commas to save the number in the database accurately
-                                }}
+                                onChange={(e) => handleCreditChange(index, 'amount', e.target.value)}
                                 onBlur={(e) => {
                                     let value = parseFloat(e.target.value.replace(/,/g, '')).toFixed(2); // Remove commas and ensure 2 decimals
                                     if (!isNaN(value)) {
-                                        const updatedEntries = [...debitEntries];
+                                        const updatedEntries = [...creditEntries];
                                         updatedEntries[index].amount = value; // Set formatted value in the state
                                         setCreditEntries(updatedEntries);
                                     }
                                 }}
-
-                                onFocus={(e) => {
-                                    e.target.value = e.target.value.replace(/,/g, ''); // Remove commas for editing
-                                }}
+                                onFocus={(e) => { e.target.value = e.target.value.replace(/,/g, ''); }}
                             />
                             {index > 0 ? (
                                 <button

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
-//import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendar } from "react-icons/fa";
 
 function PopUpCal() {
@@ -9,7 +8,7 @@ function PopUpCal() {
   return (
     <div>
       <button onClick={() => setIsOpen(!isOpen)}>
-      <FaCalendar />
+        <FaCalendar />
       </button>
 
       {isOpen && (
