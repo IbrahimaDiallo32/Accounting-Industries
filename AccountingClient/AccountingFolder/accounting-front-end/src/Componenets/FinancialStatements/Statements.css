@@ -8,6 +8,58 @@
 }
 
 .statement-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .statement-table th,
+  .statement-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .statement-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+  }
+  
+  .section-header {
+    background-color: #e9e9e9;
+  }
+  
+  .section-header td {
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .indent{
+   padding-left: 80px;
+  }
+  .statement-table td.indent{
+    padding-left: 80px;
+  }
+  .no-border{
+    border: none;
+  }
+  .statement-table td.no-border{
+    border: none;
+  }
+  .total-row {
+    border-top: 2px solid black;
+}
+.accont-amount{
+  text-align: right !important;
+}
+.account-amount{
+  text-align: right !important;
+  text-decoration: double underline;
+}
+.date-selector-box{
+  font-size: 16pt;
+  margin-left: 15px;
+=======
   width: 100%;
   border-collapse: collapse;
   margin: 20px 0;
