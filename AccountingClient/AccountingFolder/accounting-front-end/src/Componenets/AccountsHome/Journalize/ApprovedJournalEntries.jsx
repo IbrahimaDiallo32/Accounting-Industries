@@ -81,7 +81,7 @@ const ApprovedJournalEntries = () => {
         return Object.values(groupedEntries);
     };
 
-    const [searchTerm,setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearch = async () => {
         try {
@@ -109,7 +109,9 @@ const ApprovedJournalEntries = () => {
                     <a href="/AllJournalEntries">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
                     <a href="/Statements">Statements</a>
-                    <a href="/EventLog">Event Log</a>
+                    {storedUser.accountType === 'Admin' || storedUser.accountType === 'Manager' ? (
+                        <a href="/EventLog">Event Log</a>
+                    ) : ""}
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
                 <div className="main-content">
@@ -122,8 +124,8 @@ const ApprovedJournalEntries = () => {
                             <button className='jounalButtonTabs' ><a href='/ApprovedJournalEntries'>Approved Entries</a></button>
                             <button className='jounalButtonTabs' ><a href='/RejectedJournals'>Rejected Entries </a></button>
                             <span className='searchJournals' >
-                            <input className ='journalSearch' onChange={(e) => setSearchTerm(e.target.value)}></input>
-                            <button className='jounalButtonTabs' onClick = {handleSearch}>Search</button>
+                                <input className='journalSearch' onChange={(e) => setSearchTerm(e.target.value)}></input>
+                                <button className='jounalButtonTabs' onClick={handleSearch}>Search</button>
                             </span>
                         </div>
                     </h1>

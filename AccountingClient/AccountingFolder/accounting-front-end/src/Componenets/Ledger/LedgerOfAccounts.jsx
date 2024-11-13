@@ -87,7 +87,9 @@ const LedgerOfAccounts = () => {
                 <a href="/AllJournalEntries">Journalize</a>
                 <a href="/LedgerOfAccounts">Ledger</a>
                 <a href="/Statements">Statements</a>
-                <a href="/EventLog">Event Log</a>
+                {storedUser.accountType === 'Admin' || storedUser.accountType === 'Manager' ? (
+                    <a href="/EventLog">Event Log</a>
+                ) : ""}
                 <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
             </div>
             <div className="main-content">
@@ -120,7 +122,7 @@ const LedgerOfAccounts = () => {
                                     <td>{journal.dateCreated}</td>
                                     <td>{journal.status}</td>
                                     <td>{journal.completedBy}</td>
-                                    <td><a href = "/AllJournalEntries" onClick={ () => {saveSelectedPostReference(journal.uniqueID)}}>{journal.uniqueID}</a></td>
+                                    <td><a href="/AllJournalEntries" onClick={() => { saveSelectedPostReference(journal.uniqueID) }}>{journal.uniqueID}</a></td>
 
                                     {checkEntryType(journal.entryType) ? (
                                         <td>${journal.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>

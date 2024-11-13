@@ -149,22 +149,24 @@ const Journalize = () => {
             // Get the current account information
             const accountResponse = await axios.get(`http://localhost:8080/account/GetByAccountName/${entry.accountName}`);
             const account = accountResponse.data;
+            console.log("this the accoiunt data: " + account)
 
             // Calculate the new balance based on the account's normal side
             let newBalance;
             let debitTotal;
             let creditTotal;
 
-            if (account.normalSide === "Debit") {
+            if (account.normalSide === "left") {
                 newBalance = account.balance + (isDebit ? entry.amount : -entry.amount);
-                debitTotal = account.debit + entry.amount;
-                creditTotal = account.credit; // Maintain the existing credit total
+                debitTotal = account.debit + (isDebit ? entry.amount : 0);
+                creditTotal = account.credit + (isDebit ? 0 : entry.amount); // Maintain the existing credit total
             } else {
                 newBalance = account.balance + (isDebit ? -entry.amount : entry.amount);
-                creditTotal = account.credit + entry.amount;
-                debitTotal = account.debit; // Maintain the existing debit total
+                creditTotal = account.credit + (isDebit ? 0 : entry.amount);
+                debitTotal = account.debit + (isDebit ? entry.amount : 0); // Maintain the existing debit total
             }
 
+            console.log("everything before teh API call??")
             // Patch the account with the updated balance, debit, and credit values
             await axios.patch(`http://localhost:8080/account/edit/${account.accountNumber}`, {
                 balance: newBalance,
@@ -179,21 +181,21 @@ const Journalize = () => {
     };
 
     const handleApproveEntry = async (uniqueID) => {
-        // try {
-        //     const response = await axios.patch(`http://localhost:8080/journal/updateStatus/${uniqueID}`, { //URL that will create a new account
-        //         status: "Approved",
-        //         dateApproved: dateToday()
-        //     });
-        //     // window.location.reload();
+        try {
+            const response = await axios.patch(`http://localhost:8080/journal/updateStatus/${uniqueID}`, { //URL that will create a new account
+                status: "Approved",
+                dateApproved: dateToday()
+            });
+            // window.location.reload();
 
-        //     alert("Journal entries successfully approved!"); // Notify user on success
-        // } catch (error) {
-        //     console.error('Error approving journal entries:', error);
-        //     setErrorMessage('An error occurred while approving journal entry.');
-        // }
+            alert("Journal entries successfully approved!"); // Notify user on success
+        } catch (error) {
+            console.error('Error approving journal entries:', error);
+            setErrorMessage('An error occurred while approving journal entry.');
+        }
 
 
-        // const entriesToApprove = journalEntries.filter(entry => entry.id === Number(uniqueID));
+        const entriesToApprove = journalEntries.filter(entry => entry.uniqueID === uniqueID);
 
         console.log("Entries to approve:", entriesToApprove);
         if (entriesToApprove.length > 0) {
@@ -368,7 +370,9 @@ const Journalize = () => {
                     <a href="/AllJournalEntries">Journalize</a>
                     <a href="/LedgerOfAccounts">Ledger</a>
                     <a href="/Statements">Statements</a>
-                    <a href="/EventLog">Event Log</a>
+                    {storedUser.accountType === 'Admin' || storedUser.accountType === 'Manager' ? (
+                        <a href="/EventLog">Event Log</a>
+                    ) : ""}
                     <a><button className="logout-other-button" onClick={handleLogout}>Logout</button></a>
                 </div>
                 <div className="main-content">

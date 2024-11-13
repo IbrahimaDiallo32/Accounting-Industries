@@ -221,7 +221,6 @@ function EditUserForm({ user }) {
                     </fieldset>
                 </form>
             </div>
-            <button onClick={checkme}>dsf</button>
         </div>
     );
 }
