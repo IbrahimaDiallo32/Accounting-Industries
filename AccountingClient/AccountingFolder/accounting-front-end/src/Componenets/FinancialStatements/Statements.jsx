@@ -3,7 +3,9 @@ import Avatar from '../Assets/Avatar';
 import axios from 'axios';
 import Modal from '../Modal/Modal';
 import { useNavigate } from 'react-router-dom';
+import ReactAriaCalendar from  '../Modal/ReactAriaCalendar';
 import './Statements.css';
+import DatePicker from 'react-datepicker';
 
 const Statements = () => {
 
@@ -68,6 +70,16 @@ const Statements = () => {
         return Statement === currentStatement
     };
 
+    const handlePrint = () => {
+        window.print();
+    }
+
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    const handleDateChange = (date) => {
+    setSelectedDate(date);
+    };
+
     const [balanceSheet, setBalanceSheet] = useState([]);
     const [trialBalance, setTrialBalance] = useState([]);
     const [incomeStatement, setIncomeStatement] = useState([]);
@@ -98,10 +110,19 @@ const Statements = () => {
                     <option value="retained-earnings">Retained Earnings Statement</option>
                 </select>
 
+                <button className="submitSort" onClick = {handlePrint}>Print or Save</button>
+
                 {correctDisplay("balance-sheet") && (                                 //Start of Blance Sheet
 
                     <div className="statement-outer-container">
+                        <h2>Accounting Treasuries Indutries</h2>
                         <h2>Balance Sheet</h2>
+                        <h2>As of 
+                            <DatePicker className='date-selector-box'
+                            selected={selectedDate}
+                            onChange={handleDateChange}
+                            dateFormat="MMMM d, yyyy"
+                            /></h2> 
                         <table className="statement-table">
                             <thead>
                                 <tr>
@@ -120,14 +141,14 @@ const Statements = () => {
                                     <tr key={account.id}>
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                         <td className='no-border'></td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Assets</strong></td>
-                                    <td><strong>${balanceSheet.totalAssets?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${balanceSheet.totalAssets?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                     <td className='no-border'></td>
                                 </tr>
 
@@ -140,14 +161,14 @@ const Statements = () => {
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
                                         <td className='no-border'></td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Liabilities</strong></td>
                                     <td className='no-border'></td>
-                                    <td><strong>${balanceSheet.totalLiabilities?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${balanceSheet.totalLiabilities?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                 </tr>
 
                                 {/* Equity Section */}
@@ -159,20 +180,20 @@ const Statements = () => {
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
                                         <td className='no-border'></td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Equity</strong></td>
                                     <td className='no-border'></td>
-                                    <td><strong>${balanceSheet.totalEquity?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${balanceSheet.totalEquity?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                 </tr>
 
                                 {/* Total Liabilities and Equity */}
                                 <tr className="section-header">
                                     <td colSpan="3"><strong>Total Liabilities and Equity</strong></td>
-                                    <td><strong>${balanceSheet.totalLiabilitiesAndEquity?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${balanceSheet.totalLiabilitiesAndEquity?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -180,7 +201,14 @@ const Statements = () => {
                 )}
                 {correctDisplay("trial-balance") && (                               //Start of Trial Balance
                     <div className="statement-outer-container">
+                        <h2>Accounting Treasuries Indutries</h2>
                         <h2>Trial Balance</h2>
+                        <h2>As of 
+                            <DatePicker className='date-selector-box'
+                            selected={selectedDate}
+                            onChange={handleDateChange}
+                            dateFormat="MMMM d, yyyy"
+                            /></h2> 
                         <table className="statement-table">
                             <thead>
                                 <tr>
@@ -199,14 +227,14 @@ const Statements = () => {
                                     <tr key={account.id}>
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                         <td className='no-border'></td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Assets</strong></td>
-                                    <td><strong>${trialBalance.totalAssets?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${trialBalance.totalAssets?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                     <td className='no-border'></td>
                                 </tr>
 
@@ -219,14 +247,14 @@ const Statements = () => {
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
                                         <td className='no-border'></td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Liabilities</strong></td>
                                     <td className='no-border'></td>
-                                    <td><strong>${trialBalance.totalLiabilities?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${trialBalance.totalLiabilities?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                 </tr>
 
                                 {/* Equity Section */}
@@ -238,14 +266,14 @@ const Statements = () => {
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
                                         <td className='no-border'></td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Equity</strong></td>
                                     <td className='no-border'></td>
-                                    <td><strong>${trialBalance.totalEquity?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${trialBalance.totalEquity?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                 </tr>
 
                                 {/* Revenue Section */}
@@ -257,14 +285,14 @@ const Statements = () => {
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
                                         <td className='no-border'></td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Revenue</strong></td>
                                     <td className='no-border'></td>
-                                    <td><strong>${trialBalance.totalRevenue?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${trialBalance.totalRevenue?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                 </tr>
 
                                 {/* Expenses Section */}
@@ -275,25 +303,25 @@ const Statements = () => {
                                     <tr key={account.id}>
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                         <td className='no-border'></td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Expenses</strong></td>
-                                    <td><strong>${trialBalance.totalExpense?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${trialBalance.totalExpense?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                     <td className='no-border'></td>
                                 </tr>
 
                                 {/* Total Debits and Credits */}
                                 <tr className="section-header">
                                     <td colSpan="3"><strong>Total Debits</strong></td>
-                                    <td><strong>${trialBalance.totalDebit?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${trialBalance.totalDebit?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                 </tr>
                                 <tr className="section-header">
                                     <td colSpan="3"><strong>Total Credits</strong></td>
-                                    <td><strong>${trialBalance.totalCredit?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${trialBalance.totalCredit?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -301,7 +329,14 @@ const Statements = () => {
                 )}
                 {correctDisplay("income-statement") && (                            //Start of Income Statement
                     <div className="statement-outer-container">
+                        <h2>Accounting Treasuries Indutries</h2>
                         <h2>Income Statement</h2>
+                        <h2>As of 
+                            <DatePicker className='date-selector-box'
+                            selected={selectedDate}
+                            onChange={handleDateChange}
+                            dateFormat="MMMM d, yyyy"
+                            /></h2> 
                         <table className="statement-table">
                             <thead>
                                 <tr>
@@ -321,14 +356,14 @@ const Statements = () => {
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
                                         <td className='no-border'></td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Revenue</strong></td>
                                     <td className='no-border'></td>
-                                    <td><strong>${incomeStatement.totalRevenue?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${incomeStatement.totalRevenue?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                 </tr>
 
                                 {/* Expenses Section */}
@@ -339,21 +374,21 @@ const Statements = () => {
                                     <tr key={account.id}>
                                         <td className='no-border'></td>
                                         <td>{account.accountName}</td>
-                                        <td>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                        <td className='accont-amount'>${account.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                         <td className='no-border'></td>
                                     </tr>
                                 ))}
-                                <tr>
+                                <tr className="total-row">
                                     <td className='no-border'></td>
                                     <td className='indent'><strong>Total Expenses</strong></td>
-                                    <td><strong>${incomeStatement.totalExpense?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
+                                    <td className='account-amount'><strong>${incomeStatement.totalExpense?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></td>
                                     <td className='no-border'></td>
                                 </tr>
 
                                 {/* Net Income */}
                                 <tr className="section-header">
                                     <td colSpan="3"><strong>Net Income</strong></td>
-                                    <td>
+                                    <td className='account-amount'>
                                         <strong>
                                             ${(
                                                 (incomeStatement.totalRevenue || 0) -
@@ -368,7 +403,14 @@ const Statements = () => {
                 )}
                 {correctDisplay("retained-earnings") && (                           //Start of Retained Earnings
                     <div className="statement-outer-container">
+                        <h2>Accounting Treasuries Indutries</h2>
                         <h2>Retained Earnings Statement</h2>
+                        <h2>As of 
+                            <DatePicker className='date-selector-box'
+                            selected={selectedDate}
+                            onChange={handleDateChange}
+                            dateFormat="MMMM d, yyyy"
+                            /></h2> 
                         <table className="statement-table">
                             <thead>
                                 <tr>
@@ -379,22 +421,33 @@ const Statements = () => {
                             <tbody>
                                 <tr>
                                     <td><strong>Beginning Retained Earnings</strong></td>
-                                    <td>${(0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                    <td className='accont-amount'>${(0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Net Income</strong></td>
-                                    <td>
-                                        <strong>
+                                    <td className='accont-amount'>
                                             ${(
                                                 (incomeStatement.totalRevenue || 0) -
                                                 (incomeStatement.totalExpense || 0)
                                             ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                        </strong>
                                     </td>
                                 </tr>
+                                <tr className="total-row">
+                                    <td><strong>Total</strong></td>
+                                    <td className="account-amount"><strong>
+                                            ${(
+                                                (0) + // Starting retained earnings
+                                                ((incomeStatement.totalRevenue || 0) - (incomeStatement.totalExpense || 0))
+                                            ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </strong></td>
+                                </tr>
                                 <tr>
+                                    <td><strong>Dividends</strong></td>
+                                    <td className='accont-amount'>${(0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                                </tr>
+                                <tr className="total-row">
                                     <td><strong>Total Retained Earnings</strong></td>
-                                    <td>
+                                    <td className='account-amount'>
                                         <strong>
                                             ${(
                                                 (0) + // Starting retained earnings

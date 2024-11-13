@@ -45,3 +45,17 @@
   .statement-table td.no-border{
     border: none;
   }
+  .total-row {
+    border-top: 2px solid black;
+}
+.accont-amount{
+  text-align: right !important;
+}
+.account-amount{
+  text-align: right !important;
+  text-decoration: double underline;
+}
+.date-selector-box{
+  font-size: 16pt;
+  margin-left: 15px;
+}
