@@ -88,3 +88,58 @@ body {
     justify-content: right;
     gap: 10px;
 }
+.dash-entry-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.dash-card {
+    font-family: "Poppins", sans-serif;
+    width: calc(30% - 20px);
+    /* Ensures two cards per row */
+    height: 150px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin: 10px 0;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.dash-card:hover {
+    transform: scale(1.01);
+    /* Slightly less intense hover effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dash-card-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    color: #333;
+}
+.dash-card-content {
+    font-family: "Poppins", sans-serif;
+    margin-top: 10px;
+    color: #555;
+    font-size: 40pt;
+    justify-content: center !important;
+}
+.poor-ratio {
+    color: red;
+    font-weight: bold;
+  }
+  
+  .average-ratio {
+    color: orange;
+    font-weight: bold;
+  }
+  
+  .healthy-ratio {
+    color: green;
+    font-weight: bold;
+  }
