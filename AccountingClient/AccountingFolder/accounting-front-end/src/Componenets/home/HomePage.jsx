@@ -9,12 +9,14 @@ import CalandarPopUp from '../Modal/CalandarPopUp';
 import { useNavigate } from 'react-router-dom';
 import { CiCalculator1 } from "react-icons/ci";
 import CalculatorPopUp from '../Modal/CalculatorPopUp';
+import axios from 'axios';
 
 const HomePage = () => {
 
     const storedUser = JSON.parse(localStorage.getItem("currentUser"));
     const fullName = storedUser.firstName + " " + storedUser.lastName;
     const navigate = useNavigate();
+    const [ratiosAndDashboard, setRatiosAndDashboard] = useState([]);
 
     const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
     const toggleCalculator = () => {
@@ -30,15 +32,26 @@ const HomePage = () => {
     };
 
     useEffect(() => {
+        const dashboardRatios = async () => {
+            try {
+                const response = await axios.get(`http://localhost:8080/account/dashboard`);
+                setRatiosAndDashboard(response.data);
+            } catch (error) {
+                console.error("Error fetching accounts", error);
+            }
+        };
+        dashboardRatios();
         if (!storedUser) { //if no one is logged it, it automatically navigates back to login page
             navigate("/", { replace: true });
         }
+        console.log(ratiosAndDashboard);
     }, []);
 
     const handleLogout = () => {
         localStorage.removeItem("currentUser"); // Clear user data
         navigate("/loginForm"); // Redirect to login
     };
+    
 
     return (
         <div className='outerContainers'>
@@ -96,7 +109,95 @@ const HomePage = () => {
                         </Draggable>
 
                     )}
+                    <div className="dash-entry-cards">
+                                <div className="dash-card">
+                                    <div className="dash-card-header">
+                                        <span>Current Ratio</span>
+                                    </div>
+                                    
+                                    <div className={`dash-card-content ${ratiosAndDashboard.currentRatio < 90
+                                            ? "poor-ratio"
+                                            : ratiosAndDashboard.currentRatio >= 90 && ratiosAndDashboard.currentRatio < 140
+                                            ? "average-ratio"
+                                             : "healthy-ratio"
+                                            }`}>
+                                        {ratiosAndDashboard.currentRatio}%
+                                    </div>
+                                   
+                                </div>
+
+                                <div className="dash-card">
+                                    <div className="dash-card-header">
+                                    <span>Return on Assets</span>
+                                    </div>
+                                    <div className={`dash-card-content ${ratiosAndDashboard.returnOnAssets < 5
+                                            ? "poor-ratio"
+                                            : ratiosAndDashboard.returnOnAssets >= 5 && ratiosAndDashboard.returnOnAssets < 10
+                                            ? "average-ratio"
+                                             : "healthy-ratio"
+                                            }`}>
+                                    {ratiosAndDashboard.returnOnAssets}%
+                                    </div>
+                                </div>
+
+                                <div className="dash-card">
+                                    <div className="dash-card-header">
+                                        <span>Net Profit Margin</span>
+                                    </div>
+                                    <div className={`dash-card-content ${ratiosAndDashboard.netProfitMargin < 5
+                                            ? "poor-ratio"
+                                            : ratiosAndDashboard.netProfitMargin >= 5 && ratiosAndDashboard.netProfitMargin < 15
+                                            ? "average-ratio"
+                                             : "healthy-ratio"
+                                            }`}>
+                                        {ratiosAndDashboard.netProfitMargin}%
+                                    </div>
+                                </div>
+
+                                <div className="dash-card">
+                                    <div className="dash-card-header">
+                                        <span>Return on Equity</span>
+                                    </div>
+                                    <div className={`dash-card-content ${ratiosAndDashboard.returnOnEquity < 10
+                                            ? "poor-ratio"
+                                            : ratiosAndDashboard.returnOnEquity >= 10 && ratiosAndDashboard.returnOnEquity < 20
+                                            ? "average-ratio"
+                                             : "healthy-ratio"
+                                            }`}>
+                                        {ratiosAndDashboard.returnOnEquity}%
+                                    </div>
+                                </div>
+
+                                <div className="dash-card">
+                                    <div className="dash-card-header">
+                                        <span>Asset Turnover</span>
+                                    </div>
+                                    <div className={`dash-card-content ${ratiosAndDashboard.assetTurnover < 50
+                                            ? "poor-ratio"
+                                            : ratiosAndDashboard.assetTurnover >= 50 && ratiosAndDashboard.assetTurnover < 100
+                                            ? "average-ratio"
+                                             : "healthy-ratio"
+                                            }`}>
+                                        {ratiosAndDashboard.assetTurnover}%
+                                    </div>
+                                </div>
+
+                                <div className="dash-card">
+                                    <div className="dash-card-header">
+                                        <span>Quick Ratio</span>
+                                    </div>
+                                    <div className={`dash-card-content ${ratiosAndDashboard.quickRatio < 90
+                                            ? "poor-ratio"
+                                            : ratiosAndDashboard.quickRatio >= 90 && ratiosAndDashboard.quickRatio < 140
+                                            ? "average-ratio"
+                                             : "healthy-ratio"
+                                            }`}>
+                                        {ratiosAndDashboard.quickRatio}%
+                                    </div>
+                                </div>
+                    </div>
                 </div>
+                
             </div>
         </div>
     );
