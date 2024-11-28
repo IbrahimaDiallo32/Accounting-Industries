@@ -151,7 +151,6 @@ const EditAccount = ({ account }) => {
                 comment: comment
             });
             alert("Account successfully edited!"); //notifies user successful
-            window.location.reload(true); //refreshes the page so the chages can be realized
         } catch (error) {
             console.error('Error updating account:', error.response ? error.response.data : error.message);
         }

@@ -109,7 +109,7 @@ const Accounts = () => {
                 <AccountsHelp />
             </Modal>
             <div className="main-content">
-                <h1>Accounts
+                <h1>Chart Of Accounts
                     {storedUser.accountType == 'Admin' || storedUser.accountType == 'Manager' ? (
                         <button className='createNewAccountButton' onClick={openModal} title="Create a new Account"><IoMdAdd />Account</button>
                     ) : (

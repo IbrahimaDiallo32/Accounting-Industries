@@ -192,6 +192,7 @@ const NewJournalEntry = () => {
         } catch (error) {
             console.error("Error logging event", error);
         }
+        window.location.reload(true); //refreshes the page so the chages can be realized
     };
 
     const dateAndTimeToday = () => {

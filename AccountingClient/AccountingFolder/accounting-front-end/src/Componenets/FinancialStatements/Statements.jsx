@@ -3,7 +3,7 @@ import Avatar from '../Assets/Avatar';
 import axios from 'axios';
 import Modal from '../Modal/Modal';
 import { useNavigate } from 'react-router-dom';
-import ReactAriaCalendar from  '../Modal/ReactAriaCalendar';
+import ReactAriaCalendar from '../Modal/ReactAriaCalendar';
 import './Statements.css';
 import DatePicker from 'react-datepicker';
 
@@ -74,10 +74,10 @@ const Statements = () => {
         window.print();
     }
 
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedDate, setSelectedDate] = useState("November 20, 2024");
 
     const handleDateChange = (date) => {
-    setSelectedDate(date);
+        setSelectedDate(date);
     };
 
     const [balanceSheet, setBalanceSheet] = useState([]);
@@ -112,19 +112,19 @@ const Statements = () => {
                     <option value="retained-earnings">Retained Earnings Statement</option>
                 </select>
 
-                <button className="submitSort" onClick = {handlePrint}>Print or Save</button>
+                <button className="submitSort" onClick={handlePrint}>Print or Save</button>
 
                 {correctDisplay("balance-sheet") && (                                 //Start of Blance Sheet
 
                     <div className="statement-outer-container">
                         <h2>Accounting Treasuries Indutries</h2>
                         <h2>Balance Sheet</h2>
-                        <h2>As of 
+                        <h2>As of
                             <DatePicker className='date-selector-box'
-                            selected={selectedDate}
-                            onChange={handleDateChange}
-                            dateFormat="MMMM d, yyyy"
-                            /></h2> 
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                                dateFormat="MMMM d, yyyy"
+                            /></h2>
                         <table className="statement-table">
                             <thead>
                                 <tr>
@@ -205,12 +205,12 @@ const Statements = () => {
                     <div className="statement-outer-container">
                         <h2>Accounting Treasuries Indutries</h2>
                         <h2>Trial Balance</h2>
-                        <h2>As of 
+                        <h2>As of
                             <DatePicker className='date-selector-box'
-                            selected={selectedDate}
-                            onChange={handleDateChange}
-                            dateFormat="MMMM d, yyyy"
-                            /></h2> 
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                                dateFormat="MMMM d, yyyy"
+                            /></h2>
                         <table className="statement-table">
                             <thead>
                                 <tr>
@@ -333,12 +333,12 @@ const Statements = () => {
                     <div className="statement-outer-container">
                         <h2>Accounting Treasuries Indutries</h2>
                         <h2>Income Statement</h2>
-                        <h2>As of 
+                        <h2>As of
                             <DatePicker className='date-selector-box'
-                            selected={selectedDate}
-                            onChange={handleDateChange}
-                            dateFormat="MMMM d, yyyy"
-                            /></h2> 
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                                dateFormat="MMMM d, yyyy"
+                            /></h2>
                         <table className="statement-table">
                             <thead>
                                 <tr>
@@ -407,12 +407,12 @@ const Statements = () => {
                     <div className="statement-outer-container">
                         <h2>Accounting Treasuries Indutries</h2>
                         <h2>Retained Earnings Statement</h2>
-                        <h2>As of 
+                        <h2>As of
                             <DatePicker className='date-selector-box'
-                            selected={selectedDate}
-                            onChange={handleDateChange}
-                            dateFormat="MMMM d, yyyy"
-                            /></h2> 
+                                selected={selectedDate}
+                                onChange={handleDateChange}
+                                dateFormat="MMMM d, yyyy"
+                            /></h2>
                         <table className="statement-table">
                             <thead>
                                 <tr>
@@ -428,20 +428,20 @@ const Statements = () => {
                                 <tr>
                                     <td><strong>Net Income</strong></td>
                                     <td className='accont-amount'>
-                                            ${(
-                                                (incomeStatement.totalRevenue || 0) -
-                                                (incomeStatement.totalExpense || 0)
-                                            ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        ${(
+                                            (incomeStatement.totalRevenue || 0) -
+                                            (incomeStatement.totalExpense || 0)
+                                        ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                     </td>
                                 </tr>
                                 <tr className="total-row">
                                     <td><strong>Total</strong></td>
                                     <td className="account-amount"><strong>
-                                            ${(
-                                                (0) + // Starting retained earnings
-                                                ((incomeStatement.totalRevenue || 0) - (incomeStatement.totalExpense || 0))
-                                            ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                                        </strong></td>
+                                        ${(
+                                            (0) + // Starting retained earnings
+                                            ((incomeStatement.totalRevenue || 0) - (incomeStatement.totalExpense || 0))
+                                        ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                    </strong></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Dividends</strong></td>

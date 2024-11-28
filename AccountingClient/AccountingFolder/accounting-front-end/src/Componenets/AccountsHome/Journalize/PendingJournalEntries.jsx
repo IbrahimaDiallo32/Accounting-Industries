@@ -196,8 +196,6 @@ const Journalize = () => {
 
 
         const entriesToApprove = journalEntries.filter(entry => entry.uniqueID === uniqueID);
-
-        console.log("Entries to approve:", entriesToApprove);
         if (entriesToApprove.length > 0) {
             // Loop through each entry and handle debits and credits
             for (const entry of entriesToApprove) {
@@ -211,79 +209,10 @@ const Journalize = () => {
                     await updateAccountBalance(credit, false);
                 }
             }
-
-            // // Update the state to reflect the approved status
-            // const updatedEntries = journalEntries.map(entry =>
-            //     entriesToApprove.includes(entry)
-            //         ? { ...entry, status: 'approved' } // Mark the status as approved
-            //         : entry
-            // );
-            // setJournalEntries(updatedEntries);
-
             console.log("Entries approved successfully");
         } else {
             console.error("No entries found for approval with the given uniqueID");
         }
-
-
-
-        // Fetch journal entry details to access its debits and credits
-        // const response = await axios.get(`http://localhost:8080/journal/getEntry/${uniqueID}`);
-        // const journalEntry = response.data;
-
-        // // Loop through debits and credits and update respective accounts
-        // const updateAccountBalance = async (entry, isDebit) => {
-        //     // Get the current account info
-        //     const accountResponse = await axios.get(`http://localhost:8080/account/GetByAccountName/${entry.accountName}`);
-        //     const account = accountResponse.data;
-
-        //     // Calculate the new balance based on the account's normal side
-        //     let newBalance;
-        //     let debitTotal;
-        //     let creditTotal;
-        //     if (account.normalSide === "Debit") {
-        //         newBalance = account.balance + (isDebit ? entry.amount : -entry.amount);
-        //         debitTotal = account.debit + entry.amount;
-        //     } else {
-        //         newBalance = account.balance + (isDebit ? -entry.amount : entry.amount);
-        //         creditTotal = account.credit + entry.amount;
-        //     }
-
-        //     // Patch the account with the updated balance
-        //     await axios.patch(`http://localhost:8080/account/edit/${account.accountNumber}`, {
-        //         balance: newBalance,
-        //         debit: debitTotal,
-        //         credit: creditTotal
-        //     });
-        // };
-
-        // // Process debits
-        // for (const debit of journalEntry.debits) {
-        //     await updateAccountBalance(debit, true);
-        // }
-
-        // // Process credits
-        // for (const credit of journalEntry.credits) {
-        //     await updateAccountBalance(credit, false);
-        // }
-
-        // // e.preventDefault(); // This prevents the page from reloading when the form is submitted.
-        // // //This sends a a post with JSON formatted data to the Backend API via this URL with instructions for handling confugured in Spring boot 
-        // // try {
-        // //     const response = await axios.patch(`http://localhost:8080/account/edit/${originalAccountNumber}`, { //URL that will edit an account given the original Accountnumner 
-        // //         accountName: accountName,
-        // //         accountNumber: Number(accountNumber),
-        // //         initialBalance: parseFloat(String(initialBalance).replace(/,/g, '')),
-        // //         debit: parseFloat(String(debit).replace(/,/g, '')),
-        // //         credit: parseFloat(String(credit).replace(/,/g, '')),
-        // //         balance: parseFloat(String(balance).replace(/,/g, ''))
-        // //     });
-        // //     alert("Account successfully edited!"); //notifies user successful
-        // //     window.location.reload(true); //refreshes the page so the chages can be realized
-        // // } catch (error) {
-        // //     console.error('Error updating account:', error.response ? error.response.data : error.message);
-        // // }
-        console.log("eveything but event log")
 
         try {
             // Log the login event
@@ -299,7 +228,7 @@ const Journalize = () => {
         } catch (error) {
             console.error("Error logging event", error);
         }
-
+        window.location.reload();
     }
 
     const handleDenyEntry = async (uniqueID) => {
